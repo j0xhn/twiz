@@ -79,8 +79,10 @@
             NSLog(@"Uh oh. The user cancelled the Twitter login.");
             return;
         } else if (user.isNew) {
+            // give intro run through here, or welcome message
             NSLog(@"User signed up and logged in with Twitter!");
         } else {
+            
             NSLog(@"signin Sucessfull");
             [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginSuccessfulNotification" object:nil userInfo:nil];
             NSLog(@"Post Successfull");

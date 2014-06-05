@@ -17,12 +17,5 @@
             <color key="backgroundColor" red="0.96078431369999995" green="0.93725490199999995" blue="0.85882352939999995" alpha="1" colorSpace="calibratedRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
         </view>
-        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="logo.png" id="11">
-            <rect key="frame" x="0.0" y="0.0" width="187" height="58"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-        </imageView>
     </objects>
-    <resources>
-        <image name="logo.png" width="374" height="117"/>
-    </resources>
 </document>

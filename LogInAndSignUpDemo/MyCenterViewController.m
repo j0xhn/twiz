@@ -11,7 +11,6 @@
 #import "UIViewController+JASidePanel.h"
 #import "JASidePanelController.h"
 
-
 @interface MyCenterViewController ()
 
 - (void) refreshView;
@@ -31,6 +30,14 @@
 - (void) viewWillAppear:(BOOL)animated{
     // initial screen here
     self.title = @"Twiz";
+//    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, 320, 14)];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{
+                NSFontAttributeName: [UIFont fontWithName:@"MuseoSansRounded-900" size:24],
+                NSForegroundColorAttributeName: [UIColor whiteColor],
+    }];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:49.0f/255.0f green:35.0f/255.0f blue:105.0f/255.0f alpha:1.0f];
+    self.navigationController.navigationBar.translucent = NO;
+
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"MainBG.png"]]];
     // creates listener for Twitter Login
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -55,7 +62,7 @@
         // works only if you login, then close app and login, not after information is actually sent to twitter, then redirects you back up to top 'viewWillAppear' method.. so now I'm going to create a listener to listen for login and refreash page so that the correct view comes in
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"MainBG.png"]]];
         
-        UILabel *userName = [[UILabel alloc]initWithFrame:CGRectMake(10, 100, self.view.bounds.size.width, 40)];
+                UILabel *userName = [[UILabel alloc]initWithFrame:CGRectMake(10, 100, self.view.bounds.size.width, 40)];
         userName.text = [NSString stringWithFormat:NSLocalizedString(@"Welcome %@!", nil), [[PFUser currentUser] username]];
         [self.view addSubview:userName];
         
@@ -68,7 +75,7 @@
         button.frame = CGRectMake(10.0, self.view.bounds.size.height - 50.0f, self.view.bounds.size.width - 20.0f, 40.0);
         [[button layer] setCornerRadius:3.0f];
         [[button layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
-        [button addTarget:self action:@selector(refreshView) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(loadTweets) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:button];
         self.refreshBtn = button;
     }
@@ -84,11 +91,33 @@
         [self.sidePanelController showCenterPanelAnimated:YES];
     // refreshes center panel
         self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[MyCenterViewController alloc] init]];
+}
 
-//    [self.view setNeedsDisplay];
-//    
-//    UIView *playView = [UIView alloc];
-//    [self.view addSubview:playView];
+- (void)loadTweets
+{
+    NSString *bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?count=10"];
+    
+    NSURL *url = [NSURL URLWithString:bodyString];
+    NSMutableURLRequest *tweetRequest = [NSMutableURLRequest requestWithURL:url];
+    tweetRequest.HTTPMethod = @"GET";
+    tweetRequest.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [[PFTwitterUtils twitter] signRequest:tweetRequest];
+    
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    
+    // Post status synchronously.
+    NSData *data = [NSURLConnection sendSynchronousRequest:tweetRequest
+                                         returningResponse:&response
+                                                     error:&error];
+    
+    // Handle response.
+    if (!error) {
+        NSLog(@"Response: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    } else {
+        NSLog(@"Error: %@", error);
+    }
 }
 
 #pragma mark - PFLogInViewControllerDelegate
