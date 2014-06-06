@@ -77,4 +77,58 @@ works for getting pictures if you swap out user.username with actuall twitter ac
             }
 
 ```
+works for accessing twitter object
 
+```
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    
+    // Create an account type that ensures Twitter accounts are retrieved.
+    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
+    // Request access from the user to use their Twitter accounts.
+    [accountStore requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error) {
+        
+        if(granted) {
+            // Get the list of Twitter accounts.
+            NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+            
+            // For the sake of brevity, we'll assume there is only one Twitter account present.
+            // You would ideally ask the user which account they want to tweet from, if there is more than one Twitter account present.
+            if ([accountsArray count] > 0) {
+                // Grab the initial Twitter account to tweet from.
+                ACAccount *twitterAccount = [accountsArray objectAtIndex:0];
+                NSLog(@"twitter account %@", twitterAccount);
+                
+                //At this point, the twitterAccount has been pulled into the *twitterAccount object.
+            }
+        }
+    }];
+```
+
+giving me 
+```
+type:com.apple.twitter
+identifier: D9F82BCD-4C85-4F48-814D-86AA1CFA2973
+active: YES
+accountDescription: @johnDANGRstorey
+username: johnDANGRstorey
+objectID: x-coredata://4BBE83B9-8C9E-4A9C-A61B-7515D1548805/Account/p1
+provisionedDataclasses: {()}
+enabledDataclasses: {()}
+enableAndSyncableDataclasses: {()}
+dataclassProperties: (null)
+properties: {
+    "user_id" = 154177060;
+}
+parentAccount: (null)
+owningBundleID:com.apple.Preferences
+authenticated: YES
+lastCredentialRenewalRejectedDate: (null)
+supportsAuthentication: YES
+authenticationType: (null)
+credentialType: (null)
+created: Wednesday, June 4, 2014 at 10:54:19 PM Mountain Daylight Time
+active: YES
+visible: YES
+
+```
