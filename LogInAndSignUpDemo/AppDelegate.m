@@ -24,9 +24,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // I try to make the background purple as soon as possible, but it doesn't seem to work. Q:1 Is there another way that I am missing.  Maybe like an initial screen view kind of thing or loading screen.
-    [self.window setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"MainBG.png"]]];
-    
+    [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleLightContent];
     // ****************************************************************************
     // Fill in with your Parse and Twitter credentials. Don't forget to add your
     // Facebook id in Info.plist:

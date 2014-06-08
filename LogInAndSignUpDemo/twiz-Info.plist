@@ -6,10 +6,12 @@
 	<string></string>
 	<key>CFBundleIdentifier</key>
 	<string>com.parse.LogInAndSignUpDemo</string>
-	<key>CFBundleName</key>
-	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
@@ -29,10 +31,8 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -41,6 +41,13 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MuseoSansRounded-100.otf</string>
+		<string>MuseoSansRounded-300.otf</string>
+		<string>MuseoSansRounded-500.otf</string>
+		<string>MuseoSansRounded-900.otf</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -60,14 +67,9 @@
 	<string>your_facebook_app_id</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>MuseoSansRounded-100.otf</string>
-		<string>MuseoSansRounded-300.otf</string>
-		<string>MuseoSansRounded-500.otf</string>
-		<string>MuseoSansRounded-900.otf</string>
-	</array>
+	<key>CFBundleName</key>
+	<string>${PRODUCT_NAME}</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

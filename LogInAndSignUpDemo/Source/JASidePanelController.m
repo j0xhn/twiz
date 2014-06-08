@@ -288,13 +288,13 @@ static char ja_kvoContext;
     }
     container.layer.shadowPath = shadowPath.CGPath;	
     container.layer.shadowColor = [UIColor blackColor].CGColor;
-    container.layer.shadowRadius = 10.0f;
+    container.layer.shadowRadius = 0.0f;
     container.layer.shadowOpacity = 0.75f;
     container.clipsToBounds = NO;
 }
 
 - (void)stylePanel:(UIView *)panel {
-    panel.layer.cornerRadius = 6.0f;
+    panel.layer.cornerRadius = 0.0f;
     panel.clipsToBounds = YES;
 }
 
@@ -431,7 +431,7 @@ static char ja_kvoContext;
 #pragma mark - Panel Buttons
 
 - (void)_placeButtonForLeftPanel {
-    if (self.leftPanel) {
+    if (self.leftPanel || self.rightPanel) {
         UIViewController *buttonController = self.centerPanel;
         if ([buttonController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *nav = (UINavigationController *)buttonController;
@@ -440,9 +440,16 @@ static char ja_kvoContext;
             }
         }
         if (!buttonController.navigationItem.leftBarButtonItem) {   
-            buttonController.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
+//            buttonController.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
+            UILabel *scoreLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,6,55,32)];
+            scoreLabel.text = @"Ashu";
+            scoreLabel.backgroundColor = [UIColor whiteColor];
+            [self.navigationController.navigationBar addSubview:scoreLabel];
         }
-    }	
+        if (!buttonController.navigationItem.rightBarButtonItem) {
+            buttonController.navigationItem.rightBarButtonItem = [self rightButtonForCenterPanel];
+        }
+    }
 }
 
 #pragma mark - Gesture Recognizer Delegate
@@ -954,6 +961,9 @@ static char ja_kvoContext;
 
 - (UIBarButtonItem *)leftButtonForCenterPanel {
     return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+}
+- (UIBarButtonItem *)rightButtonForCenterPanel {
+    return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleRightPanel:)];
 }
 
 - (void)showLeftPanel:(BOOL)animated {

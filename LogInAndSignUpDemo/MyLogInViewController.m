@@ -87,6 +87,8 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginSuccessfulNotification" object:nil userInfo:nil];
             NSLog(@"Post Successfull");
             // A:2 removes the viewcontroller but doesn't reload the page... trying to add NSNotification to refresh page in Q:2  Also curious about if I reload the center page if it will go back to the MyCenterViewController rather than the JARightViewController, but that should be easy enough after I figure out even if reload page doesn't do it.
+            
+            //CHASE: I can't call the method in viewWillAppear because it puts it in a never ending loop :O 
             [self dismissViewControllerAnimated:YES completion:NULL];
 
         }     
