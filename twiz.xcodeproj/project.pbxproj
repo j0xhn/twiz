@@ -37,6 +37,7 @@
 		C4BBB7C416FD2D73003CA3F7 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C4BBB7C116FD2D73003CA3F7 /* Default-568h@2x.png */; };
 		C4FD613617286AC800F61563 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FD613517286AC800F61563 /* Icon.png */; };
 		C4FD613817286ACD00F61563 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FD613717286ACD00F61563 /* Icon@2x.png */; };
+		F50C4D8B19450D480041971F /* MyTwitterController.m in Sources */ = {isa = PBXBuildFile; fileRef = F50C4D8A19450D480041971F /* MyTwitterController.m */; };
 		F5228FA71938F5D400D0160A /* MuseoSansRounded-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = F5228FA31938F58500D0160A /* MuseoSansRounded-100.otf */; };
 		F5228FA81938F5D400D0160A /* MuseoSansRounded-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = F5228FA41938F58500D0160A /* MuseoSansRounded-300.otf */; };
 		F5228FA91938F5D400D0160A /* MuseoSansRounded-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = F5228FA51938F58500D0160A /* MuseoSansRounded-500.otf */; };
@@ -88,6 +89,8 @@
 		C4BBB7C116FD2D73003CA3F7 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C4FD613517286AC800F61563 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
 		C4FD613717286ACD00F61563 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "../Icon@2x.png"; sourceTree = "<group>"; };
+		F50C4D8919450D480041971F /* MyTwitterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTwitterController.h; sourceTree = "<group>"; };
+		F50C4D8A19450D480041971F /* MyTwitterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTwitterController.m; sourceTree = "<group>"; };
 		F5228FA31938F58500D0160A /* MuseoSansRounded-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-100.otf"; path = "../../../../../../../Volumes/Macintosh HD/Users/johndangerstorey/Documents/Stock/Fonts/MuseoSansRounded-100.otf"; sourceTree = "<group>"; };
 		F5228FA41938F58500D0160A /* MuseoSansRounded-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-300.otf"; path = "../../../../../../../Volumes/Macintosh HD/Users/johndangerstorey/Documents/Stock/Fonts/MuseoSansRounded-300.otf"; sourceTree = "<group>"; };
 		F5228FA51938F58500D0160A /* MuseoSansRounded-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-500.otf"; path = "../../../../../../../Volumes/Macintosh HD/Users/johndangerstorey/Documents/Stock/Fonts/MuseoSansRounded-500.otf"; sourceTree = "<group>"; };
@@ -157,7 +160,6 @@
 			children = (
 				74366EAC158AAE1000A17D8A /* twiz files */,
 				741203C415900A3C00820BE9 /* Assets */,
-				F5229049193EDBC700D0160A /* JASidePanels */,
 				74366EAD158AAE1000A17D8A /* Supporting Files */,
 				74366EA5158AAE0F00A17D8A /* Frameworks */,
 				74366EA3158AAE0F00A17D8A /* Products */,
@@ -203,6 +205,7 @@
 				74366EB5158AAE1000A17D8A /* AppDelegate.h */,
 				74366EB6158AAE1000A17D8A /* AppDelegate.m */,
 				74366EF6158B959200A17D8A /* My Views */,
+				F5229049193EDBC700D0160A /* JASidePanels */,
 			);
 			name = "twiz files";
 			path = LogInAndSignUpDemo;
@@ -229,6 +232,8 @@
 			children = (
 				74366EF7158B95C800A17D8A /* MyCenterViewController.h */,
 				74366EF8158B95C800A17D8A /* MyCenterViewController.m */,
+				F50C4D8919450D480041971F /* MyTwitterController.h */,
+				F50C4D8A19450D480041971F /* MyTwitterController.m */,
 				74366F01158B973C00A17D8A /* MyLogInViewController.h */,
 				74366F02158B973C00A17D8A /* MyLogInViewController.m */,
 				F5228FB0193900F100D0160A /* XIB */,
@@ -262,7 +267,7 @@
 				F522904D193EDBC700D0160A /* UIViewController+JASidePanel.m */,
 			);
 			name = JASidePanels;
-			path = LogInAndSignUpDemo/Source;
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -345,6 +350,7 @@
 				F522905E193EDDF400D0160A /* JADebugViewController.m in Sources */,
 				74366EB7158AAE1000A17D8A /* AppDelegate.m in Sources */,
 				74366EFA158B95C800A17D8A /* MyCenterViewController.m in Sources */,
+				F50C4D8B19450D480041971F /* MyTwitterController.m in Sources */,
 				74366F03158B973C00A17D8A /* MyLogInViewController.m in Sources */,
 				F522905F193EDDF400D0160A /* JALeftViewController.m in Sources */,
 				F522904F193EDBC700D0160A /* UIViewController+JASidePanel.m in Sources */,

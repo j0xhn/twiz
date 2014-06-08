@@ -11,6 +11,8 @@
 #import "UIViewController+JASidePanel.h"
 #import "JASidePanelController.h"
 
+#import "MyTwitterController.h"
+
 @interface MyCenterViewController ()
 
 - (void) refreshView;
@@ -92,7 +94,7 @@
         [tweetLabel setFont:museoButtonFont50022];
         //sets left padding
         tweetLabel.textContainer.lineFragmentPadding = 15;
-        tweetLabel.text = @"Being able to express yourself, clearly and forcefully, in less than the 140 characters is actually a really good thing to learn.  #learning";
+        tweetLabel.text = @"Being able to express yourself, clearly and forcefully, in less than the 140 characters is actually a really good thing to learn.  #twitter";
         [self.view addSubview:tweetLabel];
         
         // refresh button
@@ -116,35 +118,15 @@
 
 // A:2 I ended up just dismissing the viewcontroller in the LoginViewController, transitioning back to the center, and create a new instance of the view controller.
 - (void) refreshView{
-    NSLog(@"You want to refresh view");
+    NSLog(@"You want to refresh view - from CenterViewController");
     self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[MyCenterViewController alloc] init]];
 }
 
 - (void)loadTweets
 {
-    NSString *bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=johnDANGRstorey&count=2"];
-    
-    NSURL *url = [NSURL URLWithString:bodyString];
-    NSMutableURLRequest *tweetRequest = [NSMutableURLRequest requestWithURL:url];
-    
-    [[PFTwitterUtils twitter] signRequest:tweetRequest];
-    
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    
-    // Post status synchronously - TODO: change to Asynch
-    NSData *data = [NSURLConnection sendSynchronousRequest:tweetRequest
-                                         returningResponse:&response
-                                                     error:&error];
-    
-    // Handle response.
-    if (!error) {
-        NSLog(@"Response: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-    } else {
-        NSLog(@"Error: %@", error);
-    }
-    
-
+    NSLog(@"You want to load tweets - from CenterViewController");
+    NSString *userName = @"johnDANGRstorey";
+    [MyTwitterController requestTweetArray:userName];
 
 }
 
