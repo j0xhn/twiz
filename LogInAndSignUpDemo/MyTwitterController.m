@@ -10,8 +10,19 @@
 #import "MyLogInViewController.h"
 #import "MyCenterViewController.h"
 
+static NSString const * tweetIDKey = @"tweetID";
+static NSString const * tweetTextKey = @"tweetText";
+static NSString const * tweetAuthorIDKey = @"tweetAuthorID";
+
+@interface MyTwitterController ()
+@property (strong,nonatomic) NSDictionary *tweetBucketDictionary;
+
+@end
+
 @implementation MyTwitterController
-// Q:4 what's wrong with this?
+
+
+// Q:4 what's wrong with this?  I can't seem to access the tweetBucketArray found in MyTwitterController.h file.
 //if (self.tweetBucketArray == 3){
 //    [self requestTweetArray];
 //}
@@ -65,10 +76,16 @@
 //             NSLog(@"JSON: %@", json);
              for(id key in json){
                  NSLog(@"key=%@", key);
-                 NSNumber *activeTweetID = [key objectForKey:@"id"];
-                 NSString *activeTweetText = [key objectForKey:@"text"];
-//                 NSNumber *activeTweetAuthorID = [key[user]]
-                 NSLog(@"activeTweetID: %@ and text: %@", activeTweetID, activeTweetText);
+                 NSNumber *singleTweetID = [key objectForKey:@"id"];
+                 NSString *singleTweetText = [key objectForKey:@"text"];
+                 NSNumber *singleTweetAuthorID = [[key objectForKey:@"user"]objectForKey:@"id"];
+                 NSDictionary *singleTweet = @{tweetIDKey:singleTweetID, tweetTextKey:singleTweetText, tweetAuthorIDKey:singleTweetAuthorID};
+                 NSLog(@"activeTweetID: %@ and text: %@ and AuthorID: %@ in dictionary: %@", singleTweetID, singleTweetText, singleTweetAuthorID, singleTweet);
+                 
+                 NSDictionary *tweetBucketDictionary = [NSDictionary new];
+                 // Q:4 this wont work either
+                 [tweetBucketDictionary A]
+                 
              }
          }
          else if ([data length] == 0 && error == nil)
@@ -76,6 +93,12 @@
              NSLog(@"Nothing was downloaded.");
          }
          else if (error != nil){
+             UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                               message:@"Something went wrong, check your internet connection then try again"
+                                                              delegate:self
+                                                     cancelButtonTitle:@"OK"
+                                                     otherButtonTitles:nil];
+             [errorAlertView show];
              NSLog(@"Error = %@", error);
          }
          

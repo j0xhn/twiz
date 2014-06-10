@@ -20,13 +20,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LogInAndSignUpDemo/MyTwitterController.m"
-            timestampString = "423963486.907836"
+            timestampString = "424101352.893478"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "+requestTweetArray:"
-            landmarkType = "5">
+            startingLineNumber = "77"
+            endingLineNumber = "77"
+            landmarkName = "@implementation MyTwitterController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
