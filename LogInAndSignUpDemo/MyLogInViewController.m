@@ -23,12 +23,9 @@
     
     [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"MainBG.png"]]];
     
-    
     // if 'nil' not selected it will bring up Parse Logo
     [self.logInView setLogo:[UIImage imageNamed:nil]];
     
-    
-    // sets logo font,size, and position Q:3 I will need to use this for 3 other labels.  Do I define it in each place or is there a way to share it.  I started making a UIFont subclass but came accross difficulties because it makes you define the size each time you define the font.  The characteristics I want to persist is the NAME and the COLOR, but even those two are on completely different classes (being UIFont and UILabel)
     UILabel *logoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 200, self.view.bounds.size.width, 40)];
     logoLabel.text = @"TWIZ";
     logoLabel.textColor = [UIColor whiteColor];
@@ -97,7 +94,7 @@
 - (void)loadTweets
 {
     NSString *userName = @"johnDANGRstorey";
-    [MyTwitterController requestTweetArray:userName];
+    [MyTwitterController requestTweetBucketDictionary:(NSString *)userName];
     
 }
 

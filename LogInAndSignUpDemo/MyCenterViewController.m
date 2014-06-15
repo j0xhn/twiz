@@ -15,8 +15,9 @@
 
 @interface MyCenterViewController ()
 
-- (void) refreshView;
 @property (nonatomic, weak) UIButton *refreshBtn;
+@property (nonatomic, strong) NSDictionary *activeTweet;
+@property (nonatomic, strong) UITextView *tweetLabel;
 
 @end
 
@@ -79,11 +80,6 @@
         scoreLabel.textColor = [UIColor whiteColor];
         scoreLabel.font = [UIFont fontWithName:@"MuseoSansRounded-500" size:16];
         [self.navigationController.navigationBar addSubview:scoreLabel];
-
-        // sets username
-        UILabel *userName = [[UILabel alloc]initWithFrame:CGRectMake(10, 100, self.view.bounds.size.width, 40)];
-        userName.text = [NSString stringWithFormat:NSLocalizedString(@"Welcome %@!", nil), [[PFUser currentUser] username]];
-        [self.view addSubview:userName];
         
         // Tweet Display
         UITextView *tweetLabel = [[UITextView alloc]initWithFrame:CGRectMake(10.0, 10.0f, self.view.bounds.size.width - 20.0f, 180.0)];
@@ -95,28 +91,37 @@
         //sets left padding
         tweetLabel.textContainer.lineFragmentPadding = 15;
         tweetLabel.text = @"Being able to express yourself, clearly and forcefully, in less than the 140 characters is actually a really good thing to learn.  #twitter";
-        [self.view addSubview:tweetLabel];
+        self.tweetLabel = tweetLabel;
+        [self.view addSubview:self.tweetLabel];
+        
+        // request button
+        UIButton *requestBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        requestBtn.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+        [requestBtn setTitle:@"Refresh Active Tweet" forState:UIControlStateNormal];
+        [requestBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        UIFont *museoButtonFont500 = [UIFont fontWithName:@"MuseoSansRounded-500" size:18.0];
+        [requestBtn setFont:museoButtonFont500];
+        requestBtn.frame = CGRectMake(10.0, self.view.bounds.size.height - 100.0f, self.view.bounds.size.width - 20.0f, 40.0);
+        [[requestBtn layer] setCornerRadius:3.0f];
+        [[requestBtn layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
+        [requestBtn addTarget:self action:@selector(requestActiveTweet) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:requestBtn];
         
         // refresh button
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-        [button setTitle:@"Refresh" forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        UIFont *museoButtonFont500 = [UIFont fontWithName:@"MuseoSansRounded-500" size:18.0];
-        [button setFont:museoButtonFont500];
-        button.frame = CGRectMake(10.0, self.view.bounds.size.height - 50.0f, self.view.bounds.size.width - 20.0f, 40.0);
-        [[button layer] setCornerRadius:3.0f];
-        [[button layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
-        [button addTarget:self action:@selector(loadTweets) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:button];
-        self.refreshBtn = button;
+        UIButton *refreshBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        refreshBtn.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+        [refreshBtn setTitle:@"Refresh Bucket" forState:UIControlStateNormal];
+        [refreshBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [refreshBtn setFont:museoButtonFont500];
+        refreshBtn.frame = CGRectMake(10.0, self.view.bounds.size.height - 50.0f, self.view.bounds.size.width - 20.0f, 40.0);
+        [[refreshBtn layer] setCornerRadius:3.0f];
+        [[refreshBtn layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
+        [refreshBtn addTarget:self action:@selector(loadTweets) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:refreshBtn];
+
     }
 }
-//  here I need it to not exactly create a new instance of the controller, but just refreash the existing view.  Or do you think it's a better pattern to create a new view to initiate after the "LoginSuccessfulNotification" is called Q:2 what's the correct pattern for this?
 
-//  Q:3 should I be setting all the login for setting labels, buttons, etc... in this view so they just automatically get called once the login comes back successfull?  This however would mean I need to do it outside of the function as well because it wouldn't naturally do it everytime I answer a question or it logs in with a user from the initial screen (like a 'remember me' user that hasn't logged out. Or I could keep all the logic inside of my refreshView and just call that meathod upon viewDidLoad.  I guess most of my questions are on data structure and where it is most appropriate to call which functions.
-
-// A:2 I ended up just dismissing the viewcontroller in the LoginViewController, transitioning back to the center, and create a new instance of the view controller.
 - (void) refreshView{
     NSLog(@"You want to refresh view - from CenterViewController");
     self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[MyCenterViewController alloc] init]];
@@ -125,9 +130,16 @@
 - (void)loadTweets
 {
     NSLog(@"You want to load tweets - from CenterViewController");
-    NSString *userName = @"johnDANGRstorey";
-    [MyTwitterController requestTweetArray:userName];
+    NSString *userName = [NSString stringWithFormat:[[PFUser currentUser] username]];
+    [MyTwitterController requestTweetBucketDictionary:(NSString *)userName];
 
+}
+
+- (void)requestActiveTweet
+{
+    NSLog(@"You want to request active with answers tweet - from CenterViewController");
+    self.activeTweet = [MyTwitterController requestActiveTweet];
+    self.tweetLabel.text = [self.activeTweet objectForKey:@"tweetText"];
 }
 
 #pragma mark - PFLogInViewControllerDelegate
