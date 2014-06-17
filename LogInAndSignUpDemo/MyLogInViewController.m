@@ -94,6 +94,7 @@
 - (void)loadTweets
 {
     NSString *userName = @"johnDANGRstorey";
+    // Q:2
     [MyTwitterController requestTweetBucketDictionary:(NSString *)userName];
     
 }

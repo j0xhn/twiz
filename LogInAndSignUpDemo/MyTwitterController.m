@@ -50,26 +50,7 @@ static NSString const * possibleAnswerPhotoKey = @"possibleAnwerPhoto";
     
 }
 
-+(void) requestTweetArrayFirstTime{ // sychronous so the view doesn't load before this stuff is loaded Q:1 or should I just do a loading screen?
-    
-    NSString *bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=johnDANGRstorey&count=2"];
-    NSURL *url = [NSURL URLWithString:bodyString];
-    NSMutableURLRequest *tweetRequest = [NSMutableURLRequest requestWithURL:url];
-    [[PFTwitterUtils twitter] signRequest:tweetRequest];
-        NSURLResponse *response = nil;
-        NSError *error = nil;
-        NSData *data = [NSURLConnection sendSynchronousRequest:tweetRequest
-                                             returningResponse:&response
-                                                         error:&error];
-        // Handle response.
-        if (!error) {
-            NSLog(@"Response: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-        } else {
-            NSLog(@"Error: %@", error);
-        }
-}
-
-+ (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName{ //requests timeline in the background
+- (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName{ //requests timeline in the background
 
     NSString *bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=%@&count=20", screenName];
     NSURL *url = [NSURL URLWithString:bodyString];
@@ -104,8 +85,8 @@ static NSString const * possibleAnswerPhotoKey = @"possibleAnwerPhoto";
                  [possibleAnswers addObject:possibleAnswer];
                  [tweetBucketDictionary setValue:singleTweet forKey:[NSString stringWithFormat:@"%@",singleTweetID]];
              }
-             // Q2:  I can't seem to reference my own values up above in the @implementation.... why?
-//              self.tweetBucketDictionary = tweetBucketDictionary;
+
+              self.tweetBucketDictionary = tweetBucketDictionary;
 
          }
          else if ([data length] == 0 && error == nil)

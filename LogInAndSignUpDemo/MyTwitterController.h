@@ -11,7 +11,7 @@
 @interface MyTwitterController : NSObject
 
 + (NSDictionary *) requestActiveTweet;
-+ (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName;
+- (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName;
 + (NSArray *) generatePossibleAnswers;
 + (void) checkAnswer;
 + (void) incrementScore:(NSNumber *)number;
