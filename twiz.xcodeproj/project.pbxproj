@@ -50,6 +50,8 @@
 		F522905F193EDDF400D0160A /* JALeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5229058193EDDF400D0160A /* JALeftViewController.m */; };
 		F5229060193EDDF400D0160A /* JARightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F522905A193EDDF400D0160A /* JARightViewController.m */; };
 		F5229061193EDDF400D0160A /* JASidePanels-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F522905B193EDDF400D0160A /* JASidePanels-Info.plist */; };
+		F5DAC7A119514DBC00CBE038 /* MyActiveTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAC7A019514DBC00CBE038 /* MyActiveTweet.m */; };
+		F5DAC7A519514E0900CBE038 /* MyConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAC7A419514E0900CBE038 /* MyConstants.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +111,10 @@
 		F522905A193EDDF400D0160A /* JARightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JARightViewController.m; sourceTree = "<group>"; };
 		F522905B193EDDF400D0160A /* JASidePanels-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "JASidePanels-Info.plist"; sourceTree = "<group>"; };
 		F522905C193EDDF400D0160A /* JASidePanels-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JASidePanels-Prefix.pch"; sourceTree = "<group>"; };
+		F5DAC79F19514DBC00CBE038 /* MyActiveTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyActiveTweet.h; sourceTree = "<group>"; };
+		F5DAC7A019514DBC00CBE038 /* MyActiveTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyActiveTweet.m; sourceTree = "<group>"; };
+		F5DAC7A319514E0900CBE038 /* MyConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyConstants.h; sourceTree = "<group>"; };
+		F5DAC7A419514E0900CBE038 /* MyConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyConstants.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +211,7 @@
 				74366EB5158AAE1000A17D8A /* AppDelegate.h */,
 				74366EB6158AAE1000A17D8A /* AppDelegate.m */,
 				74366EF6158B959200A17D8A /* My Views */,
+				F5DAC7A219514DD300CBE038 /* Model */,
 				F5229049193EDBC700D0160A /* JASidePanels */,
 			);
 			name = "twiz files";
@@ -232,8 +239,6 @@
 			children = (
 				74366EF7158B95C800A17D8A /* MyCenterViewController.h */,
 				74366EF8158B95C800A17D8A /* MyCenterViewController.m */,
-				F50C4D8919450D480041971F /* MyTwitterController.h */,
-				F50C4D8A19450D480041971F /* MyTwitterController.m */,
 				74366F01158B973C00A17D8A /* MyLogInViewController.h */,
 				74366F02158B973C00A17D8A /* MyLogInViewController.m */,
 				F5228FB0193900F100D0160A /* XIB */,
@@ -268,6 +273,19 @@
 			);
 			name = JASidePanels;
 			path = Source;
+			sourceTree = "<group>";
+		};
+		F5DAC7A219514DD300CBE038 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F5DAC79F19514DBC00CBE038 /* MyActiveTweet.h */,
+				F5DAC7A019514DBC00CBE038 /* MyActiveTweet.m */,
+				F50C4D8919450D480041971F /* MyTwitterController.h */,
+				F50C4D8A19450D480041971F /* MyTwitterController.m */,
+				F5DAC7A319514E0900CBE038 /* MyConstants.h */,
+				F5DAC7A419514E0900CBE038 /* MyConstants.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -355,6 +373,8 @@
 				F522905F193EDDF400D0160A /* JALeftViewController.m in Sources */,
 				F522904F193EDBC700D0160A /* UIViewController+JASidePanel.m in Sources */,
 				F5229060193EDDF400D0160A /* JARightViewController.m in Sources */,
+				F5DAC7A119514DBC00CBE038 /* MyActiveTweet.m in Sources */,
+				F5DAC7A519514E0900CBE038 /* MyConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

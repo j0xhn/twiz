@@ -132,7 +132,7 @@
     NSLog(@"You want to load tweets - from CenterViewController");
     NSString *userName = [NSString stringWithFormat:[[PFUser currentUser] username]];
     // Q1: Now after turning it into a instance method I can't call it on the class anymore.  What is the correct model for this?  Is this why we create those [sharedInstance] type of controllers?  Or should I just create an instance of "MyTwitterController" when the view initializes.  That seems to me to be wrong....
-    [MyTwitterController requestTweetBucketDictionary:(NSString *)userName];
+//    [MyTwitterController requestTweetBucketDictionary:(NSString *)userName];
 
 }
 

@@ -8,20 +8,16 @@
 #import "MyTwitterController.h"
 #import "MyLogInViewController.h"
 #import "MyCenterViewController.h"
-
-static NSString const * tweetIDKey = @"tweetID";
-static NSString const * tweetTextKey = @"tweetText";
-static NSString const * tweetAuthorIDKey = @"tweetAuthorID";
-
-static NSString const * possibleAnswerAuthorKey = @"possibleAnswerAuthor";
-static NSString const * possibleAnswerPhotoKey = @"possibleAnwerPhoto";
+#import "MyActiveTweet.h"
+#import "MyConstants.h"
 
 @interface MyTwitterController ()
 
-@property (strong, nonatomic) NSDictionary *activeTweet;
+
 @property (strong, nonatomic) NSDictionary *tweetBucketDictionary;
 @property (strong, nonatomic) NSMutableArray *possibleAnswers;
 @property (strong, nonatomic) NSNumber *correctAnswerID;
+@property (strong, nonatomic) NSDictionary *activeTweet;
 
 @end
 
