@@ -11,6 +11,7 @@
 #import "UIViewController+JASidePanel.h"
 #import "JASidePanelController.h"
 #import "MyActiveTweet.h"
+#import "MyConstants.h"
 
 #import "MyTwitterController.h"
 
@@ -18,7 +19,12 @@
 
 @property (nonatomic, weak) UIButton *refreshBtn;
 @property (nonatomic, strong) MyActiveTweet *activeTweet;
+
 @property (nonatomic, strong) UITextView *tweetLabel;
+
+@property (nonatomic, strong) UILabel *author1;
+@property (nonatomic, strong) UIImage *authorImage1;
+
 
 @end
 
@@ -87,21 +93,31 @@
         [[tweetLabel layer] setCornerRadius:3.0f];
         [[tweetLabel layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
         tweetLabel.textColor = [UIColor whiteColor];
-        UIFont *museoButtonFont50022 = [UIFont fontWithName:@"MuseoSansRounded-500" size:22.0];
-        [tweetLabel setFont:museoButtonFont50022];
+        UIFont *museoButtonFont500_22 = [UIFont fontWithName:@"MuseoSansRounded-500" size:22.0];
+        [tweetLabel setFont:museoButtonFont500_22];
         //sets left padding
         tweetLabel.textContainer.lineFragmentPadding = 15;
         tweetLabel.text = @"Being able to express yourself, clearly and forcefully, in less than the 140 characters is actually a really good thing to learn.  #twitter";
         self.tweetLabel = tweetLabel;
         [self.view addSubview:self.tweetLabel];
-        
+    
+        // Possible Answer
+        UIView *possibleAnswer1 = [[UIView alloc] initWithFrame:CGRectMake(10.0, 200.0, self.view.bounds.size.width - 20.0f, 40)];
+        UILabel *author1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 40)];
+        author1.text = @"sample author";
+        [author1 setFont:museoButtonFont500_22];
+        self.author1 = author1;
+    
+        [possibleAnswer1 addSubview:self.author1];
+        [self.view addSubview:possibleAnswer1];
+    
         // request button
         UIButton *requestBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         requestBtn.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         [requestBtn setTitle:@"Refresh Active Tweet" forState:UIControlStateNormal];
         [requestBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        UIFont *museoButtonFont500 = [UIFont fontWithName:@"MuseoSansRounded-500" size:18.0];
-        [requestBtn setFont:museoButtonFont500];
+        UIFont *museoButtonFont500_18 = [UIFont fontWithName:@"MuseoSansRounded-500" size:18.0];
+        [requestBtn setFont:museoButtonFont500_18];
         requestBtn.frame = CGRectMake(10.0, self.view.bounds.size.height - 100.0f, self.view.bounds.size.width - 20.0f, 40.0);
         [[requestBtn layer] setCornerRadius:3.0f];
         [[requestBtn layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
@@ -113,7 +129,7 @@
         refreshBtn.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         [refreshBtn setTitle:@"Refresh Bucket" forState:UIControlStateNormal];
         [refreshBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [refreshBtn setFont:museoButtonFont500];
+        [refreshBtn setFont:museoButtonFont500_18];
         refreshBtn.frame = CGRectMake(10.0, self.view.bounds.size.height - 50.0f, self.view.bounds.size.width - 20.0f, 40.0);
         [[refreshBtn layer] setCornerRadius:3.0f];
         [[refreshBtn layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
@@ -142,6 +158,7 @@
     NSLog(@"You want to request active with answers tweet - from CenterViewController");
     self.activeTweet = [[MyTwitterController sharedInstance] requestActiveTweet];
     self.tweetLabel.text = [self.activeTweet.tweet objectForKey:@"tweetText"];
+    self.author1.text = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
 }
 
 #pragma mark - PFLogInViewControllerDelegate
