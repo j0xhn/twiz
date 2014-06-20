@@ -10,10 +10,12 @@
 
 @interface MyTwitterController : NSObject
 
-+ (NSDictionary *) requestActiveTweet;
++ (MyTwitterController *)sharedInstance;
+
+- (NSDictionary *) requestActiveTweet;
 - (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName;
-+ (NSArray *) generatePossibleAnswers;
-+ (void) checkAnswer;
-+ (void) incrementScore:(NSNumber *)number;
+
+- (void) checkAnswer:(NSNumber *)selectedAuthorID;
 
 @end
+

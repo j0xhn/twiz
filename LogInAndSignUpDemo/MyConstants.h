@@ -5,7 +5,6 @@
 //  Created by John D. Storey on 6/17/14.
 //
 //
-
 #import <Foundation/Foundation.h>
 
 static NSString const * tweetIDKey = @"tweetID";
@@ -14,6 +13,8 @@ static NSString const * tweetAuthorIDKey = @"tweetAuthorID";
 
 static NSString const * possibleAnswerAuthorKey = @"possibleAnswerAuthor";
 static NSString const * possibleAnswerPhotoKey = @"possibleAnwerPhoto";
+
+static NSInteger const * tweetBucketSize = 20;
 
 @interface MyConstants : NSObject
 

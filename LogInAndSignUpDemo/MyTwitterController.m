@@ -6,48 +6,52 @@
 //
 //
 #import "MyTwitterController.h"
-#import "MyLogInViewController.h"
-#import "MyCenterViewController.h"
 #import "MyActiveTweet.h"
 #import "MyConstants.h"
 
 @interface MyTwitterController ()
 
-
 @property (strong, nonatomic) NSDictionary *tweetBucketDictionary;
-@property (strong, nonatomic) NSMutableArray *possibleAnswers;
-@property (strong, nonatomic) NSNumber *correctAnswerID;
-@property (strong, nonatomic) NSDictionary *activeTweet;
+@property (strong, nonatomic) NSArray *possibleAnswerBucketArray;
 
 @end
 
 @implementation MyTwitterController
 
++ (MyTwitterController *)sharedInstance {
+    static MyTwitterController *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [MyTwitterController new];
+    });
+    return sharedInstance;
+}
+
 #pragma mark - Generate Tweets
 
-+ (NSDictionary *) requestActiveTweet{
+- (NSDictionary *)requestActiveTweet {
     NSDictionary *activeTweet = [NSDictionary new];
     activeTweet = @{tweetAuthorIDKey:@"111111authorID", tweetTextKey:@"sample tweet text", tweetIDKey:@"22222222tweetID",
                     @"possibleAnswerArray": @[@{possibleAnswerAuthorKey: @"possibleAnswerAuthor1",possibleAnswerPhotoKey:@"possibleAnswerPhoto1"},
                                               @{possibleAnswerAuthorKey: @"possibleAnswerAuthor2",possibleAnswerPhotoKey:@"possibleAnswerPhoto2"},
-                                              @{possibleAnswerAuthorKey: @"possibleAnswerAuthor3",possibleAnswerPhotoKey: @"possibleAnswerPhoto3"},
-                                              @{possibleAnswerAuthorKey: @"possibleAnswerAuthor4",possibleAnswerPhotoKey: @"possibleAnswerPhoto4"} ]};
+                                              @{possibleAnswerAuthorKey: @"possibleAnswerAuthor3",possibleAnswerPhotoKey:@"possibleAnswerPhoto3"},
+                                              @{possibleAnswerAuthorKey: @"possibleAnswerAuthor4",possibleAnswerPhotoKey:@"possibleAnswerPhoto4"} ]};
     
-//    // convert dictionary to Array
-//    NSMutableArray *tweetBucketArray = [NSArray alloc]initWithObjects:self.tweetBucketDictionary, nil];
-//    // pull of first tweet from tweetBucketDictionary and assign it to self.activeTweet
-//    self.activeTweet = [tweetBucketArray firstObject];
-//    // delete it from tweetBucketDictionary
-//    [tweetBucketArray removeObjectAtIndex:0];
-//    // set it back to the Dictioary
-//    for(id key in tweetBucketArray){
-//        NSMutableDictionary *singleTweet = key;
+    //    // convert dictionary to Array
+    //    NSMutableArray *tweetBucketArray = [NSArray alloc]initWithObjects:self.tweetBucketDictionary, nil];
+    //    // pull of first tweet from tweetBucketDictionary and assign it to self.activeTweet
+    //    self.activeTweet = [tweetBucketArray firstObject];
+    //    // delete it from tweetBucketDictionary
+    //    [tweetBucketArray removeObjectAtIndex:0];
+    //    // set it back to the Dictioary
+    //    for(id key in tweetBucketArray){
+    //        NSMutableDictionary *singleTweet = key;
     return activeTweet;
     
 }
 
 - (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName{ //requests timeline in the background
-
+    
     NSString *bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=%@&count=20", screenName];
     NSURL *url = [NSURL URLWithString:bodyString];
     NSMutableURLRequest *tweetRequest = [NSMutableURLRequest requestWithURL:url];
@@ -64,7 +68,7 @@
              NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:&error];
              
              NSMutableDictionary *tweetBucketDictionary = [NSMutableDictionary new];
-             NSMutableArray *possibleAnswers = [NSMutableArray new];
+             NSMutableArray *possibleAnswerBucketArray = [NSMutableArray new];
              
              for(id key in json){
                  NSLog(@"key=%@", key);
@@ -78,12 +82,13 @@
                  NSString *singleTweetAuthorPhoto = [[key objectForKey:@"user"] objectForKey:@"profile_image_url_https"];
                  NSDictionary *possibleAnswer = @{possibleAnswerAuthorKey:singleTweetAuthorID, possibleAnswerPhotoKey:singleTweetAuthorPhoto};
                  
-                 [possibleAnswers addObject:possibleAnswer];
+                 [possibleAnswerBucketArray addObject:possibleAnswer];
                  [tweetBucketDictionary setValue:singleTweet forKey:[NSString stringWithFormat:@"%@",singleTweetID]];
              }
-
-              self.tweetBucketDictionary = tweetBucketDictionary;
-
+             
+             self.possibleAnswerBucketArray = possibleAnswerBucketArray;
+             self.tweetBucketDictionary = tweetBucketDictionary;
+             
          }
          else if ([data length] == 0 && error == nil)
          {
@@ -91,24 +96,37 @@
          }
          else if (error != nil){
              UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                               message:@"Something went wrong, check your internet connection then try again"
-                                                              delegate:self
-                                                     cancelButtonTitle:@"OK"
-                                                     otherButtonTitles:nil];
+                                                                      message:@"Something went wrong, check your internet connection then try again"
+                                                                     delegate:self
+                                                            cancelButtonTitle:@"OK"
+                                                            otherButtonTitles:nil];
              [errorAlertView show];
              NSLog(@"Error = %@", error);
          }
-         
      }];
+    return self.tweetBucketDictionary;
 }
 
 #pragma mark - Answers and Score
 
-+ (NSArray *) generatePossibleAnswers{
+- (NSArray *) generatePossibleAnswers{
     
-    // create a new instance of possibleAnswers dictionary
-    
-    // generate random number arc4random() % 20
+    //    NSInteger *randomNumber1 = arc4random() % 20;
+    //    NSInteger *randomNumber2 = arc4random() % 20;
+    //    NSInteger *randomNumber3 = arc4random() % 20;
+    //    NSInteger *randomNumber4 = arc4random() % 20;
+    //
+    //    NSDictionary *possibleAnswer1 = [self.possibleAnswerBucketArray objectAtIndex:randomNumber1];
+    //
+    //    if (randomNumber1 == randomNumber2) {
+    //        randomNumber2++;
+    //    }
+    //    NSDictionary *possibleAnswer2 = [self.possibleAnswerBucketArray objectAtIndex:randomNumber2];
+    //
+    //    if (randomNumber1 == randomNumber2 || randomNumber2 randomNumber3 | randomNumber4)) {
+    //        randomNumber2++;
+    //    }
+    //    NSDictionary *possibleAnswer2 = [self.possibleAnswerBucketArray objectAtIndex:randomNumber2];
     
     // select that person dictionary in the array
     
@@ -118,13 +136,13 @@
     
 }
 
-+ (void) checkAnswer{
+- (void) checkAnswer:(NSNumber *)selectedAuthorID{
     // check if the dictionary item from the button selected matches the authorID on the activeTweet.
     
     // increment the score with right.
     
 }
-+ (void) incrementScore:(NSNumber *)number{
+- (void) incrementScore:(NSNumber *)number{
     // take the score, increment the number, then resave it as the score
     
 }

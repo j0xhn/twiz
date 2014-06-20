@@ -139,7 +139,7 @@
 - (void)requestActiveTweet
 {
     NSLog(@"You want to request active with answers tweet - from CenterViewController");
-    self.activeTweet = [MyTwitterController requestActiveTweet];
+    self.activeTweet = [[MyTwitterController sharedInstance] requestActiveTweet];
     self.tweetLabel.text = [self.activeTweet objectForKey:@"tweetText"];
 }
 
