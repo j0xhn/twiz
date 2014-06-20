@@ -10,13 +10,14 @@
 #import "MyLogInViewController.h"
 #import "UIViewController+JASidePanel.h"
 #import "JASidePanelController.h"
+#import "MyActiveTweet.h"
 
 #import "MyTwitterController.h"
 
 @interface MyCenterViewController ()
 
 @property (nonatomic, weak) UIButton *refreshBtn;
-@property (nonatomic, strong) NSDictionary *activeTweet;
+@property (nonatomic, strong) MyActiveTweet *activeTweet;
 @property (nonatomic, strong) UITextView *tweetLabel;
 
 @end
@@ -63,15 +64,15 @@
     
     
     // Check if user is logged in
-    if (![PFUser currentUser]) {        
-        // Customize the Log In View Controller
-        MyLogInViewController *logInViewController = [[MyLogInViewController alloc] init];
-        logInViewController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
-        logInViewController.delegate = self;
-        logInViewController.fields =   PFLogInFieldsTwitter;
-        // Present Log In View Controller
-        [self presentViewController:logInViewController animated:YES completion:NULL];
-    } else {
+//    if (![PFUser currentUser]) {        
+//        // Customize the Log In View Controller
+//        MyLogInViewController *logInViewController = [[MyLogInViewController alloc] init];
+//        logInViewController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
+//        logInViewController.delegate = self;
+//        logInViewController.fields =   PFLogInFieldsTwitter;
+//        // Present Log In View Controller
+//        [self presentViewController:logInViewController animated:YES completion:NULL];
+//    } else {
         // works only if you login, then close app and login, not after information is actually sent to twitter, then redirects you back up to top 'viewWillAppear' method.. so now I'm going to create a listener to listen for login and refreash page so that the correct view comes in
         
         // makes score button
@@ -119,7 +120,7 @@
         [refreshBtn addTarget:self action:@selector(loadTweets) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:refreshBtn];
 
-    }
+//    }
 }
 
 - (void) refreshView{
@@ -140,7 +141,7 @@
 {
     NSLog(@"You want to request active with answers tweet - from CenterViewController");
     self.activeTweet = [[MyTwitterController sharedInstance] requestActiveTweet];
-    self.tweetLabel.text = [self.activeTweet objectForKey:@"tweetText"];
+    self.tweetLabel.text = [self.activeTweet.tweet objectForKey:@"tweetText"];
 }
 
 #pragma mark - PFLogInViewControllerDelegate

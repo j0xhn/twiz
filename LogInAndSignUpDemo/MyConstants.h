@@ -15,7 +15,12 @@ static NSString const * possibleAnswerAuthorKey = @"possibleAnswerAuthor";
 static NSString const * possibleAnswerPhotoKey = @"possibleAnwerPhoto";
 
 static NSInteger const * tweetBucketSize = 20;
-
+//Q5: how to define NSDictionary as static?
+/*
+static NSDictionary const * sampleActiveTweet = @{tweetTextKey:@"testing tweet text 1",
+                                                  tweetAuthorIDKey:@"authorid123456",
+                                                  tweetIDKey:@"tweetid123456"};
+*/
 @interface MyConstants : NSObject
 
 @end

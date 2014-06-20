@@ -29,25 +29,35 @@
 
 #pragma mark - Generate Tweets
 
-- (NSDictionary *)requestActiveTweet {
-    NSDictionary *activeTweet = [NSDictionary new];
-    activeTweet = @{tweetAuthorIDKey:@"111111authorID", tweetTextKey:@"sample tweet text", tweetIDKey:@"22222222tweetID",
-                    @"possibleAnswerArray": @[@{possibleAnswerAuthorKey: @"possibleAnswerAuthor1",possibleAnswerPhotoKey:@"possibleAnswerPhoto1"},
-                                              @{possibleAnswerAuthorKey: @"possibleAnswerAuthor2",possibleAnswerPhotoKey:@"possibleAnswerPhoto2"},
-                                              @{possibleAnswerAuthorKey: @"possibleAnswerAuthor3",possibleAnswerPhotoKey:@"possibleAnswerPhoto3"},
-                                              @{possibleAnswerAuthorKey: @"possibleAnswerAuthor4",possibleAnswerPhotoKey:@"possibleAnswerPhoto4"} ]};
+- (MyActiveTweet *)requestActiveTweet {
     
-    //    // convert dictionary to Array
-    //    NSMutableArray *tweetBucketArray = [NSArray alloc]initWithObjects:self.tweetBucketDictionary, nil];
-    //    // pull of first tweet from tweetBucketDictionary and assign it to self.activeTweet
-    //    self.activeTweet = [tweetBucketArray firstObject];
-    //    // delete it from tweetBucketDictionary
-    //    [tweetBucketArray removeObjectAtIndex:0];
-    //    // set it back to the Dictioary
-    //    for(id key in tweetBucketArray){
-    //        NSMutableDictionary *singleTweet = key;
+/* commented out until I have internet connection
+ 
+    MyActiveTweet *activeTweet = [MyActiveTweet new];
+        // convert dictionary to Array
+        NSMutableArray *tweetBucketArray = [[NSArray alloc]initWithObjects:self.tweetBucketDictionary, nil];
+        // pull of first tweet from tweetBucketDictionary and assign it to self.activeTweet
+        activeTweet = [tweetBucketArray firstObject];
+        // delete it from tweetBucketDictionary
+        [tweetBucketArray removeObjectAtIndex:0];
+        // set it back to the Dictioary
+        NSMutableDictionary *mutableTweetBucketDictionary = [NSMutableDictionary new];
+        for(id key in tweetBucketArray){
+            NSLog(@"key: %@",key);
+            [mutableTweetBucketDictionary setObject:key forKey:[key objectForKey:tweetIDKey]];
+        }
+    self.tweetBucketDictionary = mutableTweetBucketDictionary;
+ */
+    MyActiveTweet *activeTweet = [MyActiveTweet new];
+    activeTweet.tweet = @{tweetTextKey:@"testing tweet text 1",
+                      tweetAuthorIDKey:@"authorid123456",
+                            tweetIDKey:@"tweetid123456"};
+    activeTweet.possibleAnswers = @[@{possibleAnswerAuthorKey:@"1singleTweetAuthorID", possibleAnswerPhotoKey:@"1singleTweetAuthorPhotoURL"},
+                                    @{possibleAnswerAuthorKey:@"2singleTweetAuthorID", possibleAnswerPhotoKey:@"2singleTweetAuthorPhotoURL"},
+                                    @{possibleAnswerAuthorKey:@"3singleTweetAuthorID", possibleAnswerPhotoKey:@"3singleTweetAuthorPhotoURL"},
+                                    @{possibleAnswerAuthorKey:@"4singleTweetAuthorID", possibleAnswerPhotoKey:@"4singleTweetAuthorPhotoURL"},];
     return activeTweet;
-    
+
 }
 
 - (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName{ //requests timeline in the background
@@ -69,14 +79,16 @@
              
              NSMutableDictionary *tweetBucketDictionary = [NSMutableDictionary new];
              NSMutableArray *possibleAnswerBucketArray = [NSMutableArray new];
-             
+ 
              for(id key in json){
                  NSLog(@"key=%@", key);
                  // for active tweet dictionary
                  NSNumber *singleTweetID = [key objectForKey:@"id"];
                  NSString *singleTweetText = [key objectForKey:@"text"];
                  NSNumber *singleTweetAuthorID = [[key objectForKey:@"user"]objectForKey:@"id"];
-                 NSDictionary *singleTweet = @{tweetTextKey:singleTweetText, tweetAuthorIDKey:singleTweetAuthorID};
+                 NSDictionary *singleTweet = @{tweetTextKey:singleTweetText,
+                                               tweetAuthorIDKey:singleTweetAuthorID,
+                                               tweetIDKey:singleTweetID};
                  NSLog(@"activeTweetID: %@ and text: %@ and AuthorID: %@ in dictionary: %@", singleTweetID, singleTweetText, singleTweetAuthorID, singleTweet);
                  // for possible answers array
                  NSString *singleTweetAuthorPhoto = [[key objectForKey:@"user"] objectForKey:@"profile_image_url_https"];
@@ -85,7 +97,7 @@
                  [possibleAnswerBucketArray addObject:possibleAnswer];
                  [tweetBucketDictionary setValue:singleTweet forKey:[NSString stringWithFormat:@"%@",singleTweetID]];
              }
-             
+
              self.possibleAnswerBucketArray = possibleAnswerBucketArray;
              self.tweetBucketDictionary = tweetBucketDictionary;
              
