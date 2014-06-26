@@ -23,4 +23,6 @@ static NSDictionary const * sampleActiveTweet = @{tweetTextKey:@"testing tweet t
 */
 @interface MyConstants : NSObject
 
+@property (strong,nonatomic) UIFont *museoButtonFont500_18;
+
 @end

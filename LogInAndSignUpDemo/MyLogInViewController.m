@@ -12,7 +12,7 @@
 #import "MyTwitterController.h"
 
 @interface MyLogInViewController ()
-@property (nonatomic, strong) UILabel *logoText;
+
 @end
 
 @implementation MyLogInViewController
@@ -25,21 +25,19 @@
     
     // if 'nil' not selected it will bring up Parse Logo
     [self.logInView setLogo:[UIImage imageNamed:nil]];
+    // removes pre-made twitter button
+    [self.logInView.twitterButton removeFromSuperview];
     
     UILabel *logoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 200, self.view.bounds.size.width, 40)];
     logoLabel.text = @"TWIZ";
     logoLabel.textColor = [UIColor whiteColor];
     logoLabel.textAlignment = NSTextAlignmentCenter;
-    
     UIFont *museoTitleFont = [UIFont fontWithName:@"MuseoSansRounded-900" size:40.0];
     logoLabel.font = museoTitleFont;
     logoLabel.textAlignment = NSTextAlignmentCenter;
     [self.logInView addSubview:logoLabel];
     
-    
-    // tagline ^see above comment on repeating code
-    
-    
+    // tagline
     UILabel *taglineLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 240, self.view.bounds.size.width, 40)];
     taglineLabel.text = @"the twitter quiz game";
     taglineLabel.textColor = [UIColor whiteColor];
@@ -50,10 +48,7 @@
     taglineLabel.textAlignment = NSTextAlignmentCenter;
     [self.logInView addSubview:taglineLabel];
     
-    // removes pre-made twitter button
-    [self.logInView.twitterButton removeFromSuperview];
-    
-    // makes my custom one
+    // makes my custom button
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [button addTarget:self
                action:@selector(twitterSignIn)
@@ -94,8 +89,7 @@
 - (void)loadTweets
 {
     NSString *userName = @"johnDANGRstorey";
-    // Q:2
-//    [MyTwitterController requestTweetBucketDictionary:(NSString *)userName];
+    [[MyTwitterController sharedInstance] requestTweetBucketDictionary:(NSString *)userName];
     
 }
 

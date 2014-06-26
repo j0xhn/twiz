@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) NSDictionary *tweetBucketDictionary;
 @property (strong, nonatomic) NSArray *possibleAnswerBucketArray;
+@property (strong,nonatomic) NSMutableArray *mutableArrayContainingNumbers;
 
 @end
 
@@ -27,42 +28,44 @@
     return sharedInstance;
 }
 
-#pragma mark - Generate Tweets
+#pragma mark - Generate Tweet and Answers
 
 - (MyActiveTweet *)requestActiveTweet {
     
-/* commented out until I have internet connection
- 
     MyActiveTweet *activeTweet = [MyActiveTweet new];
         // convert dictionary to Array
-        NSMutableArray *tweetBucketArray = [[NSArray alloc]initWithObjects:self.tweetBucketDictionary, nil];
+    NSMutableDictionary *mutableTweetBucketDictionary = [[NSMutableDictionary alloc]initWithDictionary:self.tweetBucketDictionary];
         // pull of first tweet from tweetBucketDictionary and assign it to self.activeTweet
-        activeTweet = [tweetBucketArray firstObject];
+    NSMutableArray *tweetIDArray = [mutableTweetBucketDictionary allKeys];
+    NSString *firstTweetObjectKey = [tweetIDArray firstObject];
+    NSDictionary *firstTweetFromBucket = [mutableTweetBucketDictionary objectForKey:firstTweetObjectKey];
+    
+    activeTweet.correctAnswerID = [firstTweetFromBucket objectForKey:tweetAuthorIDKey];
+    activeTweet.tweet = [firstTweetFromBucket objectForKey:tweetTextKey];
         // delete it from tweetBucketDictionary
-        [tweetBucketArray removeObjectAtIndex:0];
+    [mutableTweetBucketDictionary removeObjectForKey:firstTweetObjectKey];
         // set it back to the Dictioary
-        NSMutableDictionary *mutableTweetBucketDictionary = [NSMutableDictionary new];
-        for(id key in tweetBucketArray){
-            NSLog(@"key: %@",key);
-            [mutableTweetBucketDictionary setObject:key forKey:[key objectForKey:tweetIDKey]];
-        }
     self.tweetBucketDictionary = mutableTweetBucketDictionary;
- */
+    //Q:1Path_step2 - method generates the appropriate activeTweet, then calls the 'generatePossibleAnswers' method (works)
+    [self generatePossibleAnswers];
+    
+    return activeTweet;
+/*
     MyActiveTweet *activeTweet = [MyActiveTweet new];
     activeTweet.tweet = @{tweetTextKey:@"testing tweet text 1",
                       tweetAuthorIDKey:@"authorid123456",
                             tweetIDKey:@"tweetid123456"};
-    activeTweet.possibleAnswers = @[@{possibleAnswerAuthorKey:@"1singleTweetAuthorID", possibleAnswerPhotoKey:@"1singleTweetAuthorPhotoURL"},
-                                    @{possibleAnswerAuthorKey:@"2singleTweetAuthorID", possibleAnswerPhotoKey:@"2singleTweetAuthorPhotoURL"},
-                                    @{possibleAnswerAuthorKey:@"3singleTweetAuthorID", possibleAnswerPhotoKey:@"3singleTweetAuthorPhotoURL"},
-                                    @{possibleAnswerAuthorKey:@"4singleTweetAuthorID", possibleAnswerPhotoKey:@"4singleTweetAuthorPhotoURL"},];
+    activeTweet.possibleAnswers = @[@{possibleAnswerAuthorKey:@"1@johnDANGRstorey", possibleAnswerPhotoKey:@"1singleTweetAuthorPhotoURL"},
+                                    @{possibleAnswerAuthorKey:@"2@randomTweetGuy", possibleAnswerPhotoKey:@"2singleTweetAuthorPhotoURL"},
+                                    @{possibleAnswerAuthorKey:@"3@brainpicker", possibleAnswerPhotoKey:@"3singleTweetAuthorPhotoURL"},
+                                    @{possibleAnswerAuthorKey:@"4@justinBieber", possibleAnswerPhotoKey:@"4singleTweetAuthorPhotoURL"},];
     return activeTweet;
-
+*/
 }
 
 - (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName{ //requests timeline in the background
     
-    NSString *bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=%@&count=20", screenName];
+    NSString *bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?screen_name=%@&count=20", screenName];
     NSURL *url = [NSURL URLWithString:bodyString];
     NSMutableURLRequest *tweetRequest = [NSMutableURLRequest requestWithURL:url];
     [[PFTwitterUtils twitter] signRequest:tweetRequest];
@@ -90,9 +93,13 @@
                                                tweetAuthorIDKey:singleTweetAuthorID,
                                                tweetIDKey:singleTweetID};
                  NSLog(@"activeTweetID: %@ and text: %@ and AuthorID: %@ in dictionary: %@", singleTweetID, singleTweetText, singleTweetAuthorID, singleTweet);
-                 // for possible answers array
-                 NSString *singleTweetAuthorPhoto = [[key objectForKey:@"user"] objectForKey:@"profile_image_url_https"];
-                 NSDictionary *possibleAnswer = @{possibleAnswerAuthorKey:singleTweetAuthorID, possibleAnswerPhotoKey:singleTweetAuthorPhoto};
+                 // converts URL to UIImage
+//                 NSString *singleTweetAuthorPhoto = [[key objectForKey:@"user"] objectForKey:@"profile_image_url_https"];
+                 NSURL *imageURL = [NSURL URLWithString:[[key objectForKey:@"user"] objectForKey:@"profile_image_url_https"]];
+                 NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                 UIImage *image = [UIImage imageWithData:imageData];
+                 
+                 NSDictionary *possibleAnswer = @{possibleAnswerAuthorKey:singleTweetAuthorID, possibleAnswerPhotoKey:image};
                  
                  [possibleAnswerBucketArray addObject:possibleAnswer];
                  [tweetBucketDictionary setValue:singleTweet forKey:[NSString stringWithFormat:@"%@",singleTweetID]];
@@ -121,24 +128,26 @@
 
 #pragma mark - Answers and Score
 
+-(void) generateRandomNumberArray {
+    NSInteger randomNumber = (NSInteger) arc4random_uniform(21); // picks between 0 and n-1
+    if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){
+        [self generateRandomNumberArray]; // call the method again and get a new object
+        } else {
+            // end case, it doesn't contain it so you have a number you can use
+            [self.mutableArrayContainingNumbers addObject: [NSNumber numberWithInteger:randomNumber]];
+            if (![self.mutableArrayContainingNumbers count] == 4) {
+                [self generateRandomNumberArray];
+            }
+        }
+}
+
 - (NSArray *) generatePossibleAnswers{
-    
-    //    NSInteger *randomNumber1 = arc4random() % 20;
-    //    NSInteger *randomNumber2 = arc4random() % 20;
-    //    NSInteger *randomNumber3 = arc4random() % 20;
-    //    NSInteger *randomNumber4 = arc4random() % 20;
-    //
-    //    NSDictionary *possibleAnswer1 = [self.possibleAnswerBucketArray objectAtIndex:randomNumber1];
-    //
-    //    if (randomNumber1 == randomNumber2) {
-    //        randomNumber2++;
-    //    }
-    //    NSDictionary *possibleAnswer2 = [self.possibleAnswerBucketArray objectAtIndex:randomNumber2];
-    //
-    //    if (randomNumber1 == randomNumber2 || randomNumber2 randomNumber3 | randomNumber4)) {
-    //        randomNumber2++;
-    //    }
-    //    NSDictionary *possibleAnswer2 = [self.possibleAnswerBucketArray objectAtIndex:randomNumber2];
+    // Q:1 this call isn't getting fired when the debugger runs over it.  To track the path of how I get here search Q:1Path and I'll show you the steps.
+    //Q:1Path_step3 - makes it's way into the method but skips over this method like it doesn't even exist.  Any ideas?
+    [self generateRandomNumberArray];
+
+    NSArray *activePossibleAnswers = [NSArray new];
+    return activePossibleAnswers;
     
     // select that person dictionary in the array
     

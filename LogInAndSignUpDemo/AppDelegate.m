@@ -30,18 +30,14 @@
     // Facebook id in Info.plist:
     // ****************************************************************************
     [Parse setApplicationId:@"BYtF2ZQMPHkhm8kQzZKgJSXh19Tk02661aGeHQSV" clientKey:@"wCCqhl3GrlEOzESzPGRc1bkcyewI8Qi8KsUtdfhi"];
-    [PFFacebookUtils initializeFacebook];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     [PFTwitterUtils initializeWithConsumerKey:@"XEiHejzzFjNIzEy2bSNEug" consumerSecret:@"uEeJboXD9ZF3V8sRs89pWpGngF53xqsBd9sTT8GfE"];
-
+    
     // Set default ACLs
     PFACL *defaultACL = [PFACL ACL];
     [defaultACL setPublicReadAccess:YES];
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
-/*    
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[SubclassConfigViewController alloc] init]];
-    [self.window makeKeyAndVisible];
-    return YES;
- */
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
 	self.viewController = [[JASidePanelController alloc] init];

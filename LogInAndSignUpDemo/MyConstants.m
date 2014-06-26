@@ -10,4 +10,11 @@
 
 @implementation MyConstants
 
+//- (void) init {
+//    
+//    UIFont *museoButtonFont500_18 = [UIFont fontWithName:@"MuseoSansRounded-500" size:18.0];
+//}
+
+
+
 @end
