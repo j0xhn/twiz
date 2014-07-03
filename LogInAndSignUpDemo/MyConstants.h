@@ -10,6 +10,7 @@
 static NSString const * tweetIDKey = @"tweetID";
 static NSString const * tweetTextKey = @"tweetText";
 static NSString const * tweetAuthorIDKey = @"tweetAuthorID";
+static NSString const * tweetAuthorPhotoKey = @"tweetAuthorPhoto";
 
 static NSString const * possibleAnswerAuthorKey = @"possibleAnswerAuthor";
 static NSString const * possibleAnswerPhotoKey = @"possibleAnwerPhoto";

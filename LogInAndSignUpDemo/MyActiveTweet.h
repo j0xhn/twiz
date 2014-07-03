@@ -10,8 +10,9 @@
 
 @interface MyActiveTweet : NSObject
 
-@property (strong, nonatomic) NSNumber *correctAnswerID;
-@property (strong, nonatomic) NSDictionary *tweet;
+@property (strong, nonatomic) NSString *correctAnswerID;
+@property (strong, nonatomic) UIImage *correctAnswerPhoto;
+@property (strong, nonatomic) NSString *tweet;
 @property (strong,nonatomic) NSArray *possibleAnswers;
 
 @end

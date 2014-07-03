@@ -14,6 +14,8 @@
 @property (strong, nonatomic) NSDictionary *tweetBucketDictionary;
 @property (strong, nonatomic) NSArray *possibleAnswerBucketArray;
 @property (strong,nonatomic) NSMutableArray *mutableArrayContainingNumbers;
+@property (strong,nonatomic) NSDictionary *correctAnswer;
+@property (strong, nonatomic) MyActiveTweet *activeTweet;
 
 @end
 
@@ -41,16 +43,35 @@
     NSDictionary *firstTweetFromBucket = [mutableTweetBucketDictionary objectForKey:firstTweetObjectKey];
     
     activeTweet.correctAnswerID = [firstTweetFromBucket objectForKey:tweetAuthorIDKey];
+    // sets correctAnswerImage
+    activeTweet.correctAnswerPhoto = [firstTweetFromBucket objectForKey:tweetAuthorPhotoKey];
     activeTweet.tweet = [firstTweetFromBucket objectForKey:tweetTextKey];
         // delete it from tweetBucketDictionary
     [mutableTweetBucketDictionary removeObjectForKey:firstTweetObjectKey];
         // set it back to the Dictioary
     self.tweetBucketDictionary = mutableTweetBucketDictionary;
-    //Q:1Path_step2 - method generates the appropriate activeTweet, then calls the 'generatePossibleAnswers' method (works)
-    [self generatePossibleAnswers];
+
+    [self generateRandomNumberArray];
+    
+    NSMutableArray *activePossibleAnswers = [NSMutableArray new];
+    for (int i = 0; i < [self.mutableArrayContainingNumbers count]; i++)
+    {
+        NSNumber *possibleAnswerRandomNumber = self.mutableArrayContainingNumbers[i];
+        // if error's here it's because you don't have enought possibleAnswers
+        NSDictionary *possibleAnswer = [self.possibleAnswerBucketArray objectAtIndex:possibleAnswerRandomNumber.integerValue];
+        [activePossibleAnswers addObject:possibleAnswer];
+    }
+    [self.mutableArrayContainingNumbers removeAllObjects]; // clears the array so the logic works correctly in the number generator
+    
+    NSDictionary *correctAnswer = [[NSDictionary alloc]initWithObjectsAndKeys:activeTweet.correctAnswerPhoto,possibleAnswerPhotoKey,activeTweet.correctAnswerID,possibleAnswerAuthorKey, nil];
+    
+    NSInteger randomIndexNumber = (NSInteger) arc4random_uniform(4);
+    [activePossibleAnswers insertObject:correctAnswer atIndex:randomIndexNumber];
+    // Q:1 - Is there a way to check INSIDE all dictionary objects for the name, so I don't repeat?  Or would I be better to ma
+    activeTweet.possibleAnswers = activePossibleAnswers;
     
     return activeTweet;
-/*
+/*  ignore - for working in off-line mode
     MyActiveTweet *activeTweet = [MyActiveTweet new];
     activeTweet.tweet = @{tweetTextKey:@"testing tweet text 1",
                       tweetAuthorIDKey:@"authorid123456",
@@ -88,20 +109,29 @@
                  // for active tweet dictionary
                  NSNumber *singleTweetID = [key objectForKey:@"id"];
                  NSString *singleTweetText = [key objectForKey:@"text"];
-                 NSNumber *singleTweetAuthorID = [[key objectForKey:@"user"]objectForKey:@"id"];
+                 NSString *singleTweetAuthorID = [[key objectForKey:@"user"]objectForKey:@"screen_name"];
+                 
+                 NSURL *singleTweetimageURL = [NSURL URLWithString:[[key objectForKey:@"user"] objectForKey:@"profile_image_url_https"]];
+                 NSData *singleTweetimageData = [NSData dataWithContentsOfURL:singleTweetimageURL];
+                 UIImage *singleTweetimage = [UIImage imageWithData:singleTweetimageData];
+                 
                  NSDictionary *singleTweet = @{tweetTextKey:singleTweetText,
                                                tweetAuthorIDKey:singleTweetAuthorID,
-                                               tweetIDKey:singleTweetID};
-                 NSLog(@"activeTweetID: %@ and text: %@ and AuthorID: %@ in dictionary: %@", singleTweetID, singleTweetText, singleTweetAuthorID, singleTweet);
-                 // converts URL to UIImage
-//                 NSString *singleTweetAuthorPhoto = [[key objectForKey:@"user"] objectForKey:@"profile_image_url_https"];
-                 NSURL *imageURL = [NSURL URLWithString:[[key objectForKey:@"user"] objectForKey:@"profile_image_url_https"]];
-                 NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-                 UIImage *image = [UIImage imageWithData:imageData];
+                                               tweetIDKey:singleTweetID,
+                                               tweetAuthorPhotoKey:singleTweetimage};
                  
-                 NSDictionary *possibleAnswer = @{possibleAnswerAuthorKey:singleTweetAuthorID, possibleAnswerPhotoKey:image};
+                 // sets possibleAnswerBucketArray to unique answers
+                 NSString *query = [NSString stringWithFormat:@"%@ = %%@", possibleAnswerAuthorKey];
+                 NSPredicate *pred = [NSPredicate predicateWithFormat:query,singleTweetAuthorID];
+                 NSArray *filteredArray = [possibleAnswerBucketArray filteredArrayUsingPredicate:pred];
+                 if (filteredArray.count == 0) {
+                     NSDictionary *possibleAnswer = @{possibleAnswerAuthorKey:singleTweetAuthorID,
+                                                      possibleAnswerPhotoKey:singleTweetimage};
+                [possibleAnswerBucketArray addObject:possibleAnswer];
+                 }
                  
-                 [possibleAnswerBucketArray addObject:possibleAnswer];
+                 
+
                  [tweetBucketDictionary setValue:singleTweet forKey:[NSString stringWithFormat:@"%@",singleTweetID]];
              }
 
@@ -129,24 +159,34 @@
 #pragma mark - Answers and Score
 
 -(void) generateRandomNumberArray {
-    NSInteger randomNumber = (NSInteger) arc4random_uniform(21); // picks between 0 and n-1
-    if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){
-        [self generateRandomNumberArray]; // call the method again and get a new object
+    int objectsInArray = [self.possibleAnswerBucketArray count]; // makes it so you don't get numbers higher than what is currently in there
+    NSInteger randomNumber = (NSInteger) arc4random_uniform(objectsInArray); // picks between 0 and n-1
+    if (self.mutableArrayContainingNumbers) {
+        if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){
+            [self generateRandomNumberArray]; // call the method again and get a new object
         } else {
             // end case, it doesn't contain it so you have a number you can use
             [self.mutableArrayContainingNumbers addObject: [NSNumber numberWithInteger:randomNumber]];
-            if (![self.mutableArrayContainingNumbers count] == 4) {
+            if ([self.mutableArrayContainingNumbers count] != 3) {
                 [self generateRandomNumberArray];
             }
         }
+
+    } else { // runs the first time
+        NSMutableArray *mutableArrayContainingNumbers = [NSMutableArray new];
+        [mutableArrayContainingNumbers addObject: [NSNumber numberWithInteger:randomNumber]];
+        self.mutableArrayContainingNumbers = mutableArrayContainingNumbers;
+        [self generateRandomNumberArray];
+    }
+    
 }
 
 - (NSArray *) generatePossibleAnswers{
-    // Q:1 this call isn't getting fired when the debugger runs over it.  To track the path of how I get here search Q:1Path and I'll show you the steps.
-    //Q:1Path_step3 - makes it's way into the method but skips over this method like it doesn't even exist.  Any ideas?
+
     [self generateRandomNumberArray];
 
     NSArray *activePossibleAnswers = [NSArray new];
+    
     return activePossibleAnswers;
     
     // select that person dictionary in the array
