@@ -205,22 +205,17 @@
 }
 
 - (void) refreshView{
-    NSLog(@"You want to refresh view - from CenterViewController");
     self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[MyCenterViewController alloc] init]];
 }
 
 - (void)loadTweets
 {
-    NSLog(@"You want to load tweets - from CenterViewController");
     NSString *userName = [NSString stringWithFormat:[[PFUser currentUser] username]];
     [[MyTwitterController sharedInstance] requestTweetBucketDictionary:(NSString *)userName];
-
 }
 
 - (void)requestActiveTweet
 {
-    NSLog(@"You want to request active with answers tweet - from CenterViewController");
-
     self.activeTweet = [[MyTwitterController sharedInstance] requestActiveTweet];
     self.tweetLabel.text = self.activeTweet.tweet;
     

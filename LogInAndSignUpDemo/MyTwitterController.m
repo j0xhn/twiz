@@ -30,26 +30,27 @@
     return sharedInstance;
 }
 
+- (void) setTweetBucketDictionary:(NSDictionary *)tweetBucketDictionary{
+    NSLog(@"tweet bucket finished loading");
+    _tweetBucketDictionary = tweetBucketDictionary;
+}
+
 #pragma mark - Generate Tweet and Answers
 
 - (MyActiveTweet *)requestActiveTweet {
-    
+
+ 
     MyActiveTweet *activeTweet = [MyActiveTweet new];
-        // convert dictionary to Array
-    NSMutableDictionary *mutableTweetBucketDictionary = [[NSMutableDictionary alloc]initWithDictionary:self.tweetBucketDictionary];
-        // pull of first tweet from tweetBucketDictionary and assign it to self.activeTweet
-    NSMutableArray *tweetIDArray = [mutableTweetBucketDictionary allKeys];
+    NSMutableDictionary *mutableTweetBucketDictionary = [[NSMutableDictionary alloc]initWithDictionary:self.tweetBucketDictionary]; // convert to mutable dict
+    NSMutableArray *tweetIDArray = [mutableTweetBucketDictionary allKeys]; // pull of first tweet from tweetBucketDictionary and assign it to self.activeTweet
     NSString *firstTweetObjectKey = [tweetIDArray firstObject];
     NSDictionary *firstTweetFromBucket = [mutableTweetBucketDictionary objectForKey:firstTweetObjectKey];
     
     activeTweet.correctAnswerID = [firstTweetFromBucket objectForKey:tweetAuthorIDKey];
-    // sets correctAnswerImage
-    activeTweet.correctAnswerPhoto = [firstTweetFromBucket objectForKey:tweetAuthorPhotoKey];
+    activeTweet.correctAnswerPhoto = [firstTweetFromBucket objectForKey:tweetAuthorPhotoKey];// sets correctAnswerImage
     activeTweet.tweet = [firstTweetFromBucket objectForKey:tweetTextKey];
-        // delete it from tweetBucketDictionary
-    [mutableTweetBucketDictionary removeObjectForKey:firstTweetObjectKey];
-        // set it back to the Dictioary
-    self.tweetBucketDictionary = mutableTweetBucketDictionary;
+    [mutableTweetBucketDictionary removeObjectForKey:firstTweetObjectKey]; // delete it from tweetBucketDictionary
+    self.tweetBucketDictionary = mutableTweetBucketDictionary;// set it back to the Dictioary
 
     [self generateRandomNumberArray];
     
@@ -65,12 +66,31 @@
     
     NSDictionary *correctAnswer = [[NSDictionary alloc]initWithObjectsAndKeys:activeTweet.correctAnswerPhoto,possibleAnswerPhotoKey,activeTweet.correctAnswerID,possibleAnswerAuthorKey, nil];
     
-    NSInteger randomIndexNumber = (NSInteger) arc4random_uniform(4);
+    // checks to see if correctAnswer is duplicate in possibleAnswerArray
+//    NSString *query = [NSString stringWithFormat:@"%@ = %%@", possibleAnswerAuthorKey];
+//    NSPredicate *pred = [NSPredicate predicateWithFormat:query,correctAnswer[possibleAnswerAuthorKey]];
+//    NSArray *filteredArray = [activePossibleAnswers filteredArrayUsingPredicate:pred];
+//    if ([filteredArray count] != 0) {
+//        NSLog(@"duplicates");
+//    } else {
+//        NSLog(@"no duplicates");
+//    }
+    for (NSDictionary *answer in activePossibleAnswers) {
+        if (answer[possibleAnswerAuthorKey] == correctAnswer[possibleAnswerAuthorKey]) {
+            NSLog(@"this answer is a duplicate");
+            [self requestActiveTweet];
+        }
+    }
+    
+    
+    NSInteger randomIndexNumber = (NSInteger) arc4random_uniform(4); // pics random number n-1
     [activePossibleAnswers insertObject:correctAnswer atIndex:randomIndexNumber];
     // Q:1 - Is there a way to check INSIDE all dictionary objects for the name, so I don't repeat?  Or would I be better to ma
     activeTweet.possibleAnswers = activePossibleAnswers;
     
     return activeTweet;
+ 
+    
 /*  ignore - for working in off-line mode
     MyActiveTweet *activeTweet = [MyActiveTweet new];
     activeTweet.tweet = @{tweetTextKey:@"testing tweet text 1",
@@ -105,7 +125,6 @@
              NSMutableArray *possibleAnswerBucketArray = [NSMutableArray new];
  
              for(id key in json){
-                 NSLog(@"key=%@", key);
                  // for active tweet dictionary
                  NSNumber *singleTweetID = [key objectForKey:@"id"];
                  NSString *singleTweetText = [key objectForKey:@"text"];

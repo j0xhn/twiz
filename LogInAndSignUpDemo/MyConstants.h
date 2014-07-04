@@ -7,6 +7,8 @@
 //
 #import <Foundation/Foundation.h>
 
+static NSString const * tweetBucketDictionaryKey = @"tweetBucketDictionaryKey";
+
 static NSString const * tweetIDKey = @"tweetID";
 static NSString const * tweetTextKey = @"tweetText";
 static NSString const * tweetAuthorIDKey = @"tweetAuthorID";
