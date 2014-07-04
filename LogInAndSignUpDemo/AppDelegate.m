@@ -13,6 +13,8 @@
 #import "JALeftViewController.h"
 #import "JARightViewController.h"
 
+#import <SEGAnalytics.h>
+
 
 @implementation AppDelegate
 
@@ -32,6 +34,9 @@
     [Parse setApplicationId:@"BYtF2ZQMPHkhm8kQzZKgJSXh19Tk02661aGeHQSV" clientKey:@"wCCqhl3GrlEOzESzPGRc1bkcyewI8Qi8KsUtdfhi"];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     [PFTwitterUtils initializeWithConsumerKey:@"XEiHejzzFjNIzEy2bSNEug" consumerSecret:@"uEeJboXD9ZF3V8sRs89pWpGngF53xqsBd9sTT8GfE"];
+    
+    // Analytics
+    [SEGAnalytics setupWithConfiguration:[SEGAnalyticsConfiguration configurationWithWriteKey:@"vspssh598g"]];
     
     // Set default ACLs
     PFACL *defaultACL = [PFACL ACL];

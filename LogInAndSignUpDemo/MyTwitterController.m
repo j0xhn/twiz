@@ -9,6 +9,8 @@
 #import "MyActiveTweet.h"
 #import "MyConstants.h"
 
+#import <SEGAnalytics.h>
+
 @interface MyTwitterController ()
 
 @property (strong, nonatomic) NSDictionary *tweetBucketDictionary;
@@ -105,6 +107,9 @@
 }
 
 - (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName{ //requests timeline in the background
+    
+    [[SEGAnalytics sharedAnalytics] track:@"Signed Up"
+                               properties:@{ @"plan": @"Enterprise" }]; //tracks bucket requests
     
     NSString *bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?screen_name=%@&count=20", screenName];
     NSURL *url = [NSURL URLWithString:bodyString];
