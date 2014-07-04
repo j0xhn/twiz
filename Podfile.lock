@@ -1,0 +1,29 @@
+PODS:
+  - Analytics/Core-iOS (1.3.1):
+    - Analytics/Segmentio
+  - Analytics/Flurry (1.3.1):
+    - Analytics/Core-iOS
+    - FlurrySDK (~> 4.4.0)
+  - Analytics/GoogleAnalytics (1.3.1):
+    - Analytics/Core-iOS
+    - GoogleAnalytics-iOS-SDK (= 3.0.7)
+  - Analytics/Segmentio (1.3.1):
+    - Analytics/Core-iOS
+    - Reachability (= 3.1.1)
+  - FlurrySDK (4.4.0):
+    - FlurrySDK/FlurrySDK
+  - FlurrySDK/FlurrySDK (4.4.0)
+  - GoogleAnalytics-iOS-SDK (3.0.7)
+  - Reachability (3.1.1)
+
+DEPENDENCIES:
+  - Analytics/Flurry (~> 1.2)
+  - Analytics/GoogleAnalytics (~> 1.2)
+
+SPEC CHECKSUMS:
+  Analytics: 6218ab245f72d4b16afddfeaa8b54f69cab6555b
+  FlurrySDK: abaedafc350afa41b004236b67ae14f7d3748b68
+  GoogleAnalytics-iOS-SDK: bb285d8eef15a682f1b82971becd0d22edd0e53b
+  Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
+
+COCOAPODS: 0.33.1
