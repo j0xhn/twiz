@@ -53,6 +53,7 @@
 		F5229061193EDDF400D0160A /* JASidePanels-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F522905B193EDDF400D0160A /* JASidePanels-Info.plist */; };
 		F57F8D14195A738600DAB0B8 /* johnD.png in Resources */ = {isa = PBXBuildFile; fileRef = F57F8D13195A738600DAB0B8 /* johnD.png */; };
 		F57F8D17195A751F00DAB0B8 /* MyCenterViewController+Style.m in Sources */ = {isa = PBXBuildFile; fileRef = F57F8D16195A751F00DAB0B8 /* MyCenterViewController+Style.m */; };
+		F5AD829D19664B7B0010F2D2 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5AD829C19664B7B0010F2D2 /* Crashlytics.framework */; };
 		F5DAC7A119514DBC00CBE038 /* MyActiveTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAC7A019514DBC00CBE038 /* MyActiveTweet.m */; };
 		F5DAC7A519514E0900CBE038 /* MyConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAC7A419514E0900CBE038 /* MyConstants.m */; };
 		F5DAC8A2195A25AE00CBE038 /* johnD.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = F5DAC8A1195A25AE00CBE038 /* johnD.jpeg */; };
@@ -120,6 +121,7 @@
 		F57F8D13195A738600DAB0B8 /* johnD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = johnD.png; sourceTree = "<group>"; };
 		F57F8D15195A751F00DAB0B8 /* MyCenterViewController+Style.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MyCenterViewController+Style.h"; sourceTree = "<group>"; };
 		F57F8D16195A751F00DAB0B8 /* MyCenterViewController+Style.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MyCenterViewController+Style.m"; sourceTree = "<group>"; };
+		F5AD829C19664B7B0010F2D2 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		F5DAC79F19514DBC00CBE038 /* MyActiveTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyActiveTweet.h; sourceTree = "<group>"; };
 		F5DAC7A019514DBC00CBE038 /* MyActiveTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyActiveTweet.m; sourceTree = "<group>"; };
 		F5DAC7A319514E0900CBE038 /* MyConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyConstants.h; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				C4BBB7BC16FD2B0F003CA3F7 /* Social.framework in Frameworks */,
 				C4BBB7B516FD2ABC003CA3F7 /* CoreLocation.framework in Frameworks */,
 				143C2CDF182058B900DFCD05 /* FacebookSDK.framework in Frameworks */,
+				F5AD829D19664B7B0010F2D2 /* Crashlytics.framework in Frameworks */,
 				C4BBB7B616FD2ABC003CA3F7 /* StoreKit.framework in Frameworks */,
 				74366ECA158AB00E00A17D8A /* QuartzCore.framework in Frameworks */,
 				74366EC3158AAF7E00A17D8A /* AudioToolbox.framework in Frameworks */,
@@ -197,6 +200,7 @@
 		74366EA5158AAE0F00A17D8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F5AD829C19664B7B0010F2D2 /* Crashlytics.framework */,
 				143C2CDE182058B900DFCD05 /* FacebookSDK.framework */,
 				143C2CDC18203DBB00DFCD05 /* Parse.framework */,
 				C4BBB7BD16FD2B7D003CA3F7 /* libsqlite3.0.dylib */,
@@ -317,6 +321,7 @@
 				74366E9F158AAE0F00A17D8A /* Frameworks */,
 				74366EA0158AAE0F00A17D8A /* Resources */,
 				BCF606124168401A8FAA1F1B /* Copy Pods Resources */,
+				F5AD829B19664B3C0010F2D2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -410,6 +415,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Pods-twiz-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F5AD829B19664B3C0010F2D2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run bf558a6cef31aa4273fd55371f9d5ae2cd97e01c 472560584821c1a37fea3b8c5a8c1219ebfe11b95ebf371aec4111e3966bfa4e\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -500,6 +518,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/fjm/git/SampleAppsPrivate/LoginAndSignUpTutorial,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LogInAndSignUpDemo/twiz-Prefix.pch";
@@ -519,6 +538,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/fjm/git/SampleAppsPrivate/LoginAndSignUpTutorial,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LogInAndSignUpDemo/twiz-Prefix.pch";

@@ -22,15 +22,19 @@
 
 @property (nonatomic, strong) UITextView *tweetLabel;
 
+@property (nonatomic, strong) UIButton *possibleAnswer1;
 @property (nonatomic, strong) UILabel *author1;
 @property (nonatomic,strong) UIImageView *authorImageView1;
 
+@property (nonatomic, strong) UIButton *possibleAnswer2;
 @property (nonatomic, strong) UILabel *author2;
 @property (nonatomic, strong) UIImageView *authorImageView2;
 
+@property (nonatomic, strong) UIButton *possibleAnswer3;
 @property (nonatomic, strong) UILabel *author3;
 @property (nonatomic, strong) UIImageView *authorImageView3;
 
+@property (nonatomic, strong) UIButton *possibleAnswer4;
 @property (nonatomic, strong) UILabel *author4;
 @property (nonatomic, strong) UIImageView *authorImageView4;
 
@@ -53,6 +57,7 @@
     UIFont *museoButtonFont500_18 = [UIFont fontWithName:@"MuseoSansRounded-500" size:18.0];
     UIFont *museoButtonFont500_22 = [UIFont fontWithName:@"MuseoSansRounded-500" size:22.0];
     UIFont *museoButtonFont300_30 = [UIFont fontWithName:@"MuseoSansRounded-300" size:30.0];
+    UIFont *museoButtonFont300_22 = [UIFont fontWithName:@"MuseoSansRounded-300" size:22.0];
     // Check if user is logged in - commented out during offline development
     if (![PFUser currentUser]) {        
         // Customize the Log In View Controller
@@ -86,7 +91,7 @@
 #pragma mark - Possible Answers Display
     
         // Possible Answer1
-        UIView *possibleAnswer1 = [[UIView alloc] initWithFrame:CGRectMake(10.0, 200.0, self.view.bounds.size.width - 20.0f, 48)];
+        UIButton *possibleAnswer1 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 200.0, self.view.bounds.size.width - 20.0f, 48)];
         possibleAnswer1.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:0.5].CGColor;
         possibleAnswer1.layer.borderWidth = 1.0f;
         possibleAnswer1.layer.cornerRadius = 3.0f;
@@ -96,15 +101,13 @@
         authorImageView1.contentMode = UIViewContentModeScaleAspectFill;
         self.authorImageView1 = authorImageView1;
         
-    
-        UILabel *author1 = [[UILabel alloc] initWithFrame:CGRectMake(50, 2, 250, 40)];
-        author1.textColor = [UIColor whiteColor];
-        author1.text = @"sample author";
-        [author1 setFont:museoButtonFont300_30];
-        self.author1 = author1;
+        [possibleAnswer1 setTitle:@"button title" forState:UIControlStateNormal];
+        [possibleAnswer1 setFont:museoButtonFont300_22];
+        
         
         [possibleAnswer1 addSubview:self.authorImageView1];
-        [possibleAnswer1 addSubview:self.author1];
+        [possibleAnswer1 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
+        self.possibleAnswer1 = possibleAnswer1;
         
         // Possible Answer2
         UIView *possibleAnswer2 = [[UIView alloc] initWithFrame:CGRectMake(10.0, 255.0, self.view.bounds.size.width - 20.0f, 48)];
@@ -170,7 +173,7 @@
         [possibleAnswer4 addSubview:self.author4];
         
         
-        [self.view addSubview:possibleAnswer1];
+        [self.view addSubview:self.possibleAnswer1];
         [self.view addSubview:possibleAnswer2];
         [self.view addSubview:possibleAnswer3];
         [self.view addSubview:possibleAnswer4];
@@ -214,13 +217,29 @@
     [[MyTwitterController sharedInstance] requestTweetBucketDictionary:(NSString *)userName];
 }
 
+- (void) answerSelected:(id)sender{
+    NSString *selectedAuthorID = [(UIButton *)sender currentTitle];
+    NSString *correctAuthorID = self.activeTweet.correctAnswerID;
+    
+    if([selectedAuthorID isEqualToString:correctAuthorID]){
+        NSLog(@"%@ is equal to %@", selectedAuthorID, correctAuthorID );
+    } else {
+        NSLog(@"%@ is not equal to %@", selectedAuthorID, correctAuthorID );
+    }
+
+    [self requestActiveTweet]; // loads new tweet
+}
+
 - (void)requestActiveTweet
 {
     self.activeTweet = [[MyTwitterController sharedInstance] requestActiveTweet];
     self.tweetLabel.text = self.activeTweet.tweet;
     
-    self.author1.text = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
+    [self.possibleAnswer1 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
+//    self.possibleAnswer1.titleLabel.text = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
     self.authorImageView1.image = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerPhotoKey];
+    self.possibleAnswer1.tag = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
+    
     
     self.author2.text = [[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey];
     self.authorImageView2.image = [[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerPhotoKey];

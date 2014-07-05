@@ -13,6 +13,6 @@
 @property (strong, nonatomic) NSString *correctAnswerID;
 @property (strong, nonatomic) UIImage *correctAnswerPhoto;
 @property (strong, nonatomic) NSString *tweet;
-@property (strong,nonatomic) NSArray *possibleAnswers;
+@property (strong,nonatomic) NSMutableArray *possibleAnswers;
 
 @end

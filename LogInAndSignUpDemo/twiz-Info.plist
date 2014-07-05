@@ -4,42 +4,53 @@
 <dict>
 	<key></key>
 	<string></string>
-	<key>CFBundleIdentifier</key>
-	<string>com.parse.LogInAndSignUpDemo</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>${PRODUCT_NAME}</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
-			<key>UIPrerenderedIcon</key>
-			<true/>
 			<key>CFBundleIconFiles</key>
 			<array>
 				<string>Icon.png</string>
 				<string>Icon@2x.png</string>
 			</array>
+			<key>UIPrerenderedIcon</key>
+			<true/>
 		</dict>
 	</dict>
-	<key>CFBundleVersion</key>
-	<string>1.0</string>
-	<key>CFBundleExecutable</key>
-	<string>${EXECUTABLE_NAME}</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
+	<key>CFBundleIdentifier</key>
+	<string>com.johndangerstorey.twiz</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>${PRODUCT_NAME}</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
-	<key>UISupportedInterfaceOrientations</key>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fbyour_facebook_app_id</string>
+			</array>
+		</dict>
 	</array>
-	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
-	<key>UIPrerenderedIcon</key>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>FacebookAppID</key>
+	<string>your_facebook_app_id</string>
+	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
@@ -48,27 +59,16 @@
 		<string>MuseoSansRounded-500.otf</string>
 		<string>MuseoSansRounded-900.otf</string>
 	</array>
-	<key>CFBundleURLTypes</key>
+	<key>UIPrerenderedIcon</key>
+	<true/>
+	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fbyour_facebook_app_id</string>
-			</array>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-		</dict>
+		<string>armv7</string>
 	</array>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>FacebookAppID</key>
-	<string>your_facebook_app_id</string>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleName</key>
-	<string>${PRODUCT_NAME}</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

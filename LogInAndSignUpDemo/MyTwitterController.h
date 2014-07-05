@@ -15,7 +15,7 @@
 - (NSDictionary *) requestActiveTweet;
 - (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName;
 
-- (void) checkAnswer:(NSNumber *)selectedAuthorID;
+- (void) checkAnswer:(NSString *)selectedAuthorID;
 
 @end
 

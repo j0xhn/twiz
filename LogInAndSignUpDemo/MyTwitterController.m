@@ -10,6 +10,7 @@
 #import "MyConstants.h"
 
 #import <SEGAnalytics.h>
+#import <Crashlytics/Crashlytics.h>
 
 @interface MyTwitterController ()
 
@@ -33,7 +34,8 @@
 }
 
 - (void) setTweetBucketDictionary:(NSDictionary *)tweetBucketDictionary{
-    NSLog(@"tweet bucket finished loading");
+    //Q:3 Having trouble saving it in User Defaults because of the type of data inside NSDictionary (custom) do I cycle through the whole thing like on our "Entities" project and then make a method that re-writes it when I pull it out of NSUserDefaults?
+    
     _tweetBucketDictionary = tweetBucketDictionary;
 }
 
@@ -51,44 +53,10 @@
     activeTweet.correctAnswerID = [firstTweetFromBucket objectForKey:tweetAuthorIDKey];
     activeTweet.correctAnswerPhoto = [firstTweetFromBucket objectForKey:tweetAuthorPhotoKey];// sets correctAnswerImage
     activeTweet.tweet = [firstTweetFromBucket objectForKey:tweetTextKey];
+    activeTweet.possibleAnswers = [self requestActivePossibleAnswers:activeTweet];
+    
     [mutableTweetBucketDictionary removeObjectForKey:firstTweetObjectKey]; // delete it from tweetBucketDictionary
     self.tweetBucketDictionary = mutableTweetBucketDictionary;// set it back to the Dictioary
-
-    [self generateRandomNumberArray];
-    
-    NSMutableArray *activePossibleAnswers = [NSMutableArray new];
-    for (int i = 0; i < [self.mutableArrayContainingNumbers count]; i++)
-    {
-        NSNumber *possibleAnswerRandomNumber = self.mutableArrayContainingNumbers[i];
-        // if error's here it's because you don't have enought possibleAnswers
-        NSDictionary *possibleAnswer = [self.possibleAnswerBucketArray objectAtIndex:possibleAnswerRandomNumber.integerValue];
-        [activePossibleAnswers addObject:possibleAnswer];
-    }
-    [self.mutableArrayContainingNumbers removeAllObjects]; // clears the array so the logic works correctly in the number generator
-    
-    NSDictionary *correctAnswer = [[NSDictionary alloc]initWithObjectsAndKeys:activeTweet.correctAnswerPhoto,possibleAnswerPhotoKey,activeTweet.correctAnswerID,possibleAnswerAuthorKey, nil];
-    
-    // checks to see if correctAnswer is duplicate in possibleAnswerArray
-//    NSString *query = [NSString stringWithFormat:@"%@ = %%@", possibleAnswerAuthorKey];
-//    NSPredicate *pred = [NSPredicate predicateWithFormat:query,correctAnswer[possibleAnswerAuthorKey]];
-//    NSArray *filteredArray = [activePossibleAnswers filteredArrayUsingPredicate:pred];
-//    if ([filteredArray count] != 0) {
-//        NSLog(@"duplicates");
-//    } else {
-//        NSLog(@"no duplicates");
-//    }
-    for (NSDictionary *answer in activePossibleAnswers) {
-        if (answer[possibleAnswerAuthorKey] == correctAnswer[possibleAnswerAuthorKey]) {
-            NSLog(@"this answer is a duplicate");
-            [self requestActiveTweet];
-        }
-    }
-    
-    
-    NSInteger randomIndexNumber = (NSInteger) arc4random_uniform(4); // pics random number n-1
-    [activePossibleAnswers insertObject:correctAnswer atIndex:randomIndexNumber];
-    // Q:1 - Is there a way to check INSIDE all dictionary objects for the name, so I don't repeat?  Or would I be better to ma
-    activeTweet.possibleAnswers = activePossibleAnswers;
     
     return activeTweet;
  
@@ -139,10 +107,15 @@
                  NSData *singleTweetimageData = [NSData dataWithContentsOfURL:singleTweetimageURL];
                  UIImage *singleTweetimage = [UIImage imageWithData:singleTweetimageData];
                  
+                 if (!singleTweetimage) {
+                     singleTweetimage = [UIImage imageNamed:@"johnD"];
+                 }
+                 
                  NSDictionary *singleTweet = @{tweetTextKey:singleTweetText,
                                                tweetAuthorIDKey:singleTweetAuthorID,
                                                tweetIDKey:singleTweetID,
                                                tweetAuthorPhotoKey:singleTweetimage};
+                
                  
                  // sets possibleAnswerBucketArray to unique answers
                  NSString *query = [NSString stringWithFormat:@"%@ = %%@", possibleAnswerAuthorKey];
@@ -161,6 +134,7 @@
 
              self.possibleAnswerBucketArray = possibleAnswerBucketArray;
              self.tweetBucketDictionary = tweetBucketDictionary;
+             NSLog(@"tweet bucket finished Loading");
              
          }
          else if ([data length] == 0 && error == nil)
@@ -186,6 +160,7 @@
     int objectsInArray = [self.possibleAnswerBucketArray count]; // makes it so you don't get numbers higher than what is currently in there
     NSInteger randomNumber = (NSInteger) arc4random_uniform(objectsInArray); // picks between 0 and n-1
     if (self.mutableArrayContainingNumbers) {
+        // Q:2 it gives me an error here, but no error message.  Shows something in memory, what is happening?
         if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){
             [self generateRandomNumberArray]; // call the method again and get a new object
         } else {
@@ -205,28 +180,58 @@
     
 }
 
-- (NSArray *) generatePossibleAnswers{
-
+- (NSMutableArray *) requestActivePossibleAnswers:(MyActiveTweet *)activeTweet{
+    
     [self generateRandomNumberArray];
-
-    NSArray *activePossibleAnswers = [NSArray new];
+    
+    NSMutableArray *activePossibleAnswers = [NSMutableArray new];
+    for (int i = 0; i < [self.mutableArrayContainingNumbers count]; i++)
+    {
+        NSNumber *possibleAnswerRandomNumber = self.mutableArrayContainingNumbers[i];
+        // if error's here it's because you don't have any possibleAnswers
+        NSDictionary *possibleAnswer = [self.possibleAnswerBucketArray objectAtIndex:possibleAnswerRandomNumber.integerValue];
+        [activePossibleAnswers addObject:possibleAnswer];
+    }
+//    [self.mutableArrayContainingNumbers removeAllObjects]; // clears the array so the logic works correctly in the number generator
+    self.mutableArrayContainingNumbers = nil;
+    
+    NSDictionary *correctAnswer = [[NSDictionary alloc]initWithObjectsAndKeys:activeTweet.correctAnswerPhoto,possibleAnswerPhotoKey,activeTweet.correctAnswerID,possibleAnswerAuthorKey, nil];
+    
+    // checks to see if correctAnswer is duplicate in possibleAnswerArray
+//    NSString *query = [NSString stringWithFormat:@"%@ = %%@", possibleAnswerAuthorKey];
+//    NSPredicate *pred = [NSPredicate predicateWithFormat:query,correctAnswer[possibleAnswerAuthorKey]];
+//    NSArray *filteredArray = [activePossibleAnswers filteredArrayUsingPredicate:pred];
+//    if ([filteredArray count] != 0) {
+//        NSLog(@"duplicates");
+//        [self requestActivePossibleAnswers:activeTweet];
+//    } else {
+//        NSLog(@"no duplicates");
+//    }
+    for (NSDictionary *answer in activePossibleAnswers) {
+        if (answer[possibleAnswerAuthorKey] == correctAnswer[possibleAnswerAuthorKey]) {
+            NSLog(@"this answer is a duplicate");
+            // Q:1 sometimes this method DOES NOT recognize a duplicate, and sometimes it does.  Also the following line doesn't restart the method... why?
+            [self requestActivePossibleAnswers:activeTweet];
+        }
+    }
+    
+    NSInteger randomIndexNumber = (NSInteger) arc4random_uniform(4); // pics random number n-1
+    [activePossibleAnswers insertObject:correctAnswer atIndex:randomIndexNumber];
     
     return activePossibleAnswers;
-    
-    // select that person dictionary in the array
-    
-    // check to see if they are already in the possibleAnswers dictionary by comparing AuthorID values
-    
-    // when reach 4 in the possible Answers Array stop loop.
-    
 }
-
-- (void) checkAnswer:(NSNumber *)selectedAuthorID{
-    // check if the dictionary item from the button selected matches the authorID on the activeTweet.
+/*
+- (void) checkAnswer:(NSString *)selectedAuthorID{
     
-    // increment the score with right.
+    NSString *correctAuthorID = self.activeTweet.correctAnswerID;
     
+    if([selectedAuthorID isEqualToString:correctAuthorID]){
+        NSLog(@"%@ is equal to %@", selectedAuthorID, correctAuthorID );
+    } else {
+        NSLog(@"%@ is not equal to %@", selectedAuthorID, correctAuthorID );
+    }
 }
+ */
 - (void) incrementScore:(NSNumber *)number{
     // take the score, increment the number, then resave it as the score
     

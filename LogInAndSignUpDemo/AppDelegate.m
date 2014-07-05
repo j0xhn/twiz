@@ -14,6 +14,7 @@
 #import "JARightViewController.h"
 
 #import <SEGAnalytics.h>
+#import <Crashlytics/Crashlytics.h>
 
 
 @implementation AppDelegate
@@ -27,6 +28,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleLightContent];
+    
     // ****************************************************************************
     // Fill in with your Parse and Twitter credentials. Don't forget to add your
     // Facebook id in Info.plist:
@@ -37,6 +39,8 @@
     
     // Analytics
     [SEGAnalytics setupWithConfiguration:[SEGAnalyticsConfiguration configurationWithWriteKey:@"vspssh598g"]];
+    // Crashlytics
+    [Crashlytics startWithAPIKey:@"bf558a6cef31aa4273fd55371f9d5ae2cd97e01c"];
     
     // Set default ACLs
     PFACL *defaultACL = [PFACL ACL];
