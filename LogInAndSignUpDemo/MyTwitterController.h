@@ -13,8 +13,10 @@
 + (MyTwitterController *)sharedInstance;
 
 - (NSDictionary *) requestActiveTweet;
-- (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName;
+- (void) loadTweetBucketDictionary;
+- (NSInteger *) incrementScore:(NSInteger *)number;
 
+- (void) setCurrentUserScreenName:(NSString *)userName;
 - (void) checkAnswer:(NSString *)selectedAuthorID;
 
 @end

@@ -7,6 +7,9 @@
 //
 
 #import "MyCenterViewController+Style.h"
+#import <QuartzCore/QuartzCore.h>
+#import "JASidePanelController.h"
+#import "UIViewController+JASidePanel.h"
 
 @implementation MyCenterViewController (Style)
 
@@ -15,6 +18,7 @@
     // Navigation Bar
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"MainBG.png"]]];
     self.title = @"Twiz";
+    self.navigationController.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:49.0f/255.0f green:35.0f/255.0f blue:105.0f/255.0f alpha:1.0f];
     self.navigationController.navigationBar.translucent = NO;
     //  [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, 320, 14)];
@@ -28,8 +32,7 @@
                                              selector:@selector(refreshView)
                                                  name:@"LoginSuccessfulNotification"
                                                object:nil];
-    
-    
+
     
 }
 

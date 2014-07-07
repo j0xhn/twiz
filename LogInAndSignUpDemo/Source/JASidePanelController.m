@@ -88,16 +88,16 @@ static char ja_kvoContext;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		UIGraphicsBeginImageContextWithOptions(CGSizeMake(20.f, 13.f), NO, 0.0f);
-		
-		[[UIColor blackColor] setFill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 1)] fill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 5, 20, 1)] fill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 10, 20, 1)] fill];
+// custom: commented makes button skinnier
+//		[[UIColor blackColor] setFill];
+//		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 15, 1)] fill];
+//		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 5, 15, 1)] fill];
+//		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 10, 15, 1)] fill];
 		
 		[[UIColor whiteColor] setFill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 1, 20, 2)] fill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 6,  20, 2)] fill];
-		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 11, 20, 2)] fill];   
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 1, 15, 2)] fill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 6,  15, 2)] fill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 11, 15, 2)] fill];
 		
 		defaultImage = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
@@ -448,7 +448,8 @@ static char ja_kvoContext;
         }
         if (!buttonController.navigationItem.rightBarButtonItem) {
             buttonController.navigationItem.rightBarButtonItem = [self rightButtonForCenterPanel];
-        }
+            // custom - turns button white
+            buttonController.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];         }
     }
 }
 

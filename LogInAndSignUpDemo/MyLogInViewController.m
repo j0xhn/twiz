@@ -7,6 +7,7 @@
 //
 #import "MyLogInViewController.h"
 #import "JASidePanelController.h"
+#import "UIViewController+JASidePanel.h"
 #import "MyCenterViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "MyTwitterController.h"
@@ -73,13 +74,44 @@
             return;
         } else if (user.isNew) {
             // give intro run through here, or welcome message
-            NSLog(@"User signed up and logged in with Twitter!");
+            NSURL *verify = [NSURL URLWithString:@"https://api.twitter.com/1.1/account/verify_credentials.json"];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:verify];
+            [[PFTwitterUtils twitter] signRequest:request];
+            NSURLResponse *response = nil;
+            NSData *data = [NSURLConnection sendSynchronousRequest:request
+                                                 returningResponse:&response
+                                                             error:&error];
+            NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+            NSLog(@"%@",result);
+            
+            [user setObject:[result objectForKey:@"profile_image_url_https"]
+                     forKey:@"picture"];
+            // does this thing help?
+            [user setUsername:[result objectForKey:@"screen_name"]];
+            
+            NSString * names = [result objectForKey:@"name"];
+            NSMutableArray * array = [NSMutableArray arrayWithArray:[names componentsSeparatedByString:@" "]];
+            if ( array.count > 1){
+                [user setObject:[array lastObject]
+                         forKey:@"last_name"];
+                
+                [array firstObject];
+                [user setObject:[array componentsJoinedByString:@" " ]
+                         forKey:@"first_name"];
+            }
+            
+            [user saveInBackground];
+            [PFUser currentUser];
+            NSLog(@"username:%@", user.username);
+            [[MyTwitterController sharedInstance] setCurrentUserScreenName:user.username];
+            [self dismissViewControllerAnimated:YES completion:NULL];
+            
         } else {
             
             NSLog(@"signin Sucessfull");
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginSuccessfulNotification" object:nil userInfo:nil];
-            NSLog(@"Post Successfull");
-            [self loadTweets];
+            NSLog(@"username:%@", user.username);
+            [[MyTwitterController sharedInstance] setCurrentUserScreenName:user.username];
+//            [[MyTwitterController sharedInstance] requestTweetBucketDictionary];
             [self dismissViewControllerAnimated:YES completion:NULL];
 
         }     
@@ -88,9 +120,7 @@
 }
 - (void)loadTweets
 {
-    NSString *userName = @"johnDANGRstorey";
-    [[MyTwitterController sharedInstance] requestTweetBucketDictionary:(NSString *)userName];
-    
+    [[MyTwitterController sharedInstance] loadTweetBucketDictionary];
 }
 
 - (void)viewDidLayoutSubviews {

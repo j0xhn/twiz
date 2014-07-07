@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSArray *possibleAnswerBucketArray;
 @property (strong,nonatomic) NSMutableArray *mutableArrayContainingNumbers;
 @property (strong,nonatomic) NSDictionary *correctAnswer;
+@property (strong, nonatomic) NSString *currentUser;
 @property (strong, nonatomic) MyActiveTweet *activeTweet;
 
 @end
@@ -33,16 +34,14 @@
     return sharedInstance;
 }
 
-- (void) setTweetBucketDictionary:(NSDictionary *)tweetBucketDictionary{
-    //Q:3 Having trouble saving it in User Defaults because of the type of data inside NSDictionary (custom) do I cycle through the whole thing like on our "Entities" project and then make a method that re-writes it when I pull it out of NSUserDefaults?
-    
-    _tweetBucketDictionary = tweetBucketDictionary;
-}
-
 #pragma mark - Generate Tweet and Answers
 
 - (MyActiveTweet *)requestActiveTweet {
-
+    
+    if ([self.tweetBucketDictionary count] == 10) {
+        NSLog(@"ALERT - low on tweets");
+        [self loadTweetBucketDictionary];
+    }
  
     MyActiveTweet *activeTweet = [MyActiveTweet new];
     NSMutableDictionary *mutableTweetBucketDictionary = [[NSMutableDictionary alloc]initWithDictionary:self.tweetBucketDictionary]; // convert to mutable dict
@@ -74,12 +73,12 @@
 */
 }
 
-- (NSDictionary *) requestTweetBucketDictionary:(NSString *)screenName{ //requests timeline in the background
+- (void) loadTweetBucketDictionary{ //requests timeline in the background
     
     [[SEGAnalytics sharedAnalytics] track:@"Signed Up"
                                properties:@{ @"plan": @"Enterprise" }]; //tracks bucket requests
     
-    NSString *bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?screen_name=%@&count=20", screenName];
+    NSString *bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?screen_name=%@&count=20", self.currentUser];
     NSURL *url = [NSURL URLWithString:bodyString];
     NSMutableURLRequest *tweetRequest = [NSMutableURLRequest requestWithURL:url];
     [[PFTwitterUtils twitter] signRequest:tweetRequest];
@@ -151,7 +150,6 @@
              NSLog(@"Error = %@", error);
          }
      }];
-    return self.tweetBucketDictionary;
 }
 
 #pragma mark - Answers and Score
@@ -160,7 +158,6 @@
     int objectsInArray = [self.possibleAnswerBucketArray count]; // makes it so you don't get numbers higher than what is currently in there
     NSInteger randomNumber = (NSInteger) arc4random_uniform(objectsInArray); // picks between 0 and n-1
     if (self.mutableArrayContainingNumbers) {
-        // Q:2 it gives me an error here, but no error message.  Shows something in memory, what is happening?
         if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){
             [self generateRandomNumberArray]; // call the method again and get a new object
         } else {
@@ -196,22 +193,11 @@
     self.mutableArrayContainingNumbers = nil;
     
     NSDictionary *correctAnswer = [[NSDictionary alloc]initWithObjectsAndKeys:activeTweet.correctAnswerPhoto,possibleAnswerPhotoKey,activeTweet.correctAnswerID,possibleAnswerAuthorKey, nil];
-    
-    // checks to see if correctAnswer is duplicate in possibleAnswerArray
-//    NSString *query = [NSString stringWithFormat:@"%@ = %%@", possibleAnswerAuthorKey];
-//    NSPredicate *pred = [NSPredicate predicateWithFormat:query,correctAnswer[possibleAnswerAuthorKey]];
-//    NSArray *filteredArray = [activePossibleAnswers filteredArrayUsingPredicate:pred];
-//    if ([filteredArray count] != 0) {
-//        NSLog(@"duplicates");
-//        [self requestActivePossibleAnswers:activeTweet];
-//    } else {
-//        NSLog(@"no duplicates");
-//    }
+
     for (NSDictionary *answer in activePossibleAnswers) {
-        if (answer[possibleAnswerAuthorKey] == correctAnswer[possibleAnswerAuthorKey]) {
+        if ([answer[possibleAnswerAuthorKey] isEqualToString:correctAnswer[possibleAnswerAuthorKey]]) {
             NSLog(@"this answer is a duplicate");
-            // Q:1 sometimes this method DOES NOT recognize a duplicate, and sometimes it does.  Also the following line doesn't restart the method... why?
-            [self requestActivePossibleAnswers:activeTweet];
+            return [self requestActivePossibleAnswers:activeTweet];
         }
     }
     
@@ -220,21 +206,15 @@
     
     return activePossibleAnswers;
 }
-/*
-- (void) checkAnswer:(NSString *)selectedAuthorID{
-    
-    NSString *correctAuthorID = self.activeTweet.correctAnswerID;
-    
-    if([selectedAuthorID isEqualToString:correctAuthorID]){
-        NSLog(@"%@ is equal to %@", selectedAuthorID, correctAuthorID );
-    } else {
-        NSLog(@"%@ is not equal to %@", selectedAuthorID, correctAuthorID );
-    }
+
+- (void) setCurrentUserScreenName:(NSString *)userName{
+    self.currentUser = userName;
 }
- */
-- (void) incrementScore:(NSNumber *)number{
-    // take the score, increment the number, then resave it as the score
-    
+
+
+- (NSInteger *) incrementScore:(NSInteger *)oldScore{
+    NSInteger *newScore = oldScore + 10;
+    return newScore;
 }
 
 @end

@@ -21,6 +21,8 @@
 @property (nonatomic, strong) MyActiveTweet *activeTweet;
 
 @property (nonatomic, strong) UITextView *tweetLabel;
+@property (nonatomic,strong) UILabel *scoreLabel;
+@property (nonatomic,assign) NSInteger scoreInt;
 
 @property (nonatomic, strong) UIButton *possibleAnswer1;
 @property (nonatomic, strong) UILabel *author1;
@@ -71,10 +73,13 @@
 
         // makes score button
         UILabel *scoreLabel = [[UILabel alloc]initWithFrame:CGRectMake(20,6,55,32)];
-        scoreLabel.text = @"100";
+        NSInteger scoreInt = 0;
+        scoreLabel.text = [NSString stringWithFormat: @"%d", (int)scoreInt];
         scoreLabel.textColor = [UIColor whiteColor];
         scoreLabel.font = [UIFont fontWithName:@"MuseoSansRounded-500" size:16];
-        [self.navigationController.navigationBar addSubview:scoreLabel];
+        self.scoreInt = scoreInt;
+        self.scoreLabel = scoreLabel;
+        [self.navigationController.navigationBar addSubview:self.scoreLabel];
         
         // Tweet Display
         UITextView *tweetLabel = [[UITextView alloc]initWithFrame:CGRectMake(10.0, 10.0f, self.view.bounds.size.width - 20.0f, 180.0)];
@@ -92,9 +97,11 @@
     
         // Possible Answer1
         UIButton *possibleAnswer1 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 200.0, self.view.bounds.size.width - 20.0f, 48)];
-        possibleAnswer1.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:0.5].CGColor;
+        possibleAnswer1.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:0.2].CGColor;
         possibleAnswer1.layer.borderWidth = 1.0f;
         possibleAnswer1.layer.cornerRadius = 3.0f;
+        [possibleAnswer1 setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+        [possibleAnswer1 setTitleEdgeInsets:UIEdgeInsetsMake(0, 50.0f, 0.0f, 0.0f)];
         UIImage *authorImage1 = [UIImage imageNamed:@"johnD.png"];
         UIImageView *authorImageView1 = [[UIImageView alloc] initWithImage:authorImage1];
         [authorImageView1 setFrame:CGRectMake(9, 9, 30, 30)];
@@ -213,9 +220,10 @@
 
 - (void)loadTweets
 {
-    NSString *userName = [NSString stringWithFormat:[[PFUser currentUser] username]];
-    [[MyTwitterController sharedInstance] requestTweetBucketDictionary:(NSString *)userName];
+    [[MyTwitterController sharedInstance] loadTweetBucketDictionary];
 }
+
+#pragma mark - Answer Selected
 
 - (void) answerSelected:(id)sender{
     NSString *selectedAuthorID = [(UIButton *)sender currentTitle];
@@ -223,8 +231,15 @@
     
     if([selectedAuthorID isEqualToString:correctAuthorID]){
         NSLog(@"%@ is equal to %@", selectedAuthorID, correctAuthorID );
+        NSInteger oldScore = [self.scoreLabel.text intValue];
+        self.scoreInt = oldScore + 10;
+        self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
+        
     } else {
         NSLog(@"%@ is not equal to %@", selectedAuthorID, correctAuthorID );
+        NSInteger oldScore = [self.scoreLabel.text intValue];
+        self.scoreInt = oldScore - 1;
+        self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
     }
 
     [self requestActiveTweet]; // loads new tweet
@@ -318,8 +333,9 @@
 #pragma mark - ()
 
 - (IBAction)logOutButtonTapAction:(id)sender {
-    [PFUser logOut];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.sidePanelController showCenterPanelAnimated:YES];
+//    [PFUser logOut];
+//    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
