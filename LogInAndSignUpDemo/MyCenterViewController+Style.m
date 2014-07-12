@@ -10,13 +10,14 @@
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
 #import "UIViewController+JASidePanel.h"
+#import "MyConstants.h"
 
 @implementation MyCenterViewController (Style)
 
 - (void) viewWillAppear:(BOOL)animated{ // loaded everytime view is about to appear
     
     // Navigation Bar
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"MainBG.png"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:PURPLE_BACKGROUND]];
     self.title = @"Twiz";
     self.navigationController.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:49.0f/255.0f green:35.0f/255.0f blue:105.0f/255.0f alpha:1.0f];
@@ -26,13 +27,6 @@
                                                                       NSFontAttributeName: [UIFont fontWithName:@"MuseoSansRounded-900" size:24],
                                                                       NSForegroundColorAttributeName: [UIColor whiteColor],
                                                                       }];
-    
-    // creates listener for Twitter Login
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshView)
-                                                 name:@"LoginSuccessfulNotification"
-                                               object:nil];
-
     
 }
 

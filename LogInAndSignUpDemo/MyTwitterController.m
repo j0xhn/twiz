@@ -8,18 +8,22 @@
 #import "MyTwitterController.h"
 #import "MyActiveTweet.h"
 #import "MyConstants.h"
+#import "MyEmptyBucketViewController.h"
 
 #import <SEGAnalytics.h>
 #import <Crashlytics/Crashlytics.h>
 
 @interface MyTwitterController ()
 
-@property (strong, nonatomic) NSDictionary *tweetBucketDictionary;
-@property (strong, nonatomic) NSArray *possibleAnswerBucketArray;
+@property (strong, nonatomic) NSMutableDictionary *tweetBucketDictionary;
+@property (strong, nonatomic) NSMutableArray *possibleAnswerBucketArray;
 @property (strong,nonatomic) NSMutableArray *mutableArrayContainingNumbers;
 @property (strong,nonatomic) NSDictionary *correctAnswer;
 @property (strong, nonatomic) NSString *currentUser;
+@property (strong,nonatomic) NSNumber *lastTweetID;
 @property (strong, nonatomic) MyActiveTweet *activeTweet;
+
+@property (assign,nonatomic) BOOL InitialLoadState;
 
 @end
 
@@ -34,6 +38,11 @@
     return sharedInstance;
 }
 
+- (id) init{
+    self.InitialLoadState = YES;
+    return self;
+}
+
 #pragma mark - Generate Tweet and Answers
 
 - (MyActiveTweet *)requestActiveTweet {
@@ -42,20 +51,31 @@
         NSLog(@"ALERT - low on tweets");
         [self loadTweetBucketDictionary];
     }
+    
+    if ([self.tweetBucketDictionary count] == 0) { // presents empty bucket view controller
+        NSLog(@"ALERT - Out of Tweets");
+        MyEmptyBucketViewController *EmptyBucketViewController = [[MyEmptyBucketViewController alloc] init];
+        EmptyBucketViewController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
+        // Present Log In View Controller
+        [self.delegate ranOutOfTweets];
+        MyActiveTweet *emptyTweetsObject = [MyActiveTweet new];
+        return emptyTweetsObject;
+    }
  
     MyActiveTweet *activeTweet = [MyActiveTweet new];
-    NSMutableDictionary *mutableTweetBucketDictionary = [[NSMutableDictionary alloc]initWithDictionary:self.tweetBucketDictionary]; // convert to mutable dict
-    NSMutableArray *tweetIDArray = [mutableTweetBucketDictionary allKeys]; // pull of first tweet from tweetBucketDictionary and assign it to self.activeTweet
+    NSMutableArray *tweetIDArray = [self.tweetBucketDictionary allKeys]; // pull of first tweet from tweetBucketDictionary and assign it to self.activeTweet
     NSString *firstTweetObjectKey = [tweetIDArray firstObject];
-    NSDictionary *firstTweetFromBucket = [mutableTweetBucketDictionary objectForKey:firstTweetObjectKey];
+    NSDictionary *firstTweetFromBucket = [self.tweetBucketDictionary objectForKey:firstTweetObjectKey];
     
     activeTweet.correctAnswerID = [firstTweetFromBucket objectForKey:tweetAuthorIDKey];
     activeTweet.correctAnswerPhoto = [firstTweetFromBucket objectForKey:tweetAuthorPhotoKey];// sets correctAnswerImage
+    activeTweet.tweetID = [firstTweetFromBucket objectForKey:tweetIDKey];
     activeTweet.tweet = [firstTweetFromBucket objectForKey:tweetTextKey];
     activeTweet.possibleAnswers = [self requestActivePossibleAnswers:activeTweet];
     
-    [mutableTweetBucketDictionary removeObjectForKey:firstTweetObjectKey]; // delete it from tweetBucketDictionary
-    self.tweetBucketDictionary = mutableTweetBucketDictionary;// set it back to the Dictioary
+    self.lastTweetID = [firstTweetFromBucket objectForKey:tweetIDKey];
+    
+    [self.tweetBucketDictionary removeObjectForKey:firstTweetObjectKey]; // delete it from tweetBucketDictionary
     
     return activeTweet;
  
@@ -74,11 +94,19 @@
 }
 
 - (void) loadTweetBucketDictionary{ //requests timeline in the background
-    
+    //Q:1 analytics not working...?
     [[SEGAnalytics sharedAnalytics] track:@"Signed Up"
                                properties:@{ @"plan": @"Enterprise" }]; //tracks bucket requests
+    NSString *bodyString = @"";
+    if (!self.currentUser){ // if user stops using app, then re-opens app it erases self.currentUser, this sets it.
+        self.currentUser = [[NSUserDefaults standardUserDefaults] objectForKey:CURRENT_USER_KEY];
+    }
+    if (!self.lastTweetID) {
+        bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?screen_name=%@&count=20", self.currentUser];
+    } else {
+        bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?screen_name=%@&count=100&since_id=%@", self.currentUser, self.lastTweetID];
+    }
     
-    NSString *bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?screen_name=%@&count=20", self.currentUser];
     NSURL *url = [NSURL URLWithString:bodyString];
     NSMutableURLRequest *tweetRequest = [NSMutableURLRequest requestWithURL:url];
     [[PFTwitterUtils twitter] signRequest:tweetRequest];
@@ -89,12 +117,12 @@
                                                                                           NSData *data,
                                                                                           NSError *error)
      {
+         if (error) { // error for when you exeed your limit
+             NSLog(@"error %@", error);
+         }
          if ([data length] >0 && error == nil)
          {
              NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:&error];
-             
-             NSMutableDictionary *tweetBucketDictionary = [NSMutableDictionary new];
-             NSMutableArray *possibleAnswerBucketArray = [NSMutableArray new];
  
              for(id key in json){
                  // for active tweet dictionary
@@ -117,22 +145,35 @@
                 
                  
                  // sets possibleAnswerBucketArray to unique answers
+                 if (!self.possibleAnswerBucketArray) { // on initial load creates a new possible Answer bucket array
+                     self.possibleAnswerBucketArray = [NSMutableArray new];
+                 }
                  NSString *query = [NSString stringWithFormat:@"%@ = %%@", possibleAnswerAuthorKey];
                  NSPredicate *pred = [NSPredicate predicateWithFormat:query,singleTweetAuthorID];
-                 NSArray *filteredArray = [possibleAnswerBucketArray filteredArrayUsingPredicate:pred];
+                 NSArray *filteredArray = [self.possibleAnswerBucketArray filteredArrayUsingPredicate:pred];
                  if (filteredArray.count == 0) {
                      NSDictionary *possibleAnswer = @{possibleAnswerAuthorKey:singleTweetAuthorID,
                                                       possibleAnswerPhotoKey:singleTweetimage};
-                [possibleAnswerBucketArray addObject:possibleAnswer];
+                     [self.possibleAnswerBucketArray addObject:possibleAnswer];
                  }
                  
-                 
-
-                 [tweetBucketDictionary setValue:singleTweet forKey:[NSString stringWithFormat:@"%@",singleTweetID]];
+                 if (!self.tweetBucketDictionary) { // for the initial load, if no dictionary it creates one
+                     self.tweetBucketDictionary = [NSMutableDictionary new];
+                 }
+                 [self.tweetBucketDictionary setValue:singleTweet forKey:[NSString stringWithFormat:@"%@",singleTweetID]];
              }
+             
+             if (self.InitialLoadState) {
+                 
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [[NSNotificationCenter defaultCenter]
+                      postNotificationName:@"tweetBucketFinishedLoadingFirstTimeNotification"
+                      object:nil];
+                 });
+                 // notification comes AFTER tweetBucketDictionary has been made so central view controller can ask for active tweet
 
-             self.possibleAnswerBucketArray = possibleAnswerBucketArray;
-             self.tweetBucketDictionary = tweetBucketDictionary;
+                 self.InitialLoadState = NO; // turns off auto ask
+             }
              NSLog(@"tweet bucket finished Loading");
              
          }
@@ -209,12 +250,21 @@
 
 - (void) setCurrentUserScreenName:(NSString *)userName{
     self.currentUser = userName;
+    [[NSUserDefaults standardUserDefaults] setObject:userName forKey:currentUserKey];
 }
-
 
 - (NSInteger *) incrementScore:(NSInteger *)oldScore{
     NSInteger *newScore = oldScore + 10;
     return newScore;
+}
+
+- (void) toggleInitialLoadState{
+    if (self.InitialLoadState) {
+        self.InitialLoadState = NO;
+    } else {
+        self.InitialLoadState = YES;
+    }
+    
 }
 
 @end

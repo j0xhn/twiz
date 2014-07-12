@@ -11,6 +11,7 @@
 #import "MyCenterViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "MyTwitterController.h"
+#import "MyConstants.h"
 
 @interface MyLogInViewController ()
 
@@ -22,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"MainBG.png"]]];
+    [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:PURPLE_BACKGROUND]];
     
     // if 'nil' not selected it will bring up Parse Logo
     [self.logInView setLogo:[UIImage imageNamed:nil]];
@@ -105,6 +106,7 @@
             NSLog(@"username:%@", user.username);
             [[MyTwitterController sharedInstance] setCurrentUserScreenName:user.username];
             [self dismissViewControllerAnimated:YES completion:NULL];
+            // Q:2 doesn't refresh the view upon login
             
         } else {
             
@@ -113,8 +115,12 @@
             [[MyTwitterController sharedInstance] setCurrentUserScreenName:user.username];
 //            [[MyTwitterController sharedInstance] requestTweetBucketDictionary];
             [self dismissViewControllerAnimated:YES completion:NULL];
+            // Q:2 doesn't refresh the view upon login
 
-        }     
+        }
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:@"LoginSuccessfulNotification"
+         object:nil];
     }];
     return YES;
 }

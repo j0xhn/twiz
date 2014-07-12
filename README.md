@@ -2,7 +2,16 @@ Twiz
 ===
 the twitter quiz game
 
+Built for Mark
+```
+Mark is a 30 year old guy that is checking his twitter while sitting on the toilet, when things get slow at work, in the checkout line, whenever he rides the train to and from work, and whenever his wife is talking and talking and talking and taaaaaalking....  yeah, he checks them a lot.  
+
+He likes to click and read articles from his news sources, but also loves to just see what his friends are up to.  He feels like he wastes his time on twitter, but loves it so much that he really doesn't care.  When he finds out he can earn amazon gift cards by going through his twitter feed... he is going to crap his pants, download the app, and tell everyone about his new quadcopter he just bought using his giftcard, which his friends will read about on Twiz :)
+
+```
+
 works for tweeting, found at https://parse.com/questions/twitter-tweeting-problems
+
 ```
 
 - (void)postStatus:(NSString *)status {

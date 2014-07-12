@@ -7,10 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MyCenterViewController.h"
+
+@class MyTwitterController; // creates protocol to handle presenting new page via MyCenterViewController
+@protocol MyTwitterDelegate
+- (void) ranOutOfTweets;
+@end
 
 @interface MyTwitterController : NSObject
 
+@property (nonatomic, weak) MyCenterViewController *centerVC;
 + (MyTwitterController *)sharedInstance;
+@property (nonatomic, weak) id <MyTwitterDelegate> delegate;
 
 - (NSDictionary *) requestActiveTweet;
 - (void) loadTweetBucketDictionary;
