@@ -133,7 +133,7 @@
         [[refreshBtn layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
         [refreshBtn addTarget:self action:@selector(loadTweets) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:refreshBtn];
-*/        
+*/
         
         
         UIView *loadingView = [[UIView alloc]initWithFrame:CGRectMake((SCREEN_HORIZONTAL - 200)/2, (SCREEN_VERTICAL - 200)/2, 200, 100)];
