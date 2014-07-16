@@ -54,10 +54,11 @@
 
 -(void) ranOutOfTweets{
     
+    [self.mainView removeFromSuperview];
+    
     MyEmptyBucketViewController *emptyBucketViewController = [[MyEmptyBucketViewController alloc] init];
     emptyBucketViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    // Present Log In View Controller
-    [self presentViewController:emptyBucketViewController animated:YES completion:NULL];
+    [self presentViewController:emptyBucketViewController animated:YES completion:NULL]; // Present Log In View Controller
 
     
 }
@@ -135,12 +136,12 @@
 
 - (void) refreshView{
     self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[MyCenterViewController alloc] init]];
-    [[MyTwitterController sharedInstance] loadTweetBucketDictionary];
+    [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:nil];
 }
 
 - (void)loadTweets
 {
-    [[MyTwitterController sharedInstance] loadTweetBucketDictionary];
+    [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:nil];
 }
 
 #pragma mark - Answer Selected

@@ -28,6 +28,8 @@
 #import "JASidePanelController.h"
 #import "MyLogInViewController.h"
 #import "UIViewController+JASidePanel.h"
+#import "MyConstants.h"
+#import <Twitter/Twitter.h>
 
 @interface JARightViewController ()
 
@@ -52,13 +54,66 @@
      forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"Log Out" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    UIFont *museoButtonFont = [UIFont fontWithName:@"MuseoSansRounded-500" size:18.0];
-    [button setFont:museoButtonFont];
+    [button setFont:TWIZ_FONT_500_22];
     button.frame = CGRectMake(90.0, 287.0, 200.0, 40.0);
     [[button layer] setCornerRadius:5.0f];
     [[button layer] setBorderWidth:1.0f];
     [[button layer] setBorderColor:[UIColor whiteColor].CGColor];
     [self.view addSubview:button];
+    
+    // tweet button
+    UIButton *tweetButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [tweetButton addTarget:self
+               action:@selector(sendTweet)
+     forControlEvents:UIControlEventTouchUpInside];
+    [tweetButton setTitle:@"Send Tweet" forState:UIControlStateNormal];
+    [tweetButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [tweetButton setFont:TWIZ_FONT_500_22];
+    tweetButton.frame = CGRectMake(90.0, 227.0, 200.0, 40.0);
+    [[tweetButton layer] setCornerRadius:5.0f];
+    [[tweetButton layer] setBorderWidth:1.0f];
+    [[tweetButton layer] setBorderColor:[UIColor whiteColor].CGColor];
+    [self.view addSubview:tweetButton];
+
+}
+
+-(void)sendTweet{
+    
+    SLComposeViewController *vc = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+    
+    // Settin The Initial Text
+    [vc setInitialText:@"This tweet was sent using the new Twitter framework available in iOS 5."];
+    
+    // Adding an Image
+    UIImage *image = [UIImage imageNamed:@"sample.jpg"];
+    [vc addImage:image];
+    
+    // Adding a URL
+    NSURL *url = [NSURL URLWithString:@"http://mobile.tutsplus.com"];
+    [vc addURL:url];
+    
+    [self presentViewController:vc animated:YES completion:nil];
+    
+    // Setting a Completing Handler
+    [vc setCompletionHandler:^(TWTweetComposeViewControllerResult result) {
+        
+        [self dismissModalViewControllerAnimated:YES];
+    }];
+ /*
+    // Display Tweet Compose View Controller Modally
+    [self presentViewController:vc animated:YES completion:nil];
+    
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
+        // Initialize Tweet Compose View Controller
+
+        
+    } else {
+        // Show Alert View When The Application Cannot Send Tweets
+        NSString *message = @"The application cannot send a tweet at the moment. This is because it cannot reach Twitter or you don't have a Twitter account associated with this device.";
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:message delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        [alertView show];
+    }
+  */
 }
 
 - (void)twitterLogOut{

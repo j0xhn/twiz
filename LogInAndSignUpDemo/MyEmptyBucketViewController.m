@@ -6,6 +6,7 @@
 //
 //
 
+#import "MyTwitterController.h"
 #import "MyEmptyBucketViewController.h"
 #import "MyConstants.h"
 
@@ -70,6 +71,9 @@
 
 - (void)reloadTweets{
     NSLog(@"You wanna reload");
+    [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning

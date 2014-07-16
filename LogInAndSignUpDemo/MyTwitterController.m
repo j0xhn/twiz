@@ -40,6 +40,9 @@
 
 - (id) init{
     self.InitialLoadState = YES;
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:tweetBucketDictionaryKey]) {
+        self.tweetBucketDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:tweetBucketDictionaryKey];
+    }
     return self;
 }
 
@@ -49,7 +52,7 @@
     
     if ([self.tweetBucketDictionary count] == 10) {
         NSLog(@"ALERT - low on tweets");
-        [self loadTweetBucketDictionary];
+        [self loadTweetBucketDictionaryWithCompletion:nil];
     }
     
     if ([self.tweetBucketDictionary count] == 0) { // presents empty bucket view controller
@@ -76,12 +79,13 @@
     self.lastTweetID = [firstTweetFromBucket objectForKey:tweetIDKey];
     
     [self.tweetBucketDictionary removeObjectForKey:firstTweetObjectKey]; // delete it from tweetBucketDictionary
+//    [[NSUserDefaults standardUserDefaults] setObject:self.tweetBucketDictionary forKey:tweetBucketDictionaryKey]; // save it for when they exit
     
     return activeTweet;
  
 }
 
-- (void) loadTweetBucketDictionary{ //requests timeline in the background
+- (void) loadTweetBucketDictionaryWithCompletion:(void (^)(bool success))block{ //requests timeline in the background
     //Q:1 analytics not working...?
     [[SEGAnalytics sharedAnalytics] track:@"Signed Up"
                                properties:@{ @"plan": @"Enterprise" }]; //tracks bucket requests
@@ -107,8 +111,11 @@
      {
          if (error) { // error for when you exeed your limit
              NSLog(@"error %@", error);
+             if (block) { // if passes "nil" then this ensures it doesn't throw an error
+                 block(NO);
+             }
          }
-         if ([data length] >0 && error == nil)
+         else if ([data length] >0)
          {
              NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:&error];
  
@@ -163,11 +170,17 @@
                  self.InitialLoadState = NO; // turns off auto ask
              }
              NSLog(@"tweet bucket finished Loading");
+             if (block) { // if passes "nil" then this ensures it doesn't throw an error
+                 block(YES);
+             }
              
          }
          else if ([data length] == 0 && error == nil)
          {
              NSLog(@"Nothing was downloaded.");
+             if (block) { // if passes "nil" then this ensures it doesn't throw an error
+                 block(NO);
+             }
          }
          else if (error != nil){
              UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -177,6 +190,9 @@
                                                             otherButtonTitles:nil];
              [errorAlertView show];
              NSLog(@"Error = %@", error);
+             if (block) { // if passes "nil" then this ensures it doesn't throw an error
+                 block(NO);
+             }
          }
      }];
 }

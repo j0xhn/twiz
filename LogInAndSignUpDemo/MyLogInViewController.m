@@ -126,7 +126,7 @@
 }
 - (void)loadTweets
 {
-    [[MyTwitterController sharedInstance] loadTweetBucketDictionary];
+    [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:nil];
 }
 
 - (void)viewDidLayoutSubviews {
