@@ -71,8 +71,26 @@
 
 - (void)reloadTweets{
     NSLog(@"You wanna reload");
-    [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:nil];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:^(bool success) {
+        if (success) { // on success
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter]
+                 postNotificationName:@"resetActiveTweetNotification"
+                 object:nil];
+            });
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } else { // on error
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Not Quite Yet"
+                                                              message:@"Looks like you're twitter feed still hasn't refreashed.  Try back again in 30 minutes."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
+            
+            [message show];
+        }
+        
+    }];
+    
     
 }
 

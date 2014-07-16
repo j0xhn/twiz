@@ -73,7 +73,11 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Handle an interruption during the authorization flow, such as the user clicking the home button.
+    //
+    NSLog(@"Became active, will refresh active tweet");
+    
+    
+    // Handle an interruption during the authorization flow, such as the user clicking the home button // don't need
     [FBSession.activeSession handleDidBecomeActive];
 }
 

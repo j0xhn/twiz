@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C36E1D5450C34892BD7174C7"
+               BlueprintIdentifier = "26F1926EB6D845D7A2E026E9"
                BuildableName = "libPods-twiz-Reachability.a"
                BlueprintName = "Pods-twiz-Reachability"
                ReferencedContainer = "container:Pods.xcodeproj">

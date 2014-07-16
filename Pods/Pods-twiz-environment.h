@@ -10,25 +10,25 @@
 #define COCOAPODS_POD_AVAILABLE_Analytics_Core_iOS
 #define COCOAPODS_VERSION_MAJOR_Analytics_Core_iOS 1
 #define COCOAPODS_VERSION_MINOR_Analytics_Core_iOS 3
-#define COCOAPODS_VERSION_PATCH_Analytics_Core_iOS 1
+#define COCOAPODS_VERSION_PATCH_Analytics_Core_iOS 3
 
 // Analytics/Flurry
 #define COCOAPODS_POD_AVAILABLE_Analytics_Flurry
 #define COCOAPODS_VERSION_MAJOR_Analytics_Flurry 1
 #define COCOAPODS_VERSION_MINOR_Analytics_Flurry 3
-#define COCOAPODS_VERSION_PATCH_Analytics_Flurry 1
+#define COCOAPODS_VERSION_PATCH_Analytics_Flurry 3
 
 // Analytics/GoogleAnalytics
 #define COCOAPODS_POD_AVAILABLE_Analytics_GoogleAnalytics
 #define COCOAPODS_VERSION_MAJOR_Analytics_GoogleAnalytics 1
 #define COCOAPODS_VERSION_MINOR_Analytics_GoogleAnalytics 3
-#define COCOAPODS_VERSION_PATCH_Analytics_GoogleAnalytics 1
+#define COCOAPODS_VERSION_PATCH_Analytics_GoogleAnalytics 3
 
 // Analytics/Segmentio
 #define COCOAPODS_POD_AVAILABLE_Analytics_Segmentio
 #define COCOAPODS_VERSION_MAJOR_Analytics_Segmentio 1
 #define COCOAPODS_VERSION_MINOR_Analytics_Segmentio 3
-#define COCOAPODS_VERSION_PATCH_Analytics_Segmentio 1
+#define COCOAPODS_VERSION_PATCH_Analytics_Segmentio 3
 
 // FlurrySDK
 #define COCOAPODS_POD_AVAILABLE_FlurrySDK
@@ -53,4 +53,10 @@
 #define COCOAPODS_VERSION_MAJOR_Reachability 3
 #define COCOAPODS_VERSION_MINOR_Reachability 1
 #define COCOAPODS_VERSION_PATCH_Reachability 1
+
+// SVProgressHUD
+#define COCOAPODS_POD_AVAILABLE_SVProgressHUD
+#define COCOAPODS_VERSION_MAJOR_SVProgressHUD 1
+#define COCOAPODS_VERSION_MINOR_SVProgressHUD 0
+#define COCOAPODS_VERSION_PATCH_SVProgressHUD 0
 

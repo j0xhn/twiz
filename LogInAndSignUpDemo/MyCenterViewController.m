@@ -58,7 +58,7 @@
     
     MyEmptyBucketViewController *emptyBucketViewController = [[MyEmptyBucketViewController alloc] init];
     emptyBucketViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:emptyBucketViewController animated:YES completion:NULL]; // Present Log In View Controller
+    [self presentViewController:emptyBucketViewController animated:YES completion:nil]; // Present Log In View Controller
 
     
 }
@@ -80,7 +80,7 @@
     // creates listener for the first time your tweetBucket is finished loading
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(resetActiveTweet)
-                                                 name:@"tweetBucketFinishedLoadingFirstTimeNotification"
+                                                 name:@"resetActiveTweetNotification"
                                                object:nil];
     
 

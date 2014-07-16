@@ -162,7 +162,7 @@
                  
                  dispatch_async(dispatch_get_main_queue(), ^{
                      [[NSNotificationCenter defaultCenter]
-                      postNotificationName:@"tweetBucketFinishedLoadingFirstTimeNotification"
+                      postNotificationName:@"resetActiveTweetNotification"
                       object:nil];
                  });
                  // notification comes AFTER tweetBucketDictionary has been made so central view controller can ask for active tweet

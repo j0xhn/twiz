@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LogInAndSignUpDemo/MyTwitterController.m"
-            timestampString = "427166759.232086"
+            timestampString = "427169849.077992"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
             landmarkName = "-loadTweetBucketDictionaryWithCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LogInAndSignUpDemo/MyEmptyBucketViewController.m"
-            timestampString = "427167522.556313"
+            filePath = "LogInAndSignUpDemo/MyTwitterController.m"
+            timestampString = "427169986.076692"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "-reloadTweets"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "-requestActiveTweet"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
