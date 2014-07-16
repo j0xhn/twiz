@@ -13,6 +13,8 @@
 #import "MyActiveTweet.h"
 #import "MyConstants.h"
 #import "MyEmptyBucketViewController.h"
+#import <SVProgressHUD/SVProgressHUD.h>
+
 
 #import "MyTwitterController.h"
 
@@ -53,8 +55,9 @@
 }
 
 -(void) ranOutOfTweets{
-    
+    // removes views so that they don't overlap upon reload
     [self.mainView removeFromSuperview];
+    [self.scoreLabel removeFromSuperview];
     
     MyEmptyBucketViewController *emptyBucketViewController = [[MyEmptyBucketViewController alloc] init];
     emptyBucketViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -106,7 +109,7 @@
         [self.navigationController.navigationBar addSubview:self.scoreLabel];
         
 #pragma mark - Bottom Buttons
-        
+/*
         // request button
         UIButton *requestBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         requestBtn.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
@@ -130,6 +133,32 @@
         [[refreshBtn layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
         [refreshBtn addTarget:self action:@selector(loadTweets) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:refreshBtn];
+*/        
+        
+        
+        UIView *loadingView = [[UIView alloc]initWithFrame:CGRectMake((SCREEN_HORIZONTAL - 200)/2, (SCREEN_VERTICAL - 200)/2, 200, 100)];
+        
+        UILabel *loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, 200, 100)];
+        loadingLabel.textAlignment = NSTextAlignmentCenter;
+        loadingLabel.text = @"Loading Tweets";
+        loadingLabel.font = TWIZ_FONT_300_22;
+        loadingLabel.textColor = [UIColor whiteColor];
+
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        spinner.center = CGPointMake(CGRectGetMidX(loadingView.bounds), CGRectGetMidY(loadingView.bounds));
+        [spinner startAnimating];
+        
+        [loadingView addSubview:spinner];
+        [loadingView addSubview:loadingLabel];
+
+        [self.view addSubview:loadingView];
+        
+        [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:^(bool success) {
+                [spinner stopAnimating];
+                [loadingView removeFromSuperview];
+            }];
+ 
+        
 
     }
 }

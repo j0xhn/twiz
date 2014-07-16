@@ -13,6 +13,9 @@
 #define TWIZ_FONT_300_30 [UIFont fontWithName:@"MuseoSansRounded-300" size:30.0]
 #define TWIZ_FONT_300_22 [UIFont fontWithName:@"MuseoSansRounded-300" size:22.0]
 
+#define SCREEN_HORIZONTAL self.view.bounds.size.width
+#define SCREEN_VERTICAL self.view.bounds.size.height
+
 static NSString const * tweetBucketDictionaryKey = @"tweetBucketDictionaryKey";
 
 static NSString const * tweetIDKey = @"tweetID";
