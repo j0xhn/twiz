@@ -79,18 +79,6 @@
     
     return activeTweet;
  
-    
-/*  ignore - for working in off-line mode
-    MyActiveTweet *activeTweet = [MyActiveTweet new];
-    activeTweet.tweet = @{tweetTextKey:@"testing tweet text 1",
-                      tweetAuthorIDKey:@"authorid123456",
-                            tweetIDKey:@"tweetid123456"};
-    activeTweet.possibleAnswers = @[@{possibleAnswerAuthorKey:@"1@johnDANGRstorey", possibleAnswerPhotoKey:@"1singleTweetAuthorPhotoURL"},
-                                    @{possibleAnswerAuthorKey:@"2@randomTweetGuy", possibleAnswerPhotoKey:@"2singleTweetAuthorPhotoURL"},
-                                    @{possibleAnswerAuthorKey:@"3@brainpicker", possibleAnswerPhotoKey:@"3singleTweetAuthorPhotoURL"},
-                                    @{possibleAnswerAuthorKey:@"4@justinBieber", possibleAnswerPhotoKey:@"4singleTweetAuthorPhotoURL"},];
-    return activeTweet;
-*/
 }
 
 - (void) loadTweetBucketDictionary{ //requests timeline in the background
