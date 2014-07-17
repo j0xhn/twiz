@@ -21,9 +21,12 @@
 @property (strong,nonatomic) NSDictionary *correctAnswer;
 @property (strong, nonatomic) NSString *currentUser;
 @property (strong,nonatomic) NSNumber *lastTweetID;
+@property (assign,nonatomic) int userScore;
 @property (strong, nonatomic) MyActiveTweet *activeTweet;
 
 @property (assign,nonatomic) BOOL InitialLoadState;
+
+@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskId; // for saving in background functionality - gives about 10 minutes
 
 @end
 
@@ -39,6 +42,10 @@
 }
 
 - (id) init{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setCurrentUser)
+                                                 name:@"AppDidBecomeActiveNotification"
+                                               object:nil];
     self.InitialLoadState = YES;
     if ([[NSUserDefaults standardUserDefaults] objectForKey:tweetBucketDictionaryKey]) {
         self.tweetBucketDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:tweetBucketDictionaryKey];
@@ -50,8 +57,12 @@
 
 - (MyActiveTweet *)requestActiveTweet {
     
-    if ([self.tweetBucketDictionary count] == 10) {
-        NSLog(@"ALERT - low on tweets");
+    if ([self.tweetBucketDictionary count] == 10) { // for slow connections, this give more time for tweets to load
+        NSLog(@"ALERT - 10 tweets left");
+        [self loadTweetBucketDictionaryWithCompletion:nil];
+    }
+    if ([self.tweetBucketDictionary count] == 2) { // for fast connections
+        NSLog(@"ALERT - 2 tweets left");
         [self loadTweetBucketDictionaryWithCompletion:nil];
     }
     
@@ -166,7 +177,6 @@
                       object:nil];
                  });
                  // notification comes AFTER tweetBucketDictionary has been made so central view controller can ask for active tweet
-
                  self.InitialLoadState = NO; // turns off auto ask
              }
              NSLog(@"tweet bucket finished Loading");
@@ -251,14 +261,54 @@
     
     return activePossibleAnswers;
 }
-
-- (void) setCurrentUserScreenName:(NSString *)userName{
-    self.currentUser = userName;
-    [[NSUserDefaults standardUserDefaults] setObject:userName forKey:currentUserKey];
+- (NSNumber *) requestInitialScore{
+    NSNumber *initialScore = [NSNumber numberWithInteger:self.userScore];
+    return initialScore;
+}
+- (void) setCurrentUser{
+    PFUser *currentUser = [PFUser currentUser];
+    self.userScore = [currentUser[@"userScore"] integerValue];
+    self.lastTweetID = currentUser[@"lastTweetID"];
+    self.currentUser = currentUser[@"username"];
+    
 }
 
-- (NSInteger *) incrementScore:(NSInteger *)oldScore{
-    NSInteger *newScore = oldScore + 10;
+-(void) saveUserInfo {
+    PFUser *currentUser = [PFUser currentUser];
+    if (currentUser) {
+        NSLog(@"current User: %@", currentUser);
+        [currentUser setObject:self.lastTweetID forKey:@"lastTweetID"];
+        NSNumber *scoreForStore = [NSNumber numberWithInt:self.userScore]; // converts int for storage
+        [currentUser setObject:scoreForStore forKey:@"userScore"];
+        self.backgroundTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskId];
+        }];
+        
+        [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                NSLog(@"Hooray! Saved to Parse!");
+            }
+            if (error) {
+                NSLog(@"Ooops, we got this error: %@", error);
+            }
+
+            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskId];
+        }];
+        
+    } else {
+        // show the signup or login screen
+        NSLog(@"ERROR: NO CURRENT USER");
+    }
+}
+
+- (void) loadValuesFromParse {
+    
+}
+
+- (NSNumber *) incrementScoreWithNumber:(NSNumber *)number{
+    NSLog(@"Change Score score by %ld", (long) [number intValue]);
+    self.userScore = self.userScore + [number intValue];
+    NSNumber *newScore = [NSNumber numberWithInt:self.userScore];
     return newScore;
 }
 

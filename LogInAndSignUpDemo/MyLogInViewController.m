@@ -104,7 +104,7 @@
             [user saveInBackground];
             [PFUser currentUser];
             NSLog(@"username:%@", user.username);
-            [[MyTwitterController sharedInstance] setCurrentUserScreenName:user.username];
+            [[MyTwitterController sharedInstance] setCurrentUser];
             [self dismissViewControllerAnimated:YES completion:NULL];
             // Q:2 doesn't refresh the view upon login
             
@@ -112,8 +112,7 @@
             
             NSLog(@"signin Sucessfull");
             NSLog(@"username:%@", user.username);
-            [[MyTwitterController sharedInstance] setCurrentUserScreenName:user.username];
-//            [[MyTwitterController sharedInstance] requestTweetBucketDictionary];
+            [[MyTwitterController sharedInstance] setCurrentUser];
             [self dismissViewControllerAnimated:YES completion:NULL];
             // Q:2 doesn't refresh the view upon login
 

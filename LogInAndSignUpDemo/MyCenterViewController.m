@@ -85,6 +85,11 @@
                                              selector:@selector(resetActiveTweet)
                                                  name:@"resetActiveTweetNotification"
                                                object:nil];
+    // creates listener for App closing to save info
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(saveUserInfo)
+                                                 name:@"saveUserInfoNotification"
+                                               object:nil];
     
 
     // Check if user is logged in - commented out during offline development
@@ -93,20 +98,10 @@
         MyLogInViewController *logInViewController = [[MyLogInViewController alloc] init];
         logInViewController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
         logInViewController.delegate = self;
-        logInViewController.fields =   PFLogInFieldsTwitter;
+        logInViewController.fields = PFLogInFieldsTwitter;
         // Present Log In View Controller
         [self presentViewController:logInViewController animated:YES completion:NULL];
     } else {
-
-        // makes score button
-        UILabel *scoreLabel = [[UILabel alloc]initWithFrame:CGRectMake(20,6,55,32)];
-        NSInteger scoreInt = 0;
-        scoreLabel.text = [NSString stringWithFormat: @"%d", (int)scoreInt];
-        scoreLabel.textColor = [UIColor whiteColor];
-        scoreLabel.font = TWIZ_FONT_500_18;
-        self.scoreInt = scoreInt;
-        self.scoreLabel = scoreLabel;
-        [self.navigationController.navigationBar addSubview:self.scoreLabel];
         
 #pragma mark - Bottom Buttons
 /*
@@ -121,26 +116,13 @@
         [[requestBtn layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
         [requestBtn addTarget:self action:@selector(ranOutOfTweets) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:requestBtn];
-        
-        // refresh button
-        UIButton *refreshBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        refreshBtn.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-        [refreshBtn setTitle:@"Refresh Bucket" forState:UIControlStateNormal];
-        [refreshBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        refreshBtn.titleLabel.font = TWIZ_FONT_500_18;
-        refreshBtn.frame = CGRectMake(10.0, self.view.bounds.size.height - 30.0f, self.view.bounds.size.width - 20.0f, 20.0);
-        [[refreshBtn layer] setCornerRadius:3.0f];
-        [[refreshBtn layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
-        [refreshBtn addTarget:self action:@selector(loadTweets) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:refreshBtn];
 */
-        
         
         UIView *loadingView = [[UIView alloc]initWithFrame:CGRectMake((SCREEN_HORIZONTAL - 200)/2, (SCREEN_VERTICAL - 200)/2, 200, 100)];
         
-        UILabel *loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, 200, 100)];
+        UILabel *loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, 200, 100)];
         loadingLabel.textAlignment = NSTextAlignmentCenter;
-        loadingLabel.text = @"Loading Tweets";
+        loadingLabel.text = @"Creating Quiz";
         loadingLabel.font = TWIZ_FONT_300_22;
         loadingLabel.textColor = [UIColor whiteColor];
 
@@ -165,7 +147,9 @@
 
 - (void) refreshView{
     self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[MyCenterViewController alloc] init]];
-    [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:nil];
+    [self performSelector:@selector(resetActiveTweet)
+               withObject:nil
+               afterDelay:0.5];
 }
 
 - (void)loadTweets
@@ -181,19 +165,19 @@
     
     if([selectedAuthorID isEqualToString:correctAuthorID]){
         NSLog(@"%@ is equal to %@", selectedAuthorID, correctAuthorID );
-        NSInteger oldScore = [self.scoreLabel.text intValue];
-        self.scoreInt = oldScore + 10;
+        NSNumber *number = [NSNumber numberWithInt:5];
+        self.scoreInt = [[[MyTwitterController sharedInstance] incrementScoreWithNumber:number] intValue];
         self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
+        [sender setBackgroundColor:[UIColor greenColor]];
         UILabel *floatScore = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 50, 50)];
         floatScore.backgroundColor = [UIColor whiteColor];
         
     } else {
         NSLog(@"%@ is not equal to %@", selectedAuthorID, correctAuthorID );
-        NSInteger oldScore = [self.scoreLabel.text intValue];
-        self.scoreInt = oldScore - 1;
+        NSNumber *number = [NSNumber numberWithInt:-1];
+        self.scoreInt = [[[MyTwitterController sharedInstance] incrementScoreWithNumber:number] intValue];
         self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
     }
-    [self.mainView removeFromSuperview]; // clears old tweet
     [self resetActiveTweet]; // loads new tweet
 }
 
@@ -205,9 +189,20 @@
 
 - (void)resetActiveTweet
 {
-    
+    [self.mainView removeFromSuperview]; // clears old tweet
+    [self.scoreLabel removeFromSuperview]; //clears old score
     self.activeTweet = [[MyTwitterController sharedInstance] requestActiveTweet];
     self.mainView = [[UIView alloc] initWithFrame:self.view.bounds]; // overall view to remove after answer has been selected
+    
+    // gets correct score
+    UILabel *scoreLabel = [[UILabel alloc]initWithFrame:CGRectMake(20,6,55,32)];
+    NSNumber *userScore = [[MyTwitterController sharedInstance] requestInitialScore];
+    scoreLabel.text = [userScore stringValue];
+    scoreLabel.textColor = [UIColor whiteColor];
+    scoreLabel.font = TWIZ_FONT_500_18;
+    self.scoreLabel = scoreLabel;
+    [self.mainView addSubview:self.scoreLabel];
+    [self.navigationController.navigationBar addSubview:self.scoreLabel];
     
     // Redraws tweet and possible answers
     self.tweetLabel = [[UITextView alloc]initWithFrame:CGRectMake(10.0, 10.0f, self.view.bounds.size.width - 20.0f, 180.0)];
@@ -301,6 +296,18 @@
     
     self.possibleAnswer4.tag = [[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:possibleAnswerAuthorKey];
     
+    // skip button
+    UIButton *refreshBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    refreshBtn.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    [refreshBtn setTitle:@"Skip" forState:UIControlStateNormal];
+    [refreshBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    refreshBtn.titleLabel.font = TWIZ_FONT_300_30;
+    refreshBtn.frame = CGRectMake(10.0, self.view.bounds.size.height - 60.0f, self.view.bounds.size.width - 20.0f, 50.0);
+    [[refreshBtn layer] setCornerRadius:3.0f];
+    [[refreshBtn layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
+    [refreshBtn addTarget:self action:@selector(resetActiveTweet) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.mainView addSubview:refreshBtn];
     
     [self.mainView addSubview:self.possibleAnswer1]; // adds each answer to the mainView
     [self.mainView addSubview:self.possibleAnswer2];
@@ -308,6 +315,12 @@
     [self.mainView addSubview:self.possibleAnswer4];
     
     [self.view addSubview:self.mainView]; // adds mainView to superview so that it can be dismissed yet still keep background
+
+}
+
+- (void) saveUserInfo{
+    
+    [[MyTwitterController sharedInstance] saveUserInfo];
 
 }
 

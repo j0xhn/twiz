@@ -20,11 +20,13 @@
 + (MyTwitterController *)sharedInstance;
 @property (nonatomic, weak) id <MyTwitterDelegate> delegate;
 
+- (NSNumber *) requestInitialScore;
 - (NSDictionary *) requestActiveTweet;
 - (void) loadTweetBucketDictionaryWithCompletion:(void (^)(bool success))block;
-- (NSInteger *) incrementScore:(NSInteger *)number;
+- (NSNumber *) incrementScoreWithNumber:(NSNumber *)number;
+- (void) saveUserInfo;
 
-- (void) setCurrentUserScreenName:(NSString *)userName;
+- (void) setCurrentUser;
 - (void) checkAnswer:(NSString *)selectedAuthorID;
 
 @end

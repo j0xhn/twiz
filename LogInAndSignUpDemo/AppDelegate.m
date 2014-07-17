@@ -72,10 +72,20 @@
     return [PFFacebookUtils handleOpenURL:url];
 }
 
+- (void)applicationDidEnterBackground:(UIApplication *)application{
+    NSLog(@"App Entered Background, send notification to store values");
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"saveUserInfoNotification"
+     object:nil];
+    
+}
+
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     //
-    NSLog(@"Became active, will refresh active tweet");
-    
+    NSLog(@"Became active");
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"resetActiveTweetNotification"
+     object:nil];
     
     // Handle an interruption during the authorization flow, such as the user clicking the home button // don't need
     [FBSession.activeSession handleDidBecomeActive];
