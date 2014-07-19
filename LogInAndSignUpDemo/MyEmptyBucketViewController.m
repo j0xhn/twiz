@@ -79,6 +79,7 @@
                  object:nil];
             });
             [self dismissViewControllerAnimated:YES completion:nil];
+            // Q:2 Not a question, just a note to look into this section to find smoother ways of presenting view controller, with myEmptyTweetBucket controller as well
         } else { // on error
             UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Not Quite Yet"
                                                               message:@"Looks like you're twitter feed still hasn't refreashed.  Try back again in 30 minutes."

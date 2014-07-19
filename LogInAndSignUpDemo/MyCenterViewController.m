@@ -90,6 +90,11 @@
                                              selector:@selector(saveUserInfo)
                                                  name:@"saveUserInfoNotification"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshView)
+                                                 name:@"logOutTweetNotification"
+                                               object:nil];
+    
     
 
     // Check if user is logged in - commented out during offline development
@@ -102,21 +107,25 @@
         // Present Log In View Controller
         [self presentViewController:logInViewController animated:YES completion:NULL];
     } else {
+        [[PFUser currentUser] refresh];
+        [[MyTwitterController sharedInstance] setCurrentUser];
+        // sets image and initial score
+        UIImage *currentUserImage = [[MyTwitterController sharedInstance] requestUserImage];
+        UIImageView *userImageView = [[UIImageView alloc] initWithImage:currentUserImage];
+        [userImageView setFrame:CGRectMake(10,8,25,25)];
+        userImageView.layer.cornerRadius = userImageView.frame.size.width / 2;
+        userImageView.layer.masksToBounds = YES;
+        [self.navigationController.navigationBar addSubview:userImageView];
+        
+        self.scoreLabel = [[UILabel alloc]initWithFrame:CGRectMake(40,6,55,32)];
+        NSNumber *userScore = [[MyTwitterController sharedInstance] requestInitialScore];
+        self.scoreLabel.text = [userScore stringValue];
+        self.scoreLabel.textColor = [UIColor whiteColor];
+        self.scoreLabel.font = TWIZ_FONT_500_18;
+        [self.mainView addSubview:self.scoreLabel];
+        [self.navigationController.navigationBar addSubview:self.scoreLabel];
         
 #pragma mark - Bottom Buttons
-/*
-        // request button
-        UIButton *requestBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        requestBtn.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-        [requestBtn setTitle:@"Luanch Empty Bucket View" forState:UIControlStateNormal];
-        [requestBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        requestBtn.titleLabel.font = TWIZ_FONT_500_18;
-        requestBtn.frame = CGRectMake(10.0, self.view.bounds.size.height - 60.0f, self.view.bounds.size.width - 20.0f, 20.0);
-        [[requestBtn layer] setCornerRadius:3.0f];
-        [[requestBtn layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
-        [requestBtn addTarget:self action:@selector(ranOutOfTweets) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:requestBtn];
-*/
         
         UIView *loadingView = [[UIView alloc]initWithFrame:CGRectMake((SCREEN_HORIZONTAL - 200)/2, (SCREEN_VERTICAL - 200)/2, 200, 100)];
         
@@ -138,18 +147,15 @@
         [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:^(bool success) {
                 [spinner stopAnimating];
                 [loadingView removeFromSuperview];
+                dispatch_async(dispatch_get_main_queue(), ^{ // fixes errors it throws that are UI related when reseting Tweet
+                    [self resetActiveTweet]; // added because sometimes upon login it wouldn't load tweet
+                });
             }];
- 
-        
-
     }
 }
 
 - (void) refreshView{
     self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[MyCenterViewController alloc] init]];
-    [self performSelector:@selector(resetActiveTweet)
-               withObject:nil
-               afterDelay:0.5];
 }
 
 - (void)loadTweets
@@ -190,37 +196,26 @@
 - (void)resetActiveTweet
 {
     [self.mainView removeFromSuperview]; // clears old tweet
-    [self.scoreLabel removeFromSuperview]; //clears old score
     self.activeTweet = [[MyTwitterController sharedInstance] requestActiveTweet];
     self.mainView = [[UIView alloc] initWithFrame:self.view.bounds]; // overall view to remove after answer has been selected
-    
-    // gets correct score
-    UILabel *scoreLabel = [[UILabel alloc]initWithFrame:CGRectMake(20,6,55,32)];
-    NSNumber *userScore = [[MyTwitterController sharedInstance] requestInitialScore];
-    scoreLabel.text = [userScore stringValue];
-    scoreLabel.textColor = [UIColor whiteColor];
-    scoreLabel.font = TWIZ_FONT_500_18;
-    self.scoreLabel = scoreLabel;
-    [self.mainView addSubview:self.scoreLabel];
-    [self.navigationController.navigationBar addSubview:self.scoreLabel];
-    
+
     // Redraws tweet and possible answers
-    self.tweetLabel = [[UITextView alloc]initWithFrame:CGRectMake(10.0, 10.0f, self.view.bounds.size.width - 20.0f, 180.0)];
+
+    self.tweetLabel = [[UITextView alloc]initWithFrame:CGRectMake(10.0, 10.0f, self.view.bounds.size.width - 20.0f, 200.0)];
     [[self.tweetLabel layer] setCornerRadius:3.0f];
     [[self.tweetLabel layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
     self.tweetLabel.textColor = [UIColor whiteColor];
     [self.tweetLabel setFont:TWIZ_FONT_500_22];
-    self.tweetLabel.textContainer.lineFragmentPadding = 15; //sets left padding
+    self.tweetLabel.textContainer.lineFragmentPadding = 15;
     self.tweetLabel.text = self.activeTweet.tweet;
     
     [self.mainView addSubview:self.tweetLabel];
-   
 
     
 #pragma mark - Possible Answers Display
     
     // Possible Answer1
-    self.possibleAnswer1 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 200.0, self.view.bounds.size.width - 20.0f, 48)];
+    self.possibleAnswer1 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 220.0, self.view.bounds.size.width - 20.0f, 48)];
     self.possibleAnswer1.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:0.2].CGColor;
     self.possibleAnswer1.layer.borderWidth = 1.0f;
     self.possibleAnswer1.layer.cornerRadius = 3.0f;
@@ -239,7 +234,7 @@
     self.possibleAnswer1.tag = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
     
     // Possible Answer2
-    self.possibleAnswer2 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 255.0, self.view.bounds.size.width - 20.0f, 48)];
+    self.possibleAnswer2 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 275.0, self.view.bounds.size.width - 20.0f, 48)];
     self.possibleAnswer2.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:0.2].CGColor;
     self.possibleAnswer2.layer.borderWidth = 1.0f;
     self.possibleAnswer2.layer.cornerRadius = 3.0f;
@@ -259,7 +254,7 @@
 
     
     // Possible Answer3
-    self.possibleAnswer3 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 310.0, self.view.bounds.size.width - 20.0f, 48)];
+    self.possibleAnswer3 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 330.0, self.view.bounds.size.width - 20.0f, 48)];
     self.possibleAnswer3.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:0.2].CGColor;
     self.possibleAnswer3.layer.borderWidth = 1.0f;
     self.possibleAnswer3.layer.cornerRadius = 3.0f;
@@ -278,7 +273,7 @@
     self.possibleAnswer3.tag = [[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerAuthorKey];
     
     // Possible Answer4
-    self.possibleAnswer4 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 365.0, self.view.bounds.size.width - 20.0f, 48)];
+    self.possibleAnswer4 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 385.0, self.view.bounds.size.width - 20.0f, 48)];
     self.possibleAnswer4.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:0.2].CGColor;
     self.possibleAnswer4.layer.borderWidth = 1.0f;
     self.possibleAnswer4.layer.cornerRadius = 3.0f;
@@ -315,6 +310,8 @@
     [self.mainView addSubview:self.possibleAnswer4];
     
     [self.view addSubview:self.mainView]; // adds mainView to superview so that it can be dismissed yet still keep background
+        
+
 
 }
 

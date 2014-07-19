@@ -82,10 +82,11 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     //
-    NSLog(@"Became active");
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"resetActiveTweetNotification"
-     object:nil];
+    NSLog(@"Became active - not currently sending any sort of notification");
+    [[PFUser currentUser] refresh];
+//    [[NSNotificationCenter defaultCenter]
+//     postNotificationName:@"resetActiveTweetNotification"
+//     object:nil];
     
     // Handle an interruption during the authorization flow, such as the user clicking the home button // don't need
     [FBSession.activeSession handleDidBecomeActive];

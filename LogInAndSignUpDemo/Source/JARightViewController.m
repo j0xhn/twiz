@@ -27,6 +27,7 @@
 #import "JARightViewController.h"
 #import "JASidePanelController.h"
 #import "MyLogInViewController.h"
+#import "MyTwitterController.h"
 #import "UIViewController+JASidePanel.h"
 #import "MyConstants.h"
 #import <Twitter/Twitter.h>
@@ -82,14 +83,14 @@
     SLComposeViewController *vc = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
     
     // Settin The Initial Text
-    [vc setInitialText:@"This tweet was sent using the new Twitter framework available in iOS 5."];
+    [vc setInitialText:@"Want to earn money for going through your twitter feed? Check out Twiz: {{link}}"];
     
     // Adding an Image
     UIImage *image = [UIImage imageNamed:@"sample.jpg"];
     [vc addImage:image];
     
     // Adding a URL
-    NSURL *url = [NSURL URLWithString:@"http://mobile.tutsplus.com"];
+    NSURL *url = [NSURL URLWithString:@"http://dev.johndangerstorey.com"];
     [vc addURL:url];
     
     [self presentViewController:vc animated:YES completion:nil];
@@ -118,12 +119,12 @@
 
 - (void)twitterLogOut{
     NSLog(@"Log Out Clicked");
-    [PFUser logOut];
+    [[MyTwitterController sharedInstance] saveUserInfo];
     MyLogInViewController *logInViewController = [[MyLogInViewController alloc] init];
     logInViewController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
     logInViewController.delegate = self;
     logInViewController.fields =   PFLogInFieldsTwitter;
-
+//    [self.sidePanelController showCenterPanelAnimated:YES];
     [self presentViewController:logInViewController animated:YES completion:NULL];
 }
 

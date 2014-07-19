@@ -69,9 +69,10 @@
 
 -(BOOL) twitterSignIn {
     NSLog(@"You Clicked Sign In");
+    [PFUser logOut];
     [PFTwitterUtils logInWithBlock:^(PFUser *user, NSError *error) {
         if (!user) {
-            NSLog(@"Uh oh. The user cancelled the Twitter login.");
+            NSLog(@"Uh oh. Login failed with error %@", error);
             return;
         } else if (user.isNew) {
             // give intro run through here, or welcome message
@@ -106,16 +107,14 @@
             NSLog(@"username:%@", user.username);
             [[MyTwitterController sharedInstance] setCurrentUser];
             [self dismissViewControllerAnimated:YES completion:NULL];
-            // Q:2 doesn't refresh the view upon login
+            // Q:2 Not a question, just a note to look into this section to find smoother ways of presenting view controller, with myEmptyTweetBucket controller as well
             
         } else {
             
             NSLog(@"signin Sucessfull");
-            NSLog(@"username:%@", user.username);
             [[MyTwitterController sharedInstance] setCurrentUser];
             [self dismissViewControllerAnimated:YES completion:NULL];
-            // Q:2 doesn't refresh the view upon login
-
+            // Q:2 Not a question, just a note to look into this section to find smoother ways of presenting view controller, with myEmptyTweetBucket controller as well
         }
         [[NSNotificationCenter defaultCenter]
          postNotificationName:@"LoginSuccessfulNotification"

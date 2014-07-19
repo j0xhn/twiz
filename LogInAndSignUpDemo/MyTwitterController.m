@@ -20,6 +20,7 @@
 @property (strong,nonatomic) NSMutableArray *mutableArrayContainingNumbers;
 @property (strong,nonatomic) NSDictionary *correctAnswer;
 @property (strong, nonatomic) NSString *currentUser;
+@property (strong, nonatomic) UIImage *currentUserImage;
 @property (strong,nonatomic) NSNumber *lastTweetID;
 @property (assign,nonatomic) int userScore;
 @property (strong, nonatomic) MyActiveTweet *activeTweet;
@@ -51,6 +52,14 @@
         self.tweetBucketDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:tweetBucketDictionaryKey];
     }
     return self;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(logOutUser)
+                                                 name:@"logOutTweetNotification"
+                                               object:nil];
+}
+
+- (void) logOutUser {
+    [PFUser logOut];
 }
 
 #pragma mark - Generate Tweet and Answers
@@ -61,7 +70,7 @@
         NSLog(@"ALERT - 10 tweets left");
         [self loadTweetBucketDictionaryWithCompletion:nil];
     }
-    if ([self.tweetBucketDictionary count] == 2) { // for fast connections
+    if ([self.tweetBucketDictionary count] == 2) { // for fast connections, but sometimes it logs this, then crashes directly after
         NSLog(@"ALERT - 2 tweets left");
         [self loadTweetBucketDictionaryWithCompletion:nil];
     }
@@ -97,7 +106,7 @@
 }
 
 - (void) loadTweetBucketDictionaryWithCompletion:(void (^)(bool success))block{ //requests timeline in the background
-    //Q:1 analytics not working...?
+    //Q:1 analytics not working... any idea why or how to debug?  Should I just switch to using raw google analytics instead?
     [[SEGAnalytics sharedAnalytics] track:@"Signed Up"
                                properties:@{ @"plan": @"Enterprise" }]; //tracks bucket requests
     NSString *bodyString = @"";
@@ -105,7 +114,7 @@
         self.currentUser = [[NSUserDefaults standardUserDefaults] objectForKey:CURRENT_USER_KEY];
     }
     if (!self.lastTweetID) {
-        bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?screen_name=%@&count=20", self.currentUser];
+        bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?screen_name=%@&count=100", self.currentUser];
     } else {
         bodyString = [NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?screen_name=%@&count=100&since_id=%@", self.currentUser, self.lastTweetID];
     }
@@ -170,13 +179,6 @@
              }
              
              if (self.InitialLoadState) {
-                 
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     [[NSNotificationCenter defaultCenter]
-                      postNotificationName:@"resetActiveTweetNotification"
-                      object:nil];
-                 });
-                 // notification comes AFTER tweetBucketDictionary has been made so central view controller can ask for active tweet
                  self.InitialLoadState = NO; // turns off auto ask
              }
              NSLog(@"tweet bucket finished Loading");
@@ -213,7 +215,7 @@
     int objectsInArray = [self.possibleAnswerBucketArray count]; // makes it so you don't get numbers higher than what is currently in there
     NSInteger randomNumber = (NSInteger) arc4random_uniform(objectsInArray); // picks between 0 and n-1
     if (self.mutableArrayContainingNumbers) {
-        if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){
+        if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){ // Q:3 snags here on initial login if the have less than 4 possible tweets to choose from in their possibleAnswerBucket Q:6 what is the best way to overcome this?  Should I have default answers to insert incase this has happened?  Or perhaps go back and save the "possibleAnswerBucketArray" from the previous session to disk and pull that instead?  Thoughts?
             [self generateRandomNumberArray]; // call the method again and get a new object
         } else {
             // end case, it doesn't contain it so you have a number you can use
@@ -265,19 +267,33 @@
     NSNumber *initialScore = [NSNumber numberWithInteger:self.userScore];
     return initialScore;
 }
+- (UIImage *) requestUserImage {
+    return self.currentUserImage;
+}
 - (void) setCurrentUser{
     PFUser *currentUser = [PFUser currentUser];
     self.userScore = [currentUser[@"userScore"] integerValue];
-    self.lastTweetID = currentUser[@"lastTweetID"];
+    // long process because parse was having an issue saving my NSNumber, so I converted it to string.  This de-converts.
+
+    NSString *numberFromStoreInString = currentUser[@"lastTweetString"];
+    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+    [f setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSNumber * lastTweetID = [f numberFromString:numberFromStoreInString];
+
+    self.lastTweetID = lastTweetID;
     self.currentUser = currentUser[@"username"];
     
+    NSURL *currentUserImageURL = [NSURL URLWithString:currentUser[@"picture"]];
+    NSData *currentUserimageData = [NSData dataWithContentsOfURL:currentUserImageURL];
+    UIImage *currentUserImage = [UIImage imageWithData:currentUserimageData];
+    self.currentUserImage = currentUserImage;
 }
 
 -(void) saveUserInfo {
     PFUser *currentUser = [PFUser currentUser];
     if (currentUser) {
-        NSLog(@"current User: %@", currentUser);
-        [currentUser setObject:self.lastTweetID forKey:@"lastTweetID"];
+        NSString *lastTweetString = [NSString stringWithFormat:@"%@", self.lastTweetID];
+        [currentUser setObject:lastTweetString forKey:@"lastTweetString"];
         NSNumber *scoreForStore = [NSNumber numberWithInt:self.userScore]; // converts int for storage
         [currentUser setObject:scoreForStore forKey:@"userScore"];
         self.backgroundTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
@@ -286,6 +302,7 @@
         
         [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
+                PFUser *currentUser = [PFUser currentUser];
                 NSLog(@"Hooray! Saved to Parse!");
             }
             if (error) {

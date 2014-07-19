@@ -21,6 +21,7 @@
 @property (nonatomic, weak) id <MyTwitterDelegate> delegate;
 
 - (NSNumber *) requestInitialScore;
+- (UIImage *) requestUserImage;
 - (NSDictionary *) requestActiveTweet;
 - (void) loadTweetBucketDictionaryWithCompletion:(void (^)(bool success))block;
 - (NSNumber *) incrementScoreWithNumber:(NSNumber *)number;
