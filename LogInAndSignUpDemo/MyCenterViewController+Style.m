@@ -18,7 +18,7 @@
     
     // Navigation Bar
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:PURPLE_BACKGROUND]];
-    self.title = @"Twiz";
+    self.title = NSLocalizedString(@"Twiz", nil);
     self.navigationController.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:49.0f/255.0f green:35.0f/255.0f blue:105.0f/255.0f alpha:1.0f];
     self.navigationController.navigationBar.translucent = NO;

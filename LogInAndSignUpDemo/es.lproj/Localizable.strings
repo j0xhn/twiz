@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  twiz
+
+  Created by John D. Storey on 7/26/14.
+
+*/
+"Skip" = "Cambia";
+"Creating Quiz" = "haciendo prueba";
+"Twiz" = "El Twízo";
+"the twitter quiz game" = "el juego de twitter";
+"Login with Twitter" = "Inicializar con Twitter";

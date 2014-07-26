@@ -31,7 +31,7 @@
     [self.logInView.twitterButton removeFromSuperview];
     
     UILabel *logoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 200, self.view.bounds.size.width, 40)];
-    logoLabel.text = @"TWIZ";
+    logoLabel.text = NSLocalizedString(@"TWIZ", nil) ;
     logoLabel.textColor = [UIColor whiteColor];
     logoLabel.textAlignment = NSTextAlignmentCenter;
     UIFont *museoTitleFont = [UIFont fontWithName:@"MuseoSansRounded-900" size:40.0];
@@ -41,7 +41,7 @@
     
     // tagline
     UILabel *taglineLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 240, self.view.bounds.size.width, 40)];
-    taglineLabel.text = @"the twitter quiz game";
+    taglineLabel.text = NSLocalizedString(@"the twitter quiz game", nil);
     taglineLabel.textColor = [UIColor whiteColor];
     taglineLabel.textAlignment = NSTextAlignmentCenter;
     
@@ -55,7 +55,7 @@
     [button addTarget:self
                action:@selector(twitterSignIn)
      forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:@"Login with Twitter" forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"Login with Twitter", nil) forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     UIFont *museoButtonFont = [UIFont fontWithName:@"MuseoSansRounded-500" size:18.0];
     [button setFont:museoButtonFont];

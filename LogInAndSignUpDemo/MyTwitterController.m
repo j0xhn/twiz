@@ -25,6 +25,8 @@
 @property (assign,nonatomic) int userScore;
 @property (strong, nonatomic) MyActiveTweet *activeTweet;
 
+@property (assign,nonatomic) NSInteger infiniteLoopCounter;
+
 @property (assign,nonatomic) BOOL InitialLoadState;
 
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskId; // for saving in background functionality - gives about 10 minutes
@@ -213,9 +215,20 @@
 
 -(void) generateRandomNumberArray {
     int objectsInArray = [self.possibleAnswerBucketArray count]; // makes it so you don't get numbers higher than what is currently in there
+    self.infiniteLoopCounter = 1;
     NSInteger randomNumber = (NSInteger) arc4random_uniform(objectsInArray); // picks between 0 and n-1
     if (self.mutableArrayContainingNumbers) {
-        if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){ // Q:3 snags here on initial login if the have less than 4 possible tweets to choose from in their possibleAnswerBucket Q:6 what is the best way to overcome this?  Should I have default answers to insert incase this has happened?  Or perhaps go back and save the "possibleAnswerBucketArray" from the previous session to disk and pull that instead?  Thoughts?
+        if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){ // Q:3
+            self.infiniteLoopCounter ++;
+            if (self.infiniteLoopCounter == 10) {
+                UIAlertView *infiniteLoopAlert = [[UIAlertView alloc]
+                                      initWithTitle:@"Whoops! Lets try this again"
+                                      message:@"Something went wrong under the hood.  Usually it's because you didn't have at least 4 new tweets to create your quiz with, so close the app and wait a couple of minutes then try again"
+                                      delegate:self
+                                      cancelButtonTitle:@"Thanks!"
+                                      otherButtonTitles:nil];
+                [infiniteLoopAlert show];
+            }
             [self generateRandomNumberArray]; // call the method again and get a new object
         } else {
             // end case, it doesn't contain it so you have a number you can use

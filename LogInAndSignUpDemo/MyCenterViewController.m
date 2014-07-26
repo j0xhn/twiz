@@ -14,6 +14,7 @@
 #import "MyConstants.h"
 #import "MyEmptyBucketViewController.h"
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "PossibleAnswerBtn.h"
 
 
 #import "MyTwitterController.h"
@@ -131,7 +132,7 @@
         
         UILabel *loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, 200, 100)];
         loadingLabel.textAlignment = NSTextAlignmentCenter;
-        loadingLabel.text = @"Creating Quiz";
+        loadingLabel.text = NSLocalizedString(@"Creating Quiz", nil) ;
         loadingLabel.font = TWIZ_FONT_300_22;
         loadingLabel.textColor = [UIColor whiteColor];
 
@@ -168,27 +169,44 @@
 - (void) answerSelected:(id)sender{
     NSString *selectedAuthorID = [(UIButton *)sender currentTitle];
     NSString *correctAuthorID = self.activeTweet.correctAnswerID;
+    UILabel *floatScore = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_HORIZONTAL/2, 30, 50, 50)];
+    UIView *correctScoreView = [[UIView alloc] initWithFrame:self.view.bounds];
+    correctScoreView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.8];
     
     if([selectedAuthorID isEqualToString:correctAuthorID]){
         NSLog(@"%@ is equal to %@", selectedAuthorID, correctAuthorID );
         NSNumber *number = [NSNumber numberWithInt:5];
         self.scoreInt = [[[MyTwitterController sharedInstance] incrementScoreWithNumber:number] intValue];
         self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
-        [sender setBackgroundColor:[UIColor greenColor]];
-        UILabel *floatScore = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 50, 50)];
-        floatScore.backgroundColor = [UIColor whiteColor];
+        floatScore.text = @"+5";
+        floatScore.textColor = [UIColor whiteColor];
         
     } else {
         NSLog(@"%@ is not equal to %@", selectedAuthorID, correctAuthorID );
         NSNumber *number = [NSNumber numberWithInt:-1];
         self.scoreInt = [[[MyTwitterController sharedInstance] incrementScoreWithNumber:number] intValue];
         self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
+        floatScore.text = @"-1";
+        floatScore.textColor = [UIColor redColor];
     }
-    [self resetActiveTweet]; // loads new tweet
+    
+    [correctScoreView addSubview:floatScore];
+    
+    UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
+    
+    [mainWindow addSubview:correctScoreView];
+    [UIView animateWithDuration:1 delay:.5 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [floatScore setCenter:CGPointMake(5, 5)];
+    } completion:^(BOOL finished) {
+        [correctScoreView removeFromSuperview];
+        [self resetActiveTweet]; // loads new tweet
+    }];
+    
+   
 }
 
 -(void)buttonHighlight:(id)sender{
-    NSLog(@"button should highlight");
+
     [sender setBackgroundColor:[UIColor whiteColor]];
     
 }
@@ -215,23 +233,14 @@
 #pragma mark - Possible Answers Display
     
     // Possible Answer1
-    self.possibleAnswer1 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 220.0, self.view.bounds.size.width - 20.0f, 48)];
-    self.possibleAnswer1.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:0.2].CGColor;
-    self.possibleAnswer1.layer.borderWidth = 1.0f;
-    self.possibleAnswer1.layer.cornerRadius = 3.0f;
-    [self.possibleAnswer1 setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [self.possibleAnswer1 setTitleEdgeInsets:UIEdgeInsetsMake(0, 50.0f, 0.0f, 0.0f)];
-    [self.possibleAnswer1 addTarget:self action:@selector(buttonHighlight:) forControlEvents:UIControlEventTouchDown];
-    [self.possibleAnswer1 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
-    [self.possibleAnswer1 setFont:TWIZ_FONT_300_22];
-    self.authorImageView1 = [[UIImageView alloc] initWithImage:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerPhotoKey]];
-    [self.authorImageView1 setFrame:CGRectMake(9, 9, 30, 30)];
-    self.authorImageView1.contentMode = UIViewContentModeScaleAspectFill;
-
-    [self.possibleAnswer1 addSubview:self.authorImageView1];
-    [self.possibleAnswer1 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
- 
-    self.possibleAnswer1.tag = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
+    PossibleAnswerBtn *possibleAnswer1 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 220.0, self.view.bounds.size.width - 20.0f, 48)];
+    [possibleAnswer1 addTarget:self action:@selector(buttonHighlight:) forControlEvents:UIControlEventTouchDown];
+    [possibleAnswer1 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
+    possibleAnswer1.possibleAnswerImage.image = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerPhotoKey];
+    [possibleAnswer1 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
+    possibleAnswer1.tag = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
+    
+    
     
     // Possible Answer2
     self.possibleAnswer2 = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 275.0, self.view.bounds.size.width - 20.0f, 48)];
@@ -294,7 +303,7 @@
     // skip button
     UIButton *refreshBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     refreshBtn.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    [refreshBtn setTitle:@"Skip" forState:UIControlStateNormal];
+    [refreshBtn setTitle:NSLocalizedString(@"Skip", nil) forState:UIControlStateNormal];
     [refreshBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     refreshBtn.titleLabel.font = TWIZ_FONT_300_30;
     refreshBtn.frame = CGRectMake(10.0, self.view.bounds.size.height - 60.0f, self.view.bounds.size.width - 20.0f, 50.0);
@@ -304,7 +313,7 @@
     
     [self.mainView addSubview:refreshBtn];
     
-    [self.mainView addSubview:self.possibleAnswer1]; // adds each answer to the mainView
+    [self.mainView addSubview:possibleAnswer1]; // adds each answer to the mainView
     [self.mainView addSubview:self.possibleAnswer2];
     [self.mainView addSubview:self.possibleAnswer3];
     [self.mainView addSubview:self.possibleAnswer4];

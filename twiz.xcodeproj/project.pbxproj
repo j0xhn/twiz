@@ -59,6 +59,8 @@
 		F5DAC7A119514DBC00CBE038 /* MyActiveTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAC7A019514DBC00CBE038 /* MyActiveTweet.m */; };
 		F5DAC7A519514E0900CBE038 /* MyConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAC7A419514E0900CBE038 /* MyConstants.m */; };
 		F5DAC8A2195A25AE00CBE038 /* johnD.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = F5DAC8A1195A25AE00CBE038 /* johnD.jpeg */; };
+		F5FEB2CA1984055C004ED145 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5FEB2CC1984055C004ED145 /* Localizable.strings */; };
+		F5FEB2D019841864004ED145 /* PossibleAnswerBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FEB2CF19841864004ED145 /* PossibleAnswerBtn.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -132,6 +134,11 @@
 		F5DAC7A319514E0900CBE038 /* MyConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyConstants.h; sourceTree = "<group>"; };
 		F5DAC7A419514E0900CBE038 /* MyConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyConstants.m; sourceTree = "<group>"; };
 		F5DAC8A1195A25AE00CBE038 /* johnD.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = johnD.jpeg; sourceTree = "<group>"; };
+		F5FEB2C7198404B8004ED145 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F5FEB2CB1984055C004ED145 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F5FEB2CD1984056A004ED145 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F5FEB2CE19841864004ED145 /* PossibleAnswerBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PossibleAnswerBtn.h; sourceTree = "<group>"; };
+		F5FEB2CF19841864004ED145 /* PossibleAnswerBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PossibleAnswerBtn.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,6 +260,7 @@
 				F5228FA61938F58500D0160A /* MuseoSansRounded-900.otf */,
 				74366EAE158AAE1000A17D8A /* twiz-Info.plist */,
 				74366EAF158AAE1000A17D8A /* InfoPlist.strings */,
+				F5FEB2CC1984055C004ED145 /* Localizable.strings */,
 				74366EB2158AAE1000A17D8A /* main.m */,
 				74366EB4158AAE1000A17D8A /* twiz-Prefix.pch */,
 			);
@@ -313,6 +321,8 @@
 				F50C4D8919450D480041971F /* MyTwitterController.h */,
 				F50C4D8A19450D480041971F /* MyTwitterController.m */,
 				F5DAC7A319514E0900CBE038 /* MyConstants.h */,
+				F5FEB2CE19841864004ED145 /* PossibleAnswerBtn.h */,
+				F5FEB2CF19841864004ED145 /* PossibleAnswerBtn.m */,
 				F5DAC7A419514E0900CBE038 /* MyConstants.m */,
 			);
 			name = Model;
@@ -355,6 +365,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				es,
 			);
 			mainGroup = 74366E97158AAE0F00A17D8A;
 			productRefGroup = 74366EA3158AAE0F00A17D8A /* Products */;
@@ -384,6 +395,7 @@
 				747F007C15951A58000F601E /* MainBG.png in Resources */,
 				C4BBB7C216FD2D73003CA3F7 /* Default@2x.png in Resources */,
 				C4BBB7C316FD2D73003CA3F7 /* Default.png in Resources */,
+				F5FEB2CA1984055C004ED145 /* Localizable.strings in Resources */,
 				F57F8D14195A738600DAB0B8 /* johnD.png in Resources */,
 				C4BBB7C416FD2D73003CA3F7 /* Default-568h@2x.png in Resources */,
 				C4FD613617286AC800F61563 /* Icon.png in Resources */,
@@ -458,6 +470,7 @@
 				F5DAC7A119514DBC00CBE038 /* MyActiveTweet.m in Sources */,
 				F56F4AF01971A678005829AA /* MyEmptyBucketViewController.m in Sources */,
 				F5DAC7A519514E0900CBE038 /* MyConstants.m in Sources */,
+				F5FEB2D019841864004ED145 /* PossibleAnswerBtn.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,8 +481,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				74366EB0158AAE1000A17D8A /* en */,
+				F5FEB2C7198404B8004ED145 /* es */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		F5FEB2CC1984055C004ED145 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F5FEB2CB1984055C004ED145 /* en */,
+				F5FEB2CD1984056A004ED145 /* es */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
