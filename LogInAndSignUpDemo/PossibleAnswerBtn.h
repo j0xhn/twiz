@@ -11,5 +11,6 @@
 @interface PossibleAnswerBtn : UIButton
 
 @property (nonatomic, strong) UIImageView *possibleAnswerImage;
+@property (nonatomic, strong) UILabel *possibleAnswerPoints;
 
 @end

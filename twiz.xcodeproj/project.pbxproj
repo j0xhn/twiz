@@ -320,9 +320,9 @@
 				F5DAC7A019514DBC00CBE038 /* MyActiveTweet.m */,
 				F50C4D8919450D480041971F /* MyTwitterController.h */,
 				F50C4D8A19450D480041971F /* MyTwitterController.m */,
-				F5DAC7A319514E0900CBE038 /* MyConstants.h */,
 				F5FEB2CE19841864004ED145 /* PossibleAnswerBtn.h */,
 				F5FEB2CF19841864004ED145 /* PossibleAnswerBtn.m */,
+				F5DAC7A319514E0900CBE038 /* MyConstants.h */,
 				F5DAC7A419514E0900CBE038 /* MyConstants.m */,
 			);
 			name = Model;

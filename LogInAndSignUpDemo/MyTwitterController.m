@@ -146,8 +146,10 @@
                  NSNumber *singleTweetID = [key objectForKey:@"id"];
                  NSString *singleTweetText = [key objectForKey:@"text"];
                  NSString *singleTweetAuthorID = [[key objectForKey:@"user"]objectForKey:@"screen_name"];
+                 NSNumber *defaultPoints = [NSNumber numberWithInteger:-1];
                  
                  NSURL *singleTweetimageURL = [NSURL URLWithString:[[key objectForKey:@"user"] objectForKey:@"profile_image_url_https"]];
+                 // Q:5 convert this to AFNetworking ImageView (category)
                  NSData *singleTweetimageData = [NSData dataWithContentsOfURL:singleTweetimageURL];
                  UIImage *singleTweetimage = [UIImage imageWithData:singleTweetimageData];
                  
@@ -170,7 +172,8 @@
                  NSArray *filteredArray = [self.possibleAnswerBucketArray filteredArrayUsingPredicate:pred];
                  if (filteredArray.count == 0) {
                      NSDictionary *possibleAnswer = @{possibleAnswerAuthorKey:singleTweetAuthorID,
-                                                      possibleAnswerPhotoKey:singleTweetimage};
+                                                      possibleAnswerPhotoKey:singleTweetimage,
+                                                      tweetPointsKey:defaultPoints};
                      [self.possibleAnswerBucketArray addObject:possibleAnswer];
                  }
                  
@@ -261,8 +264,11 @@
     }
 //    [self.mutableArrayContainingNumbers removeAllObjects]; // clears the array so the logic works correctly in the number generator
     self.mutableArrayContainingNumbers = nil;
-    
-    NSDictionary *correctAnswer = [[NSDictionary alloc]initWithObjectsAndKeys:activeTweet.correctAnswerPhoto,possibleAnswerPhotoKey,activeTweet.correctAnswerID,possibleAnswerAuthorKey, nil];
+    NSNumber *points = [NSNumber numberWithInteger:5];
+    NSDictionary *correctAnswer = [[NSDictionary alloc]initWithObjectsAndKeys:
+                                   activeTweet.correctAnswerPhoto,possibleAnswerPhotoKey,
+                                   activeTweet.correctAnswerID,possibleAnswerAuthorKey,
+                                   points, tweetPointsKey, nil];
 
     for (NSDictionary *answer in activePossibleAnswers) {
         if ([answer[possibleAnswerAuthorKey] isEqualToString:correctAnswer[possibleAnswerAuthorKey]]) {
