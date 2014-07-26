@@ -13,6 +13,7 @@
 #import "MyActiveTweet.h"
 #import "MyConstants.h"
 #import "MyEmptyBucketViewController.h"
+#import "UIImageView+AFNetworking.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "PossibleAnswerBtn.h"
 
@@ -194,8 +195,7 @@
     }
     
     // set general animations
-    
-    [correctScoreView addSubview:selectedAnswerBtn];
+    [self.view addSubview:selectedAnswerBtn];
     self.mainView.alpha = .6;
 
     [UIView animateWithDuration:1 delay:.5 options:UIViewAnimationOptionCurveEaseOut animations:^{
@@ -204,6 +204,7 @@
         [selectedAnswerBtn.possibleAnswerPoints setCenter:CGPointMake((SCREEN_HORIZONTAL/2),-30)];
     } completion:^(BOOL finished) {
         [correctScoreView removeFromSuperview];
+        [selectedAnswerBtn removeFromSuperview];
         [self resetActiveTweet]; // loads new tweet
     }];
     
@@ -243,6 +244,8 @@
     // Possible Answer2
     PossibleAnswerBtn *possibleAnswer2 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 275.0, self.view.bounds.size.width - 20.0f, 48)];
     [possibleAnswer2 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
+    // Q:1 - bug here for long download times -       [possibleAnswer2.possibleAnswerImage setImageWithURL:[NSURL URLWithString:@"https://pbs.twimg.com/profile_images/418518006197518336/bvHAkCJi_bigger.jpeg"] placeholderImage:[UIImage imageNamed:@"placeholder-avatar"]];
+
     possibleAnswer2.possibleAnswerImage.image = [[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerPhotoKey];
     possibleAnswer2.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:tweetPointsKey] stringValue];
     [possibleAnswer2 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];

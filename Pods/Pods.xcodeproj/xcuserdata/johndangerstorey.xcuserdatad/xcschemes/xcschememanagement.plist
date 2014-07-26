@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-twiz-AFNetworking.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-twiz-Analytics.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -29,6 +34,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-twiz-TRVSDictionaryWithCaseInsensitivity.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-twiz.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -37,32 +47,42 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0EF65CC5571D4155907364D1</key>
+		<key>38FFD4487555472EB800AE75</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>19F2640E843142B1A96FFE99</key>
+		<key>3A4911F471F6436C97A85177</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>26F1926EB6D845D7A2E026E9</key>
+		<key>497F30F5575F4C23BEB46BB7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4401322461C2427089BB0444</key>
+		<key>73198522C4E74D38A34BD4CF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EE9AE1AD60A54AD29A1A323A</key>
+		<key>A3131B9713BC45FBB3B76C1C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F4E29C34F0594B2F9D61BE0C</key>
+		<key>B8D3539C65EA401ABE315D1A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D1CBB69F5A7747039B32CA50</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F0D7AF2E111241BCAA4F4F17</key>
 		<dict>
 			<key>primary</key>
 			<true/>
