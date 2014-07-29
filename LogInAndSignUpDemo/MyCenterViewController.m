@@ -167,41 +167,88 @@
 
 #pragma mark - Answer Selected
 
-- (void) answerSelected:(id)sender{
+- (void) answerSelected:(id)sender {
     // initialize everything needed for animation
     PossibleAnswerBtn *selectedAnswerBtn = sender;
     NSString *selectedAuthorID = [selectedAnswerBtn currentTitle];
     NSString *correctAuthorID = self.activeTweet.correctAnswerID;
-    UILabel *floatScore = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_HORIZONTAL/2, 30, 50, 50)];
     UIView *correctScoreView = [[UIView alloc] initWithFrame:self.view.bounds];
     UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
+    NSNumber *number = [NSNumber new];
+    
     [mainWindow addSubview:correctScoreView];
     
     if([selectedAuthorID isEqualToString:correctAuthorID]){
         
         NSLog(@"%@ is equal to %@", selectedAuthorID, correctAuthorID );
-        NSNumber *number = [NSNumber numberWithInt:5];
-        self.scoreInt = [[[MyTwitterController sharedInstance] incrementScoreWithNumber:number] intValue];
-        self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
+        number = [NSNumber numberWithInt:5];
+        selectedAnswerBtn.backgroundColor = [UIColor greenColor];
+
 
         
     } else {
         
         NSLog(@"%@ is not equal to %@", selectedAuthorID, correctAuthorID );
-        NSNumber *number = [NSNumber numberWithInt:-1];
-        self.scoreInt = [[[MyTwitterController sharedInstance] incrementScoreWithNumber:number] intValue];
-        self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
+        number = [NSNumber numberWithInt:-1];
+        selectedAnswerBtn.backgroundColor = [UIColor redColor];
+        
+            for (int i = 0; i < [self.activeTweet.possibleAnswers count]; i++) {
+                if ([[self.activeTweet.possibleAnswers objectAtIndex:i][tweetPointsKey] isEqualToNumber:[NSNumber numberWithInt:5]]) {
+                    NSLog(@"match is found!");
+                    NSDictionary *correctAnswer = [self.activeTweet.possibleAnswers objectAtIndex:i];
+                    switch (i)
+                    // Q:1 none of these views are being added to the view... what gives?
+                    {
+                        case 0:
 
+                            _possibleAnswer1.backgroundColor = [UIColor greenColor];
+                            [self.view addSubview:_possibleAnswer1];
+                            
+                            break;
+                            
+                        case 1:
+                            _possibleAnswer2.backgroundColor = [UIColor greenColor];
+                            [self.view addSubview:_possibleAnswer2];
+                            
+                            break;
+                            
+                        case 2:
+                            _possibleAnswer3.backgroundColor = [UIColor greenColor];
+                            [self.view addSubview:_possibleAnswer3];
+                            
+                            break;
+                            
+                        case 3:
+                            _possibleAnswer4.backgroundColor = [UIColor greenColor];
+                            [self.view addSubview:_possibleAnswer4];
+                            
+                            break;
+                            
+                        default:
+                            
+                            NSLog(@"Didn't match any! WTF?");
+                            
+                            break;
+                            
+                    }
+
+                } else {
+                    NSLog(@"match is not found :(");
+                }
+            }
     }
     
     // set general animations
     [self.view addSubview:selectedAnswerBtn];
-    self.mainView.alpha = .6;
+    self.mainView.alpha = .5;
 
     [UIView animateWithDuration:1 delay:.5 options:UIViewAnimationOptionCurveEaseOut animations:^{
         // set animations that move
         [selectedAnswerBtn.possibleAnswerPoints setHidden:(false)];
         [selectedAnswerBtn.possibleAnswerPoints setCenter:CGPointMake((SCREEN_HORIZONTAL/2),-30)];
+        self.scoreInt = [[[MyTwitterController sharedInstance] incrementScoreWithNumber:number] intValue];
+        self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
+        
     } completion:^(BOOL finished) {
         [correctScoreView removeFromSuperview];
         [selectedAnswerBtn removeFromSuperview];
@@ -237,7 +284,17 @@
     [possibleAnswer1 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
     
     possibleAnswer1.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:tweetPointsKey] stringValue];
-    possibleAnswer1.possibleAnswerImage.image = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerPhotoKey];
+    ;
+// Q:5 convert this to AFNetworking ImageView (category)
+//                 NSData *singleTweetimageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerPhotoURLKey]]];
+//                 UIImage *singleTweetimage = [UIImage imageWithData:singleTweetimageData];
+//
+//                 if (!singleTweetimage) { // adds placeholder image if can't grab image
+//                     singleTweetimage = [UIImage imageNamed:@"johnD"];
+//                 }
+//                possibleAnswer1.possibleAnswerImage.image = singleTweetimage;
+//    [possibleAnswer1.possibleAnswerImage setImageWithURL:[NSURL URLWithString:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerPhotoURLKey]] placeholderImage:[UIImage imageNamed:@"johnD"]];
+
     [possibleAnswer1 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
     possibleAnswer1.tag = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
     

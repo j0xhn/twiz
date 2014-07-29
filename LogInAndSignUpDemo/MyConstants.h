@@ -22,10 +22,12 @@ static NSString const * tweetBucketDictionaryKey = @"tweetBucketDictionaryKey";
 static NSString const * tweetIDKey = @"tweetID";
 static NSString const * tweetTextKey = @"tweetText";
 static NSString const * tweetAuthorIDKey = @"tweetAuthorID";
+static NSString const * tweetPhotoURLKey = @"tweetPhotoURL";
 static NSString const * tweetAuthorPhotoKey = @"tweetAuthorPhoto";
 static NSString const * tweetPointsKey = @"tweetPoints";
 
 static NSString const * possibleAnswerAuthorKey = @"possibleAnswerAuthor";
+static NSString const * possibleAnswerPhotoURLKey = @"possibleAnswerPhotoURLKey";
 static NSString const * possibleAnswerPhotoKey = @"possibleAnwerPhoto";
 
 static NSString const * currentUserKey = @"currentUser";

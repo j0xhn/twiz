@@ -93,7 +93,7 @@
     NSDictionary *firstTweetFromBucket = [self.tweetBucketDictionary objectForKey:firstTweetObjectKey];
     
     activeTweet.correctAnswerID = [firstTweetFromBucket objectForKey:tweetAuthorIDKey];
-    activeTweet.correctAnswerPhoto = [firstTweetFromBucket objectForKey:tweetAuthorPhotoKey];// sets correctAnswerImage
+    activeTweet.correctAnswerPhotoURL = [firstTweetFromBucket objectForKey:tweetPhotoURLKey];
     activeTweet.tweetID = [firstTweetFromBucket objectForKey:tweetIDKey];
     activeTweet.tweet = [firstTweetFromBucket objectForKey:tweetTextKey];
     activeTweet.possibleAnswers = [self requestActivePossibleAnswers:activeTweet];
@@ -149,18 +149,13 @@
                  NSNumber *defaultPoints = [NSNumber numberWithInteger:-1];
                  
                  NSURL *singleTweetimageURL = [NSURL URLWithString:[[key objectForKey:@"user"] objectForKey:@"profile_image_url_https"]];
-                 // Q:5 convert this to AFNetworking ImageView (category)
-                 NSData *singleTweetimageData = [NSData dataWithContentsOfURL:singleTweetimageURL];
-                 UIImage *singleTweetimage = [UIImage imageWithData:singleTweetimageData];
-                 
-                 if (!singleTweetimage) {
-                     singleTweetimage = [UIImage imageNamed:@"johnD"];
-                 }
                  
                  NSDictionary *singleTweet = @{tweetTextKey:singleTweetText,
                                                tweetAuthorIDKey:singleTweetAuthorID,
                                                tweetIDKey:singleTweetID,
-                                               tweetAuthorPhotoKey:singleTweetimage};
+                                               tweetPhotoURLKey: singleTweetimageURL
+//                                               tweetAuthorPhotoKey:singleTweetimage
+                                               };
                 
                  
                  // sets possibleAnswerBucketArray to unique answers
@@ -172,7 +167,7 @@
                  NSArray *filteredArray = [self.possibleAnswerBucketArray filteredArrayUsingPredicate:pred];
                  if (filteredArray.count == 0) {
                      NSDictionary *possibleAnswer = @{possibleAnswerAuthorKey:singleTweetAuthorID,
-                                                      possibleAnswerPhotoKey:singleTweetimage,
+                                                      possibleAnswerPhotoURLKey: singleTweetimageURL,
                                                       tweetPointsKey:defaultPoints};
                      [self.possibleAnswerBucketArray addObject:possibleAnswer];
                  }
@@ -262,11 +257,11 @@
         NSDictionary *possibleAnswer = [self.possibleAnswerBucketArray objectAtIndex:possibleAnswerRandomNumber.integerValue];
         [activePossibleAnswers addObject:possibleAnswer];
     }
-//    [self.mutableArrayContainingNumbers removeAllObjects]; // clears the array so the logic works correctly in the number generator
+
     self.mutableArrayContainingNumbers = nil;
     NSNumber *points = [NSNumber numberWithInteger:5];
     NSDictionary *correctAnswer = [[NSDictionary alloc]initWithObjectsAndKeys:
-                                   activeTweet.correctAnswerPhoto,possibleAnswerPhotoKey,
+                                   activeTweet.correctAnswerPhotoURL, possibleAnswerPhotoURLKey,
                                    activeTweet.correctAnswerID,possibleAnswerAuthorKey,
                                    points, tweetPointsKey, nil];
 
