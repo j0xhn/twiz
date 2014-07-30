@@ -223,21 +223,26 @@
     // set general animations
     [self.view addSubview:selectedAnswerBtn];
     self.mainView.alpha = .5;
+    // gets ready for animation
+    CGRect frame = [selectedAnswerBtn convertRect:selectedAnswerBtn.possibleAnswerPoints.frame toView:self.view];
+    [self.view addSubview:selectedAnswerBtn.possibleAnswerPoints];
+    selectedAnswerBtn.possibleAnswerPoints.frame = frame;
 
-    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [UIView animateWithDuration:.2 delay:.8 options:UIViewAnimationOptionCurveEaseOut animations:^{
         
         // set animations that move
         [selectedAnswerBtn.possibleAnswerPoints setHidden:(false)];
         self.scoreInt = [[[MyTwitterController sharedInstance] incrementScoreWithNumber:number] intValue];
         
         if (isCorrect) {
-            selectedAnswerBtn.possibleAnswerPoints.transform = CGAffineTransformScale(selectedAnswerBtn.possibleAnswerPoints.transform, 1.5, 1.5);
+            [selectedAnswerBtn.possibleAnswerPoints setCenter:CGPointMake(50, 0)];
         } else {
             selectedAnswerBtn.possibleAnswerPoints.transform = CGAffineTransformScale(selectedAnswerBtn.possibleAnswerPoints.transform, .9, .9);
         }
         
     } completion:^(BOOL finished) {
         [selectedAnswerBtn removeFromSuperview];
+        [selectedAnswerBtn.possibleAnswerPoints removeFromSuperview];
         [correctAnswerBtn removeFromSuperview];
         self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
         [self resetActiveTweet]; // loads new tweet
