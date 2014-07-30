@@ -4,17 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-twiz-AFNetworking.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-twiz-Analytics.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-twiz-FlurrySDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -47,42 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>38FFD4487555472EB800AE75</key>
+		<key>253F741A4B924DEA9B48500E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3A4911F471F6436C97A85177</key>
+		<key>618EBFEDDF9B490F93EE03CA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>497F30F5575F4C23BEB46BB7</key>
+		<key>6BA0D62C5A8747F085BA2969</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>73198522C4E74D38A34BD4CF</key>
+		<key>A501710EDCB145DCA1628B73</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A3131B9713BC45FBB3B76C1C</key>
+		<key>C104E84B2E7941A8A92C52B3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B8D3539C65EA401ABE315D1A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D1CBB69F5A7747039B32CA50</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F0D7AF2E111241BCAA4F4F17</key>
+		<key>D3DF76BE9C504BF5877EA2CE</key>
 		<dict>
 			<key>primary</key>
 			<true/>

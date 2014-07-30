@@ -13,7 +13,7 @@
 #import "JALeftViewController.h"
 #import "JARightViewController.h"
 
-#import <SEGAnalytics.h>
+//#import <SEGAnalytics.h>
 #import <Crashlytics/Crashlytics.h>
 
 
@@ -38,7 +38,7 @@
     [PFTwitterUtils initializeWithConsumerKey:@"XEiHejzzFjNIzEy2bSNEug" consumerSecret:@"uEeJboXD9ZF3V8sRs89pWpGngF53xqsBd9sTT8GfE"];
     
     // Analytics
-    [SEGAnalytics setupWithConfiguration:[SEGAnalyticsConfiguration configurationWithWriteKey:@"vspssh598g"]];
+//    [SEGAnalytics setupWithConfiguration:[SEGAnalyticsConfiguration configurationWithWriteKey:@"vspssh598g"]];
     // Crashlytics
     [Crashlytics startWithAPIKey:@"bf558a6cef31aa4273fd55371f9d5ae2cd97e01c"];
     

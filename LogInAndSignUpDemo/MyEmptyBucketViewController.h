@@ -10,4 +10,6 @@
 
 @interface MyEmptyBucketViewController : UIViewController
 
+@property (strong,nonatomic) void (^onButtonPress)();
+
 @end

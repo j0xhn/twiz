@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D1CBB69F5A7747039B32CA50"
+               BlueprintIdentifier = "253F741A4B924DEA9B48500E"
                BuildableName = "libPods-twiz-Analytics.a"
                BlueprintName = "Pods-twiz-Analytics"
                ReferencedContainer = "container:Pods.xcodeproj">

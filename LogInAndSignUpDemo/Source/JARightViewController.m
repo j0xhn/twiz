@@ -100,21 +100,7 @@
         
         [self dismissModalViewControllerAnimated:YES];
     }];
- /*
-    // Display Tweet Compose View Controller Modally
-    [self presentViewController:vc animated:YES completion:nil];
-    
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
-        // Initialize Tweet Compose View Controller
 
-        
-    } else {
-        // Show Alert View When The Application Cannot Send Tweets
-        NSString *message = @"The application cannot send a tweet at the moment. This is because it cannot reach Twitter or you don't have a Twitter account associated with this device.";
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:message delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-        [alertView show];
-    }
-  */
 }
 
 - (void)twitterLogOut{

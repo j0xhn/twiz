@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F0D7AF2E111241BCAA4F4F17"
+               BlueprintIdentifier = "618EBFEDDF9B490F93EE03CA"
                BuildableName = "libPods-twiz-TRVSDictionaryWithCaseInsensitivity.a"
                BlueprintName = "Pods-twiz-TRVSDictionaryWithCaseInsensitivity"
                ReferencedContainer = "container:Pods.xcodeproj">

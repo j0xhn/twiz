@@ -13,15 +13,18 @@
 #import "MyActiveTweet.h"
 #import "MyConstants.h"
 #import "MyEmptyBucketViewController.h"
-#import "UIImageView+AFNetworking.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "PossibleAnswerBtn.h"
-
+#import "UIImageView+AFNetworking.h"
 
 #import "MyTwitterController.h"
 
 @interface MyCenterViewController () <MyTwitterDelegate>
 
+@property (nonatomic, strong) PossibleAnswerBtn *possibleAnswer1;
+@property (nonatomic, strong) PossibleAnswerBtn *possibleAnswer2;
+@property (nonatomic, strong) PossibleAnswerBtn *possibleAnswer3;
+@property (nonatomic, strong) PossibleAnswerBtn *possibleAnswer4;
 @property (nonatomic, weak) UIButton *refreshBtn;
 @property (nonatomic, strong) MyActiveTweet *activeTweet;
 
@@ -29,23 +32,6 @@
 @property (nonatomic, strong) UITextView *tweetLabel;
 @property (nonatomic,strong) UILabel *scoreLabel;
 @property (nonatomic,assign) NSInteger scoreInt;
-
-@property (nonatomic, strong) UIButton *possibleAnswer1;
-@property (nonatomic, strong) UILabel *author1;
-@property (nonatomic,strong) UIImageView *authorImageView1;
-
-@property (nonatomic, strong) UIButton *possibleAnswer2;
-@property (nonatomic, strong) UILabel *author2;
-@property (nonatomic, strong) UIImageView *authorImageView2;
-
-@property (nonatomic, strong) UIButton *possibleAnswer3;
-@property (nonatomic, strong) UILabel *author3;
-@property (nonatomic, strong) UIImageView *authorImageView3;
-
-@property (nonatomic, strong) UIButton *possibleAnswer4;
-@property (nonatomic, strong) UILabel *author4;
-@property (nonatomic, strong) UIImageView *authorImageView4;
-
 
 @end
 
@@ -57,26 +43,41 @@
 }
 
 -(void) ranOutOfTweets{
-    // removes views so that they don't overlap upon reload
-    [self.mainView removeFromSuperview];
-    [self.scoreLabel removeFromSuperview];
-    
+
     MyEmptyBucketViewController *emptyBucketViewController = [[MyEmptyBucketViewController alloc] init];
     emptyBucketViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:emptyBucketViewController animated:YES completion:nil]; // Present Log In View Controller
-
     
+    emptyBucketViewController.onButtonPress = ^{
+        [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:^(bool success) {
+            if (success) { // on success
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self resetActiveTweet];
+                });
+                
+                [self dismissViewControllerAnimated:YES completion:nil];
+
+            } else { // on error
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Not Quite Yet"
+                                                                  message:@"Looks like you're twitter feed still hasn't refreashed.  Try back again in 30 minutes."
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
+                
+                [message show];
+            }
+            
+        }];
+
+    };
+
 }
 #pragma mark - UIViewController
 
 
 -(void)viewDidLoad{
     [MyTwitterController sharedInstance].delegate = self; // registers this view as the delegate for MyTwitterController
-}
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
     // creates listener for Twitter Login
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshView)
@@ -98,7 +99,7 @@
                                                object:nil];
     
     
-
+    self.view.backgroundColor = [UIColor redColor];
     // Check if user is logged in - commented out during offline development
     if (![PFUser currentUser]) {        
         // Customize the Log In View Controller
@@ -170,92 +171,77 @@
 - (void) answerSelected:(id)sender {
     // initialize everything needed for animation
     PossibleAnswerBtn *selectedAnswerBtn = sender;
+    PossibleAnswerBtn *correctAnswerBtn = [PossibleAnswerBtn new];
     NSString *selectedAuthorID = [selectedAnswerBtn currentTitle];
     NSString *correctAuthorID = self.activeTweet.correctAnswerID;
-    UIView *correctScoreView = [[UIView alloc] initWithFrame:self.view.bounds];
-    UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
     NSNumber *number = [NSNumber new];
-    
-    [mainWindow addSubview:correctScoreView];
+    BOOL isCorrect = nil;
     
     if([selectedAuthorID isEqualToString:correctAuthorID]){
-        
-        NSLog(@"%@ is equal to %@", selectedAuthorID, correctAuthorID );
+        isCorrect = true;
         number = [NSNumber numberWithInt:5];
-        selectedAnswerBtn.backgroundColor = [UIColor greenColor];
-
-
-        
+        selectedAnswerBtn.layer.borderWidth = 0.0;
+        selectedAnswerBtn.backgroundColor = GREEN_COLOR; /* green #57f9f7*/
+        [selectedAnswerBtn setTitleColor:PURPLE_COLOR forState:UIControlStateNormal]; /* purple */
+        selectedAnswerBtn.possibleAnswerPoints.textColor = PURPLE_COLOR; /* purple */
     } else {
         
+        isCorrect = false;
         NSLog(@"%@ is not equal to %@", selectedAuthorID, correctAuthorID );
         number = [NSNumber numberWithInt:-1];
-        selectedAnswerBtn.backgroundColor = [UIColor redColor];
+        selectedAnswerBtn.layer.borderWidth = 0.0;
+        selectedAnswerBtn.backgroundColor = RED_COLOR; /*red #f4929e*/
         
-            for (int i = 0; i < [self.activeTweet.possibleAnswers count]; i++) {
-                if ([[self.activeTweet.possibleAnswers objectAtIndex:i][tweetPointsKey] isEqualToNumber:[NSNumber numberWithInt:5]]) {
-                    NSLog(@"match is found!");
-                    NSDictionary *correctAnswer = [self.activeTweet.possibleAnswers objectAtIndex:i];
-                    switch (i)
-                    // Q:1 none of these views are being added to the view... what gives?
-                    {
-                        case 0:
-
-                            _possibleAnswer1.backgroundColor = [UIColor greenColor];
-                            [self.view addSubview:_possibleAnswer1];
-                            
-                            break;
-                            
-                        case 1:
-                            _possibleAnswer2.backgroundColor = [UIColor greenColor];
-                            [self.view addSubview:_possibleAnswer2];
-                            
-                            break;
-                            
-                        case 2:
-                            _possibleAnswer3.backgroundColor = [UIColor greenColor];
-                            [self.view addSubview:_possibleAnswer3];
-                            
-                            break;
-                            
-                        case 3:
-                            _possibleAnswer4.backgroundColor = [UIColor greenColor];
-                            [self.view addSubview:_possibleAnswer4];
-                            
-                            break;
-                            
-                        default:
-                            
-                            NSLog(@"Didn't match any! WTF?");
-                            
-                            break;
-                            
-                    }
-
-                } else {
-                    NSLog(@"match is not found :(");
+        for (int i = 0; i < [self.activeTweet.possibleAnswers count]; i++) {
+            if ([[self.activeTweet.possibleAnswers objectAtIndex:i][tweetPointsKey] isEqualToNumber:[NSNumber numberWithInt:5]]) {
+                switch (i) {
+                    case 0:
+                        correctAnswerBtn = self.possibleAnswer1;
+                        break;
+                    case 1:
+                        correctAnswerBtn = self.possibleAnswer2;
+                        break;
+                    case 2:
+                        correctAnswerBtn = self.possibleAnswer3;
+                        break;
+                    case 3:
+                        correctAnswerBtn = self.possibleAnswer4;
+                        break;
+                    default:
+                        NSLog(@"Didn't match any! WTF?");
+                        break;
                 }
+                correctAnswerBtn.layer.borderWidth = 0.0;
+                correctAnswerBtn.backgroundColor = GREEN_COLOR; /* green #57f9f7*/
+                correctAnswerBtn.titleLabel.textColor = PURPLE_COLOR; /* purple */
+                [self.view addSubview:correctAnswerBtn];
+
             }
+        }
     }
     
     // set general animations
     [self.view addSubview:selectedAnswerBtn];
     self.mainView.alpha = .5;
 
-    [UIView animateWithDuration:1 delay:.5 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
         // set animations that move
         [selectedAnswerBtn.possibleAnswerPoints setHidden:(false)];
-        [selectedAnswerBtn.possibleAnswerPoints setCenter:CGPointMake((SCREEN_HORIZONTAL/2),-30)];
         self.scoreInt = [[[MyTwitterController sharedInstance] incrementScoreWithNumber:number] intValue];
-        self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
+        
+        if (isCorrect) {
+            selectedAnswerBtn.possibleAnswerPoints.transform = CGAffineTransformScale(selectedAnswerBtn.possibleAnswerPoints.transform, 1.5, 1.5);
+        } else {
+            selectedAnswerBtn.possibleAnswerPoints.transform = CGAffineTransformScale(selectedAnswerBtn.possibleAnswerPoints.transform, .9, .9);
+        }
         
     } completion:^(BOOL finished) {
-        [correctScoreView removeFromSuperview];
         [selectedAnswerBtn removeFromSuperview];
+        [correctAnswerBtn removeFromSuperview];
+        self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
         [self resetActiveTweet]; // loads new tweet
     }];
-    
-   
 }
 
 - (void)resetActiveTweet
@@ -267,6 +253,9 @@
     // Redraws tweet and possible answers
 
     self.tweetLabel = [[UITextView alloc]initWithFrame:CGRectMake(10.0, 10.0f, self.view.bounds.size.width - 20.0f, 200.0)];
+    self.tweetLabel.dataDetectorTypes = UIDataDetectorTypeLink; // makes links clickable
+    self.tweetLabel.linkTextAttributes = @{NSForegroundColorAttributeName:GREEN_COLOR};
+    self.tweetLabel.editable = NO; // disables editing
     [[self.tweetLabel layer] setCornerRadius:3.0f];
     [[self.tweetLabel layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
     self.tweetLabel.textColor = [UIColor whiteColor];
@@ -280,49 +269,36 @@
 #pragma mark - Possible Answers Display
     
     // Possible Answer1
-    PossibleAnswerBtn *possibleAnswer1 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 220.0, self.view.bounds.size.width - 20.0f, 48)];
-    [possibleAnswer1 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
-    
-    possibleAnswer1.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:tweetPointsKey] stringValue];
-    ;
-// Q:5 convert this to AFNetworking ImageView (category)
-//                 NSData *singleTweetimageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerPhotoURLKey]]];
-//                 UIImage *singleTweetimage = [UIImage imageWithData:singleTweetimageData];
-//
-//                 if (!singleTweetimage) { // adds placeholder image if can't grab image
-//                     singleTweetimage = [UIImage imageNamed:@"johnD"];
-//                 }
-//                possibleAnswer1.possibleAnswerImage.image = singleTweetimage;
-//    [possibleAnswer1.possibleAnswerImage setImageWithURL:[NSURL URLWithString:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerPhotoURLKey]] placeholderImage:[UIImage imageNamed:@"johnD"]];
-
-    [possibleAnswer1 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
-    possibleAnswer1.tag = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
+    self.possibleAnswer1 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 220.0, self.view.bounds.size.width - 20.0f, 48)];
+    [self.possibleAnswer1 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
+    self.possibleAnswer1.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:tweetPointsKey] stringValue];
+    [self.possibleAnswer1.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[0][possibleAnswerPhotoURLKey]];
+    [self.possibleAnswer1 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
+    self.possibleAnswer1.tag = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
     
     // Possible Answer2
-    PossibleAnswerBtn *possibleAnswer2 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 275.0, self.view.bounds.size.width - 20.0f, 48)];
-    [possibleAnswer2 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
-    // Q:1 - bug here for long download times -       [possibleAnswer2.possibleAnswerImage setImageWithURL:[NSURL URLWithString:@"https://pbs.twimg.com/profile_images/418518006197518336/bvHAkCJi_bigger.jpeg"] placeholderImage:[UIImage imageNamed:@"placeholder-avatar"]];
-
-    possibleAnswer2.possibleAnswerImage.image = [[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerPhotoKey];
-    possibleAnswer2.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:tweetPointsKey] stringValue];
-    [possibleAnswer2 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
-    possibleAnswer2.tag = [[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey];
+    self.possibleAnswer2 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 275.0, self.view.bounds.size.width - 20.0f, 48)];
+    [self.possibleAnswer2 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
+    [self.possibleAnswer2.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[1][possibleAnswerPhotoURLKey]];
+    self.possibleAnswer2.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:tweetPointsKey] stringValue];
+    [self.possibleAnswer2 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
+    self.possibleAnswer2.tag = [[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey];
     
     // Possible Answer3
-    PossibleAnswerBtn *possibleAnswer3 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 330.0, self.view.bounds.size.width - 20.0f, 48)];
-    [possibleAnswer3 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
-    possibleAnswer3.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:tweetPointsKey] stringValue];
-    possibleAnswer3.possibleAnswerImage.image = [[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerPhotoKey];
-    [possibleAnswer3 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
-    possibleAnswer3.tag = [[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerAuthorKey];
+    self.possibleAnswer3 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 330.0, self.view.bounds.size.width - 20.0f, 48)];
+    [self.possibleAnswer3 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
+    self.possibleAnswer3.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:tweetPointsKey] stringValue];
+    [self.possibleAnswer3.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[2][possibleAnswerPhotoURLKey]];
+    [self.possibleAnswer3 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
+    self.possibleAnswer3.tag = [[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerAuthorKey];
     
     // Possible Answer4
-    PossibleAnswerBtn *possibleAnswer4 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 385.0, self.view.bounds.size.width - 20.0f, 48)];
-    [possibleAnswer4 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
-    possibleAnswer4.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:tweetPointsKey] stringValue];
-    possibleAnswer4.possibleAnswerImage.image = [[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:possibleAnswerPhotoKey];
-    [possibleAnswer4 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
-    possibleAnswer4.tag = [[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:possibleAnswerAuthorKey];
+    self.possibleAnswer4 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 385.0, self.view.bounds.size.width - 20.0f, 48)];
+    [self.possibleAnswer4 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
+    self.possibleAnswer4.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:tweetPointsKey] stringValue];
+    [self.possibleAnswer4.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[3][possibleAnswerPhotoURLKey]];
+    [self.possibleAnswer4 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
+    self.possibleAnswer4.tag = [[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:possibleAnswerAuthorKey];
     
     // skip button
     UIButton *refreshBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -337,10 +313,10 @@
     
     [self.mainView addSubview:refreshBtn];
     
-    [self.mainView addSubview:possibleAnswer1]; // adds each answer to the mainView
-    [self.mainView addSubview:possibleAnswer2];
-    [self.mainView addSubview:possibleAnswer3];
-    [self.mainView addSubview:possibleAnswer4];
+    [self.mainView addSubview:self.possibleAnswer1]; // adds each answer to the mainView
+    [self.mainView addSubview:self.possibleAnswer2];
+    [self.mainView addSubview:self.possibleAnswer3];
+    [self.mainView addSubview:self.possibleAnswer4];
     
     [self.view addSubview:self.mainView]; // adds mainView to superview so that it can be dismissed yet still keep background
 

@@ -10,7 +10,7 @@
 #import "MyConstants.h"
 #import "MyEmptyBucketViewController.h"
 
-#import <SEGAnalytics.h>
+//#import <SEGAnalytics.h>
 #import <Crashlytics/Crashlytics.h>
 
 @interface MyTwitterController ()
@@ -78,9 +78,6 @@
     }
     
     if ([self.tweetBucketDictionary count] == 0) { // presents empty bucket view controller
-        NSLog(@"ALERT - Out of Tweets");
-        MyEmptyBucketViewController *EmptyBucketViewController = [[MyEmptyBucketViewController alloc] init];
-        EmptyBucketViewController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
         // Present Log In View Controller
         [self.delegate ranOutOfTweets];
         MyActiveTweet *emptyTweetsObject = [MyActiveTweet new];
@@ -109,8 +106,8 @@
 
 - (void) loadTweetBucketDictionaryWithCompletion:(void (^)(bool success))block{ //requests timeline in the background
     //Q:1 analytics not working... any idea why or how to debug?  Should I just switch to using raw google analytics instead?
-    [[SEGAnalytics sharedAnalytics] track:@"Signed Up"
-                               properties:@{ @"plan": @"Enterprise" }]; //tracks bucket requests
+//    [[SEGAnalytics sharedAnalytics] track:@"Signed Up"
+//                               properties:@{ @"plan": @"Enterprise" }]; //tracks bucket requests
     NSString *bodyString = @"";
     if (!self.currentUser){ // if user stops using app, then re-opens app it erases self.currentUser, this sets it.
         self.currentUser = [[NSUserDefaults standardUserDefaults] objectForKey:CURRENT_USER_KEY];
@@ -140,8 +137,11 @@
          else if ([data length] >0)
          {
              NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:&error];
- 
+             
+         // Q:3 - app just freezes if passed an error here, should show alert view. 
+             
              for(id key in json){
+                 
                  // for active tweet dictionary
                  NSNumber *singleTweetID = [key objectForKey:@"id"];
                  NSString *singleTweetText = [key objectForKey:@"text"];
@@ -216,7 +216,7 @@
     self.infiniteLoopCounter = 1;
     NSInteger randomNumber = (NSInteger) arc4random_uniform(objectsInArray); // picks between 0 and n-1
     if (self.mutableArrayContainingNumbers) {
-        if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){ // Q:3
+        if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){
             self.infiniteLoopCounter ++;
             if (self.infiniteLoopCounter == 10) {
                 UIAlertView *infiniteLoopAlert = [[UIAlertView alloc]

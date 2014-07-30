@@ -33,8 +33,6 @@
         [self addSubview:self.possibleAnswerPoints];
         [self addSubview:self.possibleAnswerImage];
         
-
-
     }
     return self;
 }
