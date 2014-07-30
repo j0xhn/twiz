@@ -134,11 +134,11 @@
                  block(NO);
              }
          }
-         else if ([data length] >0)
+         else if ([data length] >1)
          {
              NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:&error];
              
-         // Q:3 - app just freezes if passed an error here, should show alert view. 
+         // Q:3 - app just freezes if passed an error here, should show alert view.
              
              for(id key in json){
                  

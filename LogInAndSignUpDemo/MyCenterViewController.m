@@ -181,6 +181,7 @@
         isCorrect = true;
         number = [NSNumber numberWithInt:5];
         selectedAnswerBtn.layer.borderWidth = 0.0;
+        selectedAnswerBtn.possibleAnswerPoints.text = [NSString stringWithFormat:@"+%@", selectedAnswerBtn.possibleAnswerPoints.text];
         selectedAnswerBtn.possibleAnswerPoints.textColor = PURPLE_COLOR; /* purple */
         selectedAnswerBtn.backgroundColor = GREEN_COLOR; /* green #57f9f7*/
         [selectedAnswerBtn setTitleColor:PURPLE_COLOR forState:UIControlStateNormal]; /* purple */
@@ -233,16 +234,16 @@
             [selectedAnswerBtn.possibleAnswerPoints setHidden:(false)];
             selectedAnswerBtn.possibleAnswerPoints.transform = CGAffineTransformScale(selectedAnswerBtn.possibleAnswerPoints.transform, 1.5, 1.5);
         } completion:^(BOOL finished) {
-            [UIView animateWithDuration:.05 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{ // scale down
-                selectedAnswerBtn.possibleAnswerPoints.transform = CGAffineTransformScale(selectedAnswerBtn.possibleAnswerPoints.transform, .8, .8);
+            [UIView animateWithDuration:.1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{ // scale down
+                selectedAnswerBtn.possibleAnswerPoints.transform = CGAffineTransformScale(selectedAnswerBtn.possibleAnswerPoints.transform, .7, .7);
             } completion:^(BOOL finished) {
-                [UIView animateWithDuration:.03 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{ // bounce back up
+                [UIView animateWithDuration:.06 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{ // bounce back up
                    selectedAnswerBtn.possibleAnswerPoints.transform = CGAffineTransformScale(selectedAnswerBtn.possibleAnswerPoints.transform, 1.2, 1.2);
                 } completion:^(BOOL finished) {
-                    [UIView animateWithDuration:.02 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{ // bounce back up
+                    [UIView animateWithDuration:.04 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{ // bounce back up
                         selectedAnswerBtn.possibleAnswerPoints.transform = CGAffineTransformScale(selectedAnswerBtn.possibleAnswerPoints.transform, .9, .9);
                     } completion:^(BOOL finished) {
-                        [UIView animateWithDuration:.5 delay:.8 options:UIViewAnimationOptionCurveEaseOut animations:^{ // zoom up to corner
+                        [UIView animateWithDuration:.5 delay:.5 options:UIViewAnimationOptionCurveEaseOut animations:^{ // zoom up to corner
                             [selectedAnswerBtn.possibleAnswerPoints setCenter:CGPointMake(60, -5)];
                             selectedAnswerBtn.backgroundColor = [UIColor clearColor];
                         } completion:^(BOOL finished) {
