@@ -67,6 +67,8 @@
 		F5271DAF1988A32E006AA906 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = F5271D9C1988A32E006AA906 /* UIProgressView+AFNetworking.m */; };
 		F5271DB01988A32E006AA906 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = F5271D9E1988A32E006AA906 /* UIRefreshControl+AFNetworking.m */; };
 		F5271DB11988A32E006AA906 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = F5271DA01988A32E006AA906 /* UIWebView+AFNetworking.m */; };
+		F5271DD71989000D006AA906 /* mrTrex.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F5271DD61989000D006AA906 /* mrTrex.jpg */; };
+		F5271DDB19890475006AA906 /* mrT.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F5271DDA19890475006AA906 /* mrT.jpg */; };
 		F55452851975FDE800E62F1A /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F55452841975FDE800E62F1A /* Twitter.framework */; };
 		F56F4AF01971A678005829AA /* MyEmptyBucketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56F4AEF1971A678005829AA /* MyEmptyBucketViewController.m */; };
 		F57F8D14195A738600DAB0B8 /* johnD.png in Resources */ = {isa = PBXBuildFile; fileRef = F57F8D13195A738600DAB0B8 /* johnD.png */; };
@@ -174,6 +176,8 @@
 		F5271D9E1988A32E006AA906 /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
 		F5271D9F1988A32E006AA906 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		F5271DA01988A32E006AA906 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
+		F5271DD61989000D006AA906 /* mrTrex.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mrTrex.jpg; sourceTree = "<group>"; };
+		F5271DDA19890475006AA906 /* mrT.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mrT.jpg; sourceTree = "<group>"; };
 		F55452841975FDE800E62F1A /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		F56F4AEE1971A678005829AA /* MyEmptyBucketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEmptyBucketViewController.h; sourceTree = "<group>"; };
 		F56F4AEF1971A678005829AA /* MyEmptyBucketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEmptyBucketViewController.m; sourceTree = "<group>"; };
@@ -227,6 +231,8 @@
 		741203C415900A3C00820BE9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F5271DDA19890475006AA906 /* mrT.jpg */,
+				F5271DD61989000D006AA906 /* mrTrex.jpg */,
 				F57F8D13195A738600DAB0B8 /* johnD.png */,
 				F5DAC8A1195A25AE00CBE038 /* johnD.jpeg */,
 				F5229047193ED5B300D0160A /* loginWithTwitterBtn.png */,
@@ -498,11 +504,13 @@
 				747F007C15951A58000F601E /* MainBG.png in Resources */,
 				C4BBB7C216FD2D73003CA3F7 /* Default@2x.png in Resources */,
 				C4BBB7C316FD2D73003CA3F7 /* Default.png in Resources */,
+				F5271DDB19890475006AA906 /* mrT.jpg in Resources */,
 				F5FEB2CA1984055C004ED145 /* Localizable.strings in Resources */,
 				F57F8D14195A738600DAB0B8 /* johnD.png in Resources */,
 				C4BBB7C416FD2D73003CA3F7 /* Default-568h@2x.png in Resources */,
 				C4FD613617286AC800F61563 /* Icon.png in Resources */,
 				C4FD613817286ACD00F61563 /* Icon@2x.png in Resources */,
+				F5271DD71989000D006AA906 /* mrTrex.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

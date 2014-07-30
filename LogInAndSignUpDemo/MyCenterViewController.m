@@ -328,14 +328,14 @@
         self.possibleAnswer1 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 220.0, self.view.bounds.size.width - 20.0f, 48)];
         [self.possibleAnswer1 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
         self.possibleAnswer1.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:tweetPointsKey] stringValue];
-        [self.possibleAnswer1.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[0][possibleAnswerPhotoURLKey]];
+        [self.possibleAnswer1.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[0][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
         [self.possibleAnswer1 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
         self.possibleAnswer1.tag = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
         
         // Possible Answer2
         self.possibleAnswer2 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 275.0, self.view.bounds.size.width - 20.0f, 48)];
         [self.possibleAnswer2 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
-        [self.possibleAnswer2.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[1][possibleAnswerPhotoURLKey]];
+        [self.possibleAnswer2.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[1][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
         self.possibleAnswer2.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:tweetPointsKey] stringValue];
         [self.possibleAnswer2 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
         self.possibleAnswer2.tag = [[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey];
@@ -344,7 +344,7 @@
         self.possibleAnswer3 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 330.0, self.view.bounds.size.width - 20.0f, 48)];
         [self.possibleAnswer3 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
         self.possibleAnswer3.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:tweetPointsKey] stringValue];
-        [self.possibleAnswer3.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[2][possibleAnswerPhotoURLKey]];
+        [self.possibleAnswer3.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[2][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
         [self.possibleAnswer3 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
         self.possibleAnswer3.tag = [[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerAuthorKey];
         
@@ -352,7 +352,7 @@
         self.possibleAnswer4 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 385.0, self.view.bounds.size.width - 20.0f, 48)];
         [self.possibleAnswer4 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
         self.possibleAnswer4.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:tweetPointsKey] stringValue];
-        [self.possibleAnswer4.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[3][possibleAnswerPhotoURLKey]];
+        [self.possibleAnswer4.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[3][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
         [self.possibleAnswer4 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
         self.possibleAnswer4.tag = [[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:possibleAnswerAuthorKey];
         
