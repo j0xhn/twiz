@@ -475,7 +475,7 @@
 			dependencies = (
 			);
 			name = twiz;
-			productName = LogInAndSignUpDemo;
+			productName = Twiz;
 			productReference = 74366EA2158AAE0F00A17D8A /* twiz.app */;
 			productType = "com.apple.product-type.application";
 		};

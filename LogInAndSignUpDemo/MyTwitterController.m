@@ -45,6 +45,7 @@
 }
 
 - (id) init{
+    self.infiniteLoopCounter = 1;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(setCurrentUser)
                                                  name:@"AppDidBecomeActiveNotification"
@@ -72,7 +73,7 @@
         NSLog(@"ALERT - 10 tweets left");
         [self loadTweetBucketDictionaryWithCompletion:nil];
     }
-    if ([self.tweetBucketDictionary count] == 2) { // for fast connections, but sometimes it logs this, then crashes directly after
+    if ([self.tweetBucketDictionary count] == 3) { // for fast connections, but sometimes it logs this, then crashes directly after
         NSLog(@"ALERT - 2 tweets left");
         [self loadTweetBucketDictionaryWithCompletion:nil];
     }
@@ -182,6 +183,16 @@
                  self.InitialLoadState = NO; // turns off auto ask
              }
              NSLog(@"tweet bucket finished Loading");
+             if (self.possibleAnswerBucketArray < 4) { // checks to see if there are atleast 4 possible answers
+                 UIAlertView *infiniteLoopAlert = [[UIAlertView alloc]
+                                                   initWithTitle:@"Whoops! Lets try this again"
+                                                   message:@"Something went wrong under the hood.  Usually it's because you didn't have at least 4 new tweets to create your quiz with, so close the app and wait a couple of minutes then try again"
+                                                   delegate:self
+                                                   cancelButtonTitle:@"Thanks!"
+                                                   otherButtonTitles:nil];
+                 [infiniteLoopAlert show];
+             }
+
              if (block) { // if passes "nil" then this ensures it doesn't throw an error
                  block(YES);
              }
@@ -213,20 +224,10 @@
 
 -(void) generateRandomNumberArray {
     int objectsInArray = [self.possibleAnswerBucketArray count]; // makes it so you don't get numbers higher than what is currently in there
-    self.infiniteLoopCounter = 1;
+
     NSInteger randomNumber = (NSInteger) arc4random_uniform(objectsInArray); // picks between 0 and n-1
     if (self.mutableArrayContainingNumbers) {
-        if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){
-            self.infiniteLoopCounter ++;
-            if (self.infiniteLoopCounter == 10) {
-                UIAlertView *infiniteLoopAlert = [[UIAlertView alloc]
-                                      initWithTitle:@"Whoops! Lets try this again"
-                                      message:@"Something went wrong under the hood.  Usually it's because you didn't have at least 4 new tweets to create your quiz with, so close the app and wait a couple of minutes then try again"
-                                      delegate:self
-                                      cancelButtonTitle:@"Thanks!"
-                                      otherButtonTitles:nil];
-                [infiniteLoopAlert show];
-            }
+        if ([self.mutableArrayContainingNumbers containsObject: [NSNumber numberWithInteger:randomNumber]]){ // crashes here when you don't have more than 4 possible answers to choose from
             [self generateRandomNumberArray]; // call the method again and get a new object
         } else {
             // end case, it doesn't contain it so you have a number you can use
