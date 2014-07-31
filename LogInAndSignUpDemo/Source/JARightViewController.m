@@ -151,7 +151,7 @@
     
     SLComposeViewController *vc = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
     
-    [vc setInitialText:@"I pitty da fool dat don't donwload El Twiz so they can make money while on twitter."];    // Settin The Initial Text
+    [vc setInitialText:@"I pitty da fool dat don't donwload Twiz. They be missin' out!"];    // Settin The Initial Text
     UIImage *image = [UIImage imageNamed:@"mrT.jpg"];    // Adding an Image
     [vc addImage:image];
     NSURL *url = [NSURL URLWithString:@"http://dev.johndangerstorey.com"];     // Adding a URL

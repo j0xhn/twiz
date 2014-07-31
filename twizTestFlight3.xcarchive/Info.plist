@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ApplicationProperties</key>
+	<dict>
+		<key>ApplicationPath</key>
+		<string>Applications/twiz.app</string>
+		<key>CFBundleIdentifier</key>
+		<string>com.johndangerstorey.twiz</string>
+		<key>CFBundleShortVersionString</key>
+		<string>1.0.2</string>
+		<key>CFBundleVersion</key>
+		<string>1.0.2</string>
+		<key>IconPaths</key>
+		<array>
+			<string>Applications/twiz.app/Icon@2x.png</string>
+			<string>Applications/twiz.app/Icon.png</string>
+			<string>Applications/twiz.app/Icon@2x.png</string>
+		</array>
+		<key>SigningIdentity</key>
+		<string>iPhone Developer: John D. Storey (GG38A27XE8)</string>
+	</dict>
+	<key>ArchiveVersion</key>
+	<integer>2</integer>
+	<key>CreationDate</key>
+	<date>2014-07-31T07:39:15Z</date>
+	<key>Name</key>
+	<string>LogInAndSignUpDemo</string>
+	<key>SchemeName</key>
+	<string>LogInAndSignUpDemo</string>
+</dict>
+</plist>
