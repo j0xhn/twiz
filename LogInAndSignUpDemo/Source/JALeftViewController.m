@@ -32,13 +32,7 @@
 
 @interface JALeftViewController ()
 
-@property (nonatomic, weak) UILabel *I;
-@property (nonatomic, weak) UILabel *PITTY;
-@property (nonatomic, weak) UILabel *DA;
-@property (nonatomic, weak) UILabel *FOOL;
-@property (nonatomic, weak) UILabel *DAT;
-@property (nonatomic, weak) UILabel *SWIPE;
-@property (nonatomic, weak) UILabel *RIGHT;
+@property (strong, nonatomic) UIImageView *mrTrexImage;
 
 
 @end
@@ -47,9 +41,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIImageView *mrTrexImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mrTrex.jpg"]];
-    [mrTrexImage setFrame:CGRectMake(0, 0, mrTrexImage.frame.size.width, mrTrexImage.frame.size.height)];
-    [self.view addSubview:mrTrexImage];
+    self.view.backgroundColor = [UIColor darkGrayColor];
+    
+    self.mrTrexImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mrTrex.jpg"]];
+    [self.mrTrexImage setFrame:CGRectMake(0, 0, self.mrTrexImage.frame.size.width, self.mrTrexImage.frame.size.height)];
+    [self.view addSubview:self.mrTrexImage];
+    [self.view sendSubviewToBack:self.mrTrexImage];
     
 }
 @end

@@ -19,6 +19,7 @@
 #define PURPLE_COLOR [UIColor colorWithRed:49.0f/255.0f green:35.0f/255.0f blue:105.0f/255.0f alpha:1.0f]
 #define RED_COLOR [UIColor colorWithRed:0.957 green:0.573 blue:0.62 alpha:1]
 #define GREEN_COLOR [UIColor colorWithRed:0.341 green:0.976 blue:0.969 alpha:1]
+#define SIDE_PANEL_COLOR [UIColor colorWithRed:0.71 green:0.463 blue:0.486 alpha:1]
 
 #define SCREEN_HORIZONTAL self.view.bounds.size.width
 #define SCREEN_VERTICAL self.view.bounds.size.height

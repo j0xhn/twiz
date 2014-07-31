@@ -20,7 +20,7 @@
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:PURPLE_BACKGROUND]];
     self.title = NSLocalizedString(@"Twiz", nil);
     self.navigationController.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:49.0f/255.0f green:35.0f/255.0f blue:105.0f/255.0f alpha:1.0f];
+    self.navigationController.navigationBar.barTintColor = PURPLE_COLOR;
     self.navigationController.navigationBar.translucent = NO;
     //  [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, 320, 14)];
     [self.navigationController.navigationBar setTitleTextAttributes:@{

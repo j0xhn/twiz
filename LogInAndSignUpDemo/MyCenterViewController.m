@@ -33,11 +33,15 @@
 @property (nonatomic,strong) UILabel *scoreLabel;
 @property (nonatomic,assign) NSInteger scoreInt;
 
+@property (nonatomic, assign) BOOL isIphone4;
+@property (nonatomic, assign) CGFloat heightScaleFactor;
+@property (nonatomic, assign) CGFloat additionalTenForSmall;
+
 @end
 
 @implementation MyCenterViewController
 
-- (void) dealloc
+- (void) dealloc //Q:3 Do I need this?
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -72,8 +76,6 @@
     };
 
 }
-#pragma mark - UIViewController
-
 
 -(void)viewDidLoad{
     [MyTwitterController sharedInstance].delegate = self; // registers this view as the delegate for MyTwitterController
@@ -98,6 +100,16 @@
                                                  name:@"logOutTweetNotification"
                                                object:nil];
     
+    // sets height factor to work accross versions 4 and 5
+    NSInteger height = [[UIScreen mainScreen] bounds].size.height;
+    if (height > 560) {
+        self.heightScaleFactor = 1;
+        self.additionalTenForSmall = 0;
+    } else {
+        self.heightScaleFactor = .845;
+        self.additionalTenForSmall = 10;
+        self.isIphone4 = TRUE;
+    }
     
     self.view.backgroundColor = [UIColor redColor];
     // Check if user is logged in - commented out during offline development
@@ -252,7 +264,7 @@
                                 self.scoreLabel.transform = CGAffineTransformScale(self.scoreLabel.transform, 1.2, 1.2);
                             } completion:^(BOOL finished) {
                                 [UIView animateWithDuration:.05 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{ // score button pops down
-                                    self.scoreLabel.transform = CGAffineTransformScale(self.scoreLabel.transform, .8, .8);
+                                    self.scoreLabel.transform = CGAffineTransformScale(self.scoreLabel.transform, .83333, .83333);
                                 } completion:^(BOOL finished) {
                                     [selectedAnswerBtn removeFromSuperview];
                                     [correctAnswerBtn removeFromSuperview];
@@ -307,8 +319,7 @@
         self.mainView.alpha = 0;
         
         // Redraws tweet and possible answers
-        
-        self.tweetLabel = [[UITextView alloc]initWithFrame:CGRectMake(10.0, 10.0f, self.view.bounds.size.width - 20.0f, 200.0)];
+        self.tweetLabel = [[UITextView alloc]initWithFrame:CGRectMake(10.0, 10.0f, self.view.bounds.size.width - 20.0f, (200.0 * self.heightScaleFactor))];
         self.tweetLabel.dataDetectorTypes = UIDataDetectorTypeLink; // makes links clickable
         self.tweetLabel.linkTextAttributes = @{NSForegroundColorAttributeName:GREEN_COLOR};
         self.tweetLabel.editable = NO; // disables editing
@@ -325,7 +336,7 @@
 #pragma mark - Possible Answers Display
         
         // Possible Answer1
-        self.possibleAnswer1 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 220.0, self.view.bounds.size.width - 20.0f, 48)];
+        self.possibleAnswer1 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, (220.0 * self.heightScaleFactor), self.view.bounds.size.width - 20.0f, (48 * self.heightScaleFactor))];
         [self.possibleAnswer1 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
         self.possibleAnswer1.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:tweetPointsKey] stringValue];
         [self.possibleAnswer1.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[0][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
@@ -333,7 +344,7 @@
         self.possibleAnswer1.tag = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
         
         // Possible Answer2
-        self.possibleAnswer2 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 275.0, self.view.bounds.size.width - 20.0f, 48)];
+        self.possibleAnswer2 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, (275.0 * self.heightScaleFactor), self.view.bounds.size.width - 20.0f, (48 * self.heightScaleFactor))];
         [self.possibleAnswer2 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
         [self.possibleAnswer2.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[1][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
         self.possibleAnswer2.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:tweetPointsKey] stringValue];
@@ -341,7 +352,7 @@
         self.possibleAnswer2.tag = [[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey];
         
         // Possible Answer3
-        self.possibleAnswer3 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 330.0, self.view.bounds.size.width - 20.0f, 48)];
+        self.possibleAnswer3 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, (330.0 * self.heightScaleFactor), self.view.bounds.size.width - 20.0f, (48 * self.heightScaleFactor))];
         [self.possibleAnswer3 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
         self.possibleAnswer3.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:tweetPointsKey] stringValue];
         [self.possibleAnswer3.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[2][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
@@ -349,7 +360,7 @@
         self.possibleAnswer3.tag = [[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerAuthorKey];
         
         // Possible Answer4
-        self.possibleAnswer4 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, 385.0, self.view.bounds.size.width - 20.0f, 48)];
+        self.possibleAnswer4 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, (385.0 * self.heightScaleFactor), self.view.bounds.size.width - 20.0f, (48 * self.heightScaleFactor))];
         [self.possibleAnswer4 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
         self.possibleAnswer4.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:tweetPointsKey] stringValue];
         [self.possibleAnswer4.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[3][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
@@ -361,14 +372,29 @@
         refreshBtn.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         [refreshBtn setTitle:NSLocalizedString(@"Skip", nil) forState:UIControlStateNormal];
         [refreshBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        refreshBtn.titleLabel.font = TWIZ_FONT_300_30;
-        refreshBtn.frame = CGRectMake(10.0, self.view.bounds.size.height - 60.0f, self.view.bounds.size.width - 20.0f, 50.0);
+        refreshBtn.titleLabel.font = TWIZ_FONT_300_22;
+        refreshBtn.frame = CGRectMake(10.0, (440 * self.heightScaleFactor), self.view.bounds.size.width - 20.0f, ((50.0 * self.heightScaleFactor)));
         [[refreshBtn layer] setCornerRadius:3.0f];
         [[refreshBtn layer] setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.1].CGColor];
         [refreshBtn addTarget:self action:@selector(resetActiveTweet) forControlEvents:UIControlEventTouchUpInside];
         
-        [self.mainView addSubview:refreshBtn];
+        if (self.isIphone4) { // adjust image placement, selected answer point placement, and font for 3.5 inch screens
+
+            self.possibleAnswer1.possibleAnswerImage.frame = CGRectMake((9 * self.heightScaleFactor), (9  * self.heightScaleFactor), (30  * self.heightScaleFactor), (30  * self.heightScaleFactor));
+            self.possibleAnswer2.possibleAnswerImage.frame = CGRectMake((9 * self.heightScaleFactor), (9  * self.heightScaleFactor), (30  * self.heightScaleFactor), (30  * self.heightScaleFactor));
+            self.possibleAnswer3.possibleAnswerImage.frame = CGRectMake((9 * self.heightScaleFactor), (9  * self.heightScaleFactor), (30  * self.heightScaleFactor), (30  * self.heightScaleFactor));
+            self.possibleAnswer4.possibleAnswerImage.frame = CGRectMake((9 * self.heightScaleFactor), (9  * self.heightScaleFactor), (30  * self.heightScaleFactor), (30  * self.heightScaleFactor));
+            refreshBtn.frame = CGRectMake(10.0, (440 * self.heightScaleFactor), self.view.bounds.size.width - 20.0f, ((50.0 * self.heightScaleFactor) - 10));
+            self.possibleAnswer1.possibleAnswerPoints.frame = CGRectMake((self.possibleAnswer1.frame.size.width-37), 5, 30,30);
+            self.possibleAnswer2.possibleAnswerPoints.frame = CGRectMake((self.possibleAnswer1.frame.size.width-37), 5, 30,30);
+            self.possibleAnswer3.possibleAnswerPoints.frame = CGRectMake((self.possibleAnswer1.frame.size.width-37), 5, 30,30);
+            self.possibleAnswer4.possibleAnswerPoints.frame = CGRectMake((self.possibleAnswer1.frame.size.width-37), 5, 30,30);
+            [self.tweetLabel setFont:[UIFont fontWithName:@"MuseoSansRounded-500" size:(22.0 * self.heightScaleFactor)]];
+
+        }
         
+        
+        [self.mainView addSubview:refreshBtn];
         [self.mainView addSubview:self.possibleAnswer1]; // adds each answer to the mainView
         [self.mainView addSubview:self.possibleAnswer2];
         [self.mainView addSubview:self.possibleAnswer3];
