@@ -8,6 +8,7 @@
 
 #import "MyCenterViewController.h"
 #import "MyLogInViewController.h"
+#import "MyInterstatialAdViewController.h"
 #import "UIViewController+JASidePanel.h"
 #import "JASidePanelController.h"
 #import "MyActiveTweet.h"
@@ -16,10 +17,12 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "PossibleAnswerBtn.h"
 #import "UIImageView+AFNetworking.h"
+#import <iAd/iAd.h>
+#import <UIKit/UIKit.h>
 
 #import "MyTwitterController.h"
 
-@interface MyCenterViewController () <MyTwitterDelegate>
+@interface MyCenterViewController () <MyTwitterDelegate , ADInterstitialAdDelegate>
 
 @property (nonatomic, strong) PossibleAnswerBtn *possibleAnswer1;
 @property (nonatomic, strong) PossibleAnswerBtn *possibleAnswer2;
@@ -36,6 +39,9 @@
 @property (nonatomic, assign) BOOL isIphone4;
 @property (nonatomic, assign) CGFloat heightScaleFactor;
 @property (nonatomic, assign) CGFloat additionalTenForSmall;
+
+@property (nonatomic, strong) ADInterstitialAd *interstitial;
+@property (nonatomic, assign) BOOL requestingAd;
 
 @end
 
@@ -70,11 +76,8 @@
                 
                 [message show];
             }
-            
         }];
-
     };
-
 }
 
 -(void)viewDidLoad{
@@ -110,6 +113,8 @@
         self.additionalTenForSmall = 10;
         self.isIphone4 = TRUE;
     }
+    
+    self.requestingAd = NO; // for iAd
     
     self.view.backgroundColor = [UIColor redColor];
     // Check if user is logged in - commented out during offline development
@@ -294,17 +299,12 @@
                 [correctAnswerBtn removeFromSuperview];
                 self.scoreInt = [[[MyTwitterController sharedInstance] incrementScoreWithNumber:number] intValue];
                 self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
+                
+                [self showFullScreenAd];
                 [self resetActiveTweet]; // loads new tweet
             }];
         }];
-        
-
-
-        
     }
-
-    
-
 }
 
 - (void)resetActiveTweet {
@@ -408,17 +408,17 @@
             
         }];
     }];
+}
 
-
-    
-
-
+//Interstitial iAd
+-(void)showFullScreenAd {
+    MyInterstatialAdViewController *adView = [MyInterstatialAdViewController new];
+    [self presentViewController:adView animated:YES completion:nil];
 }
 
 - (void) saveUserInfo{
     
     [[MyTwitterController sharedInstance] saveUserInfo];
-
 }
 
 #pragma mark - PFLogInViewControllerDelegate

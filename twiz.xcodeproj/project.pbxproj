@@ -79,6 +79,8 @@
 		F56F4AF01971A678005829AA /* MyEmptyBucketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56F4AEF1971A678005829AA /* MyEmptyBucketViewController.m */; };
 		F57F8D14195A738600DAB0B8 /* johnD.png in Resources */ = {isa = PBXBuildFile; fileRef = F57F8D13195A738600DAB0B8 /* johnD.png */; };
 		F57F8D17195A751F00DAB0B8 /* MyCenterViewController+Style.m in Sources */ = {isa = PBXBuildFile; fileRef = F57F8D16195A751F00DAB0B8 /* MyCenterViewController+Style.m */; };
+		F58D5872199002D00040A7EC /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F58D5871199002D00040A7EC /* iAd.framework */; };
+		F58D58781991A21C0040A7EC /* MyInterstatialAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F58D58771991A21C0040A7EC /* MyInterstatialAdViewController.m */; };
 		F5AD829D19664B7B0010F2D2 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5AD829C19664B7B0010F2D2 /* Crashlytics.framework */; };
 		F5DAC7A119514DBC00CBE038 /* MyActiveTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAC7A019514DBC00CBE038 /* MyActiveTweet.m */; };
 		F5DAC7A519514E0900CBE038 /* MyConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DAC7A419514E0900CBE038 /* MyConstants.m */; };
@@ -196,6 +198,9 @@
 		F57F8D13195A738600DAB0B8 /* johnD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = johnD.png; sourceTree = "<group>"; };
 		F57F8D15195A751F00DAB0B8 /* MyCenterViewController+Style.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MyCenterViewController+Style.h"; sourceTree = "<group>"; };
 		F57F8D16195A751F00DAB0B8 /* MyCenterViewController+Style.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MyCenterViewController+Style.m"; sourceTree = "<group>"; };
+		F58D5871199002D00040A7EC /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		F58D58761991A21C0040A7EC /* MyInterstatialAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyInterstatialAdViewController.h; path = ../MyInterstatialAdViewController.h; sourceTree = "<group>"; };
+		F58D58771991A21C0040A7EC /* MyInterstatialAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyInterstatialAdViewController.m; path = ../MyInterstatialAdViewController.m; sourceTree = "<group>"; };
 		F5AD829C19664B7B0010F2D2 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		F5DAC79F19514DBC00CBE038 /* MyActiveTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyActiveTweet.h; sourceTree = "<group>"; };
 		F5DAC7A019514DBC00CBE038 /* MyActiveTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyActiveTweet.m; sourceTree = "<group>"; };
@@ -214,6 +219,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F58D5872199002D00040A7EC /* iAd.framework in Frameworks */,
 				F5271DE71989D354006AA906 /* MessageUI.framework in Frameworks */,
 				F55452851975FDE800E62F1A /* Twitter.framework in Frameworks */,
 				C4BBB7BE16FD2B7D003CA3F7 /* libsqlite3.0.dylib in Frameworks */,
@@ -288,6 +294,7 @@
 		74366EA5158AAE0F00A17D8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F58D5871199002D00040A7EC /* iAd.framework */,
 				F5271DE61989D354006AA906 /* MessageUI.framework */,
 				F55452841975FDE800E62F1A /* Twitter.framework */,
 				F5AD829C19664B7B0010F2D2 /* Crashlytics.framework */,
@@ -361,6 +368,8 @@
 				F522905A193EDDF400D0160A /* JARightViewController.m */,
 				F5229057193EDDF400D0160A /* JALeftViewController.h */,
 				F5229058193EDDF400D0160A /* JALeftViewController.m */,
+				F58D58761991A21C0040A7EC /* MyInterstatialAdViewController.h */,
+				F58D58771991A21C0040A7EC /* MyInterstatialAdViewController.m */,
 				F5228FB0193900F100D0160A /* XIB */,
 			);
 			name = "My Views";
@@ -615,6 +624,7 @@
 				F5229060193EDDF400D0160A /* JARightViewController.m in Sources */,
 				F5DAC7A119514DBC00CBE038 /* MyActiveTweet.m in Sources */,
 				F56F4AF01971A678005829AA /* MyEmptyBucketViewController.m in Sources */,
+				F58D58781991A21C0040A7EC /* MyInterstatialAdViewController.m in Sources */,
 				F5271DA51988A32E006AA906 /* AFSecurityPolicy.m in Sources */,
 				F5271DB01988A32E006AA906 /* UIRefreshControl+AFNetworking.m in Sources */,
 				F5271DAC1988A32E006AA906 /* UIAlertView+AFNetworking.m in Sources */,
