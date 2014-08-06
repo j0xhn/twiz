@@ -1,9 +1,9 @@
 //
 //  MyCenterViewController+Style.m
-//  twiz
+//  Twiz
 //
-//  Created by John D. Storey on 6/24/14.
-//
+//  Created from LogInAndSignUpDemo via Parse
+//  Copyright (c) 2014 John D. Storey. All rights reserved.
 //
 
 #import "MyCenterViewController+Style.h"
@@ -14,7 +14,7 @@
 
 @implementation MyCenterViewController (Style)
 
-- (void) viewWillAppear:(BOOL)animated{ // loaded everytime view is about to appear
+- (void) viewWillAppear:(BOOL)animated{ // loaded everytime view is about to appear, refactor to include all styling of views
     
     // Navigation Bar
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:PURPLE_BACKGROUND]];

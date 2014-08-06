@@ -1,10 +1,11 @@
 //
 //  MyLogInViewController.m
-//  LogInAndSignUpDemo
+//  Twiz
 //
-//  Created by Mattieu Gamache-Asselin on 6/15/12.
-//  Copyright (c) 2013 Parse. All rights reserved.
+//  Created from LogInAndSignUpDemo via Parse
+//  Copyright (c) 2014 John D. Storey. All rights reserved.
 //
+
 #import "MyLogInViewController.h"
 #import "JASidePanelController.h"
 #import "UIViewController+JASidePanel.h"
@@ -25,10 +26,8 @@
     
     [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:PURPLE_BACKGROUND]];
     
-    // if 'nil' not selected it will bring up Parse Logo
-    [self.logInView setLogo:[UIImage imageNamed:nil]];
-    // removes pre-made twitter button
-    [self.logInView.twitterButton removeFromSuperview];
+    [self.logInView setLogo:[UIImage imageNamed:nil]]; // if 'nil' not selected it will bring up Parse Logo
+    [self.logInView.twitterButton removeFromSuperview]; // removes pre-made twitter button.. can't seem to find how to do it otherwise
     
     UILabel *logoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 200, self.view.bounds.size.width, 40)];
     logoLabel.text = NSLocalizedString(@"TWIZ", nil) ;
@@ -44,7 +43,6 @@
     taglineLabel.text = NSLocalizedString(@"the twitter quiz game", nil);
     taglineLabel.textColor = [UIColor whiteColor];
     taglineLabel.textAlignment = NSTextAlignmentCenter;
-    
     UIFont *museoTagLineFont = [UIFont fontWithName:@"MuseoSansRounded-300" size:14.0];
     taglineLabel.font = museoTagLineFont;
     taglineLabel.textAlignment = NSTextAlignmentCenter;
@@ -75,7 +73,7 @@
             NSLog(@"Uh oh. Login failed with error %@", error);
             return;
         } else if (user.isNew) {
-            // give intro run through here, or welcome message
+            // V:2 Give intro run through here, or welcome message with email for newsletter
             NSURL *verify = [NSURL URLWithString:@"https://api.twitter.com/1.1/account/verify_credentials.json"];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:verify];
             [[PFTwitterUtils twitter] signRequest:request];
@@ -88,7 +86,6 @@
             
             [user setObject:[result objectForKey:@"profile_image_url_https"]
                      forKey:@"picture"];
-            // does this thing help?
             [user setUsername:[result objectForKey:@"screen_name"]];
             
             NSString * names = [result objectForKey:@"name"];
@@ -107,14 +104,14 @@
             NSLog(@"username:%@", user.username);
             [[MyTwitterController sharedInstance] setCurrentUser];
             [self dismissViewControllerAnimated:YES completion:NULL];
-            // Q:2 Not a question, just a note to look into this section to find smoother ways of presenting view controller, with myEmptyTweetBucket controller as well
+            // V:2 Look into this section to find smoother ways of presenting view controller, with myEmptyTweetBucket controller as well
             
         } else {
             
             NSLog(@"signin Sucessfull");
             [[MyTwitterController sharedInstance] setCurrentUser];
             [self dismissViewControllerAnimated:YES completion:NULL];
-            // Q:2 Not a question, just a note to look into this section to find smoother ways of presenting view controller, with myEmptyTweetBucket controller as well
+            // V:2 Look into this section to find smoother ways of presenting view controller, with myEmptyTweetBucket controller as well
         }
         [[NSNotificationCenter defaultCenter]
          postNotificationName:@"LoginSuccessfulNotification"

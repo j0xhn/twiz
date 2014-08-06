@@ -1,16 +1,15 @@
 //
 //  MyTwitterController.m
-//  twiz
+//  Twiz
 //
-//  Created by John D. Storey on 6/8/14.
+//  Created from LogInAndSignUpDemo via Parse
+//  Copyright (c) 2014 John D. Storey. All rights reserved.
 //
-//
+
 #import "MyTwitterController.h"
 #import "MyActiveTweet.h"
 #import "MyConstants.h"
 #import "MyEmptyBucketViewController.h"
-
-//#import <SEGAnalytics.h>
 #import <Crashlytics/Crashlytics.h>
 
 @interface MyTwitterController ()
@@ -74,7 +73,7 @@
         [self loadTweetBucketDictionaryWithCompletion:nil];
     }
     if ([self.tweetBucketDictionary count] == 3) { // for fast connections, but sometimes it logs this, then crashes directly after
-        NSLog(@"ALERT - 2 tweets left");
+        NSLog(@"ALERT - 3 tweets left");
         [self loadTweetBucketDictionaryWithCompletion:nil];
     }
     
@@ -99,16 +98,15 @@
     self.lastTweetID = [firstTweetFromBucket objectForKey:tweetIDKey];
     
     [self.tweetBucketDictionary removeObjectForKey:firstTweetObjectKey]; // delete it from tweetBucketDictionary
-//    [[NSUserDefaults standardUserDefaults] setObject:self.tweetBucketDictionary forKey:tweetBucketDictionaryKey]; // save it for when they exit
     
     return activeTweet;
  
 }
 
 - (void) loadTweetBucketDictionaryWithCompletion:(void (^)(bool success))block{ //requests timeline in the background
+    
     //Q:1 analytics not working... any idea why or how to debug?  Should I just switch to using raw google analytics instead?
-//    [[SEGAnalytics sharedAnalytics] track:@"Signed Up"
-//                               properties:@{ @"plan": @"Enterprise" }]; //tracks bucket requests
+    
     NSString *bodyString = @"";
     if (!self.currentUser){ // if user stops using app, then re-opens app it erases self.currentUser, this sets it.
         self.currentUser = [[NSUserDefaults standardUserDefaults] objectForKey:CURRENT_USER_KEY];
@@ -139,7 +137,7 @@
          {
              NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:&error];
              
-         // Q:3 - app just freezes if passed an error here, should show alert view.
+         // V:2 - app just freezes if passed an error here, should show alert view.
              
              for(id key in json){
                  
@@ -155,7 +153,6 @@
                                                tweetAuthorIDKey:singleTweetAuthorID,
                                                tweetIDKey:singleTweetID,
                                                tweetPhotoURLKey: singleTweetimageURL
-//                                               tweetAuthorPhotoKey:singleTweetimage
                                                };
                 
                  
@@ -288,12 +285,12 @@
 - (void) setCurrentUser{
     PFUser *currentUser = [PFUser currentUser];
     self.userScore = [currentUser[@"userScore"] integerValue];
+    
     // long process because parse was having an issue saving my NSNumber, so I converted it to string.  This de-converts.
-
     NSString *numberFromStoreInString = currentUser[@"lastTweetString"];
-    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-    [f setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber * lastTweetID = [f numberFromString:numberFromStoreInString];
+    NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSNumber * lastTweetID = [numberFormatter numberFromString:numberFromStoreInString];
 
     self.lastTweetID = lastTweetID;
     self.currentUser = currentUser[@"username"];
@@ -333,12 +330,7 @@
     }
 }
 
-- (void) loadValuesFromParse {
-    
-}
-
 - (NSNumber *) incrementScoreWithNumber:(NSNumber *)number{
-    NSLog(@"Change Score score by %ld", (long) [number intValue]);
     self.userScore = self.userScore + [number intValue];
     NSNumber *newScore = [NSNumber numberWithInt:self.userScore];
     return newScore;
@@ -350,7 +342,6 @@
     } else {
         self.InitialLoadState = YES;
     }
-    
 }
 
 @end

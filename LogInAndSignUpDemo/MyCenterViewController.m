@@ -1,9 +1,9 @@
-//
+//  
 //  SubclassConfigViewController.m
-//  LogInAndSignUpDemo
+//  Twiz
 //
-//  Created by Mattieu Gamache-Asselin on 6/15/12.
-//  Copyright (c) 2013 Parse. All rights reserved.
+//  Created from LogInAndSignUpDemo via Parse
+//  Copyright (c) 2014 John D. Storey. All rights reserved.
 //
 
 #import "MyCenterViewController.h"
@@ -24,12 +24,12 @@
 
 @interface MyCenterViewController () <MyTwitterDelegate , ADInterstitialAdDelegate>
 
+@property (nonatomic, strong) MyActiveTweet *activeTweet;
 @property (nonatomic, strong) PossibleAnswerBtn *possibleAnswer1;
 @property (nonatomic, strong) PossibleAnswerBtn *possibleAnswer2;
 @property (nonatomic, strong) PossibleAnswerBtn *possibleAnswer3;
 @property (nonatomic, strong) PossibleAnswerBtn *possibleAnswer4;
 @property (nonatomic, weak) UIButton *refreshBtn;
-@property (nonatomic, strong) MyActiveTweet *activeTweet;
 
 @property (nonatomic, strong) UIView *mainView;
 @property (nonatomic, strong) UITextView *tweetLabel;
@@ -38,7 +38,7 @@
 
 @property (nonatomic, assign) BOOL isIphone4;
 @property (nonatomic, assign) CGFloat heightScaleFactor;
-@property (nonatomic, assign) CGFloat additionalTenForSmall;
+@property (nonatomic, assign) CGFloat additionalForSmall;
 
 @property (nonatomic, strong) ADInterstitialAd *interstitial;
 @property (nonatomic, assign) BOOL requestingAd;
@@ -73,7 +73,6 @@
                                                                  delegate:nil
                                                         cancelButtonTitle:@"OK"
                                                         otherButtonTitles:nil];
-                
                 [message show];
             }
         }];
@@ -98,6 +97,7 @@
                                              selector:@selector(saveUserInfo)
                                                  name:@"saveUserInfoNotification"
                                                object:nil];
+    // creates listener for App logout
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshView)
                                                  name:@"logOutTweetNotification"
@@ -107,25 +107,23 @@
     NSInteger height = [[UIScreen mainScreen] bounds].size.height;
     if (height > 560) {
         self.heightScaleFactor = 1;
-        self.additionalTenForSmall = 0;
+        self.additionalForSmall = 0;
     } else {
         self.heightScaleFactor = .845;
-        self.additionalTenForSmall = 10;
+        self.additionalForSmall = 10;
         self.isIphone4 = TRUE;
     }
     
     self.requestingAd = NO; // for iAd
     
-    self.view.backgroundColor = [UIColor redColor];
-    // Check if user is logged in - commented out during offline development
-    if (![PFUser currentUser]) {        
-        // Customize the Log In View Controller
+    if (![PFUser currentUser]) {  // Check if user is logged in - commented out during offline development
         MyLogInViewController *logInViewController = [[MyLogInViewController alloc] init];
         logInViewController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
         logInViewController.delegate = self;
         logInViewController.fields = PFLogInFieldsTwitter;
-        // Present Log In View Controller
+
         [self presentViewController:logInViewController animated:YES completion:NULL];
+        
     } else {
         [[PFUser currentUser] refresh];
         [[MyTwitterController sharedInstance] setCurrentUser];
@@ -136,7 +134,7 @@
         userImageView.layer.cornerRadius = userImageView.frame.size.width / 2;
         userImageView.layer.masksToBounds = YES;
         [self.navigationController.navigationBar addSubview:userImageView];
-        
+        // sets score label
         self.scoreLabel = [[UILabel alloc]initWithFrame:CGRectMake(40,6,55,32)];
         NSNumber *userScore = [[MyTwitterController sharedInstance] requestInitialScore];
         self.scoreLabel.text = [userScore stringValue];
@@ -145,7 +143,7 @@
         [self.mainView addSubview:self.scoreLabel];
         [self.navigationController.navigationBar addSubview:self.scoreLabel];
         
-#pragma mark - Bottom Buttons
+#pragma mark - Loading Indicator
         
         UIView *loadingView = [[UIView alloc]initWithFrame:CGRectMake((SCREEN_HORIZONTAL - 200)/2, (SCREEN_VERTICAL - 200)/2, 200, 100)];
         
@@ -161,7 +159,6 @@
         
         [loadingView addSubview:spinner];
         [loadingView addSubview:loadingLabel];
-
         [self.view addSubview:loadingView];
         
         [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:^(bool success) {
@@ -172,15 +169,6 @@
                 });
             }];
     }
-}
-
-- (void) refreshView{
-    self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[MyCenterViewController alloc] init]];
-}
-
-- (void)loadTweets
-{
-    [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:nil];
 }
 
 #pragma mark - Answer Selected
@@ -199,11 +187,11 @@
         number = [NSNumber numberWithInt:5];
         selectedAnswerBtn.layer.borderWidth = 0.0;
         selectedAnswerBtn.possibleAnswerPoints.text = [NSString stringWithFormat:@"+%@", selectedAnswerBtn.possibleAnswerPoints.text];
-        selectedAnswerBtn.possibleAnswerPoints.textColor = PURPLE_COLOR; /* purple */
+        selectedAnswerBtn.possibleAnswerPoints.textColor = PURPLE_COLOR;
         selectedAnswerBtn.backgroundColor = GREEN_COLOR; /* green #57f9f7*/
-        [selectedAnswerBtn setTitleColor:PURPLE_COLOR forState:UIControlStateNormal]; /* purple */
-    } else {
+        [selectedAnswerBtn setTitleColor:PURPLE_COLOR forState:UIControlStateNormal];
         
+    } else {
         isCorrect = false;
         NSLog(@"%@ is not equal to %@", selectedAuthorID, correctAuthorID );
         number = [NSNumber numberWithInt:-1];
@@ -237,7 +225,6 @@
             }
         }
     }
-    
     // set general animations
     [self.view addSubview:selectedAnswerBtn];
     self.mainView.alpha = .4;
@@ -335,37 +322,39 @@
         
 #pragma mark - Possible Answers Display
         
+        // refactor if possible into a loop - changing just the initial height on each time it goes through
+        
         // Possible Answer1
         self.possibleAnswer1 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, (220.0 * self.heightScaleFactor), self.view.bounds.size.width - 20.0f, (48 * self.heightScaleFactor))];
-        [self.possibleAnswer1 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
-        self.possibleAnswer1.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:tweetPointsKey] stringValue];
+        [self.possibleAnswer1 setTitle:self.activeTweet.possibleAnswers[0][possibleAnswerAuthorKey] forState:UIControlStateNormal];
+        self.possibleAnswer1.possibleAnswerPoints.text =  [self.activeTweet.possibleAnswers[0][tweetPointsKey] stringValue];
         [self.possibleAnswer1.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[0][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
         [self.possibleAnswer1 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
-        self.possibleAnswer1.tag = [[self.activeTweet.possibleAnswers objectAtIndex:0] objectForKey:possibleAnswerAuthorKey];
+        self.possibleAnswer1.tag = self.activeTweet.possibleAnswers[0][possibleAnswerAuthorKey];
         
         // Possible Answer2
         self.possibleAnswer2 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, (275.0 * self.heightScaleFactor), self.view.bounds.size.width - 20.0f, (48 * self.heightScaleFactor))];
-        [self.possibleAnswer2 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
+        [self.possibleAnswer2 setTitle: self.activeTweet.possibleAnswers[1][possibleAnswerAuthorKey] forState:UIControlStateNormal];
         [self.possibleAnswer2.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[1][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
-        self.possibleAnswer2.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:tweetPointsKey] stringValue];
+        self.possibleAnswer2.possibleAnswerPoints.text =  [self.activeTweet.possibleAnswers[1][tweetPointsKey] stringValue];
         [self.possibleAnswer2 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
-        self.possibleAnswer2.tag = [[self.activeTweet.possibleAnswers objectAtIndex:1] objectForKey:possibleAnswerAuthorKey];
+        self.possibleAnswer2.tag = self.activeTweet.possibleAnswers[1][possibleAnswerAuthorKey];
         
         // Possible Answer3
         self.possibleAnswer3 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, (330.0 * self.heightScaleFactor), self.view.bounds.size.width - 20.0f, (48 * self.heightScaleFactor))];
-        [self.possibleAnswer3 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
-        self.possibleAnswer3.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:tweetPointsKey] stringValue];
+        [self.possibleAnswer3 setTitle:self.activeTweet.possibleAnswers[2][possibleAnswerAuthorKey] forState:UIControlStateNormal];
+        self.possibleAnswer3.possibleAnswerPoints.text = [self.activeTweet.possibleAnswers[2][tweetPointsKey] stringValue];
         [self.possibleAnswer3.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[2][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
         [self.possibleAnswer3 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
-        self.possibleAnswer3.tag = [[self.activeTweet.possibleAnswers objectAtIndex:2] objectForKey:possibleAnswerAuthorKey];
+        self.possibleAnswer3.tag = self.activeTweet.possibleAnswers[2][possibleAnswerAuthorKey];
         
         // Possible Answer4
         self.possibleAnswer4 = [[PossibleAnswerBtn alloc] initWithFrame:CGRectMake(10.0, (385.0 * self.heightScaleFactor), self.view.bounds.size.width - 20.0f, (48 * self.heightScaleFactor))];
-        [self.possibleAnswer4 setTitle:[[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:possibleAnswerAuthorKey] forState:UIControlStateNormal];
-        self.possibleAnswer4.possibleAnswerPoints.text =  [[[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:tweetPointsKey] stringValue];
+        [self.possibleAnswer4 setTitle:self.activeTweet.possibleAnswers[3][possibleAnswerAuthorKey] forState:UIControlStateNormal];
+        self.possibleAnswer4.possibleAnswerPoints.text =  [self.activeTweet.possibleAnswers[3] [tweetPointsKey] stringValue];
         [self.possibleAnswer4.possibleAnswerImage setImageWithURL:self.activeTweet.possibleAnswers[3][possibleAnswerPhotoURLKey] placeholderImage:[UIImage imageNamed:@"mrT.jpg"]];
         [self.possibleAnswer4 addTarget:self action:@selector(answerSelected:) forControlEvents:UIControlEventTouchUpInside];
-        self.possibleAnswer4.tag = [[self.activeTweet.possibleAnswers objectAtIndex:3] objectForKey:possibleAnswerAuthorKey];
+        self.possibleAnswer4.tag = self.activeTweet.possibleAnswers[3][possibleAnswerAuthorKey];
         
         // skip button
         UIButton *refreshBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -393,7 +382,6 @@
 
         }
         
-        
         [self.mainView addSubview:refreshBtn];
         [self.mainView addSubview:self.possibleAnswer1]; // adds each answer to the mainView
         [self.mainView addSubview:self.possibleAnswer2];
@@ -410,15 +398,22 @@
     }];
 }
 
-//Interstitial iAd
 -(void)showFullScreenAd {
     MyInterstatialAdViewController *adView = [MyInterstatialAdViewController new];
     [self presentViewController:adView animated:YES completion:nil];
 }
 
-- (void) saveUserInfo{
+- (void) saveUserInfo {
     
     [[MyTwitterController sharedInstance] saveUserInfo];
+}
+
+- (void) refreshView {
+    self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[MyCenterViewController alloc] init]];
+}
+
+- (void)loadTweets {
+    [[MyTwitterController sharedInstance] loadTweetBucketDictionaryWithCompletion:nil];
 }
 
 #pragma mark - PFLogInViewControllerDelegate
@@ -438,16 +433,6 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-// Sent to the delegate when the log in attempt fails.
-- (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
-    NSLog(@"Failed to log in...");
-}
-
-// Sent to the delegate when the log in screen is dismissed.
-- (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController {
-    NSLog(@"User dismissed the logInViewController");
-}
-
 
 #pragma mark - PFSignUpViewControllerDelegate
 
@@ -462,30 +447,8 @@
         }
     }
     
-    if (!informationComplete) {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"Make sure you fill out all of the information!", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
-    }
-    
     return informationComplete;
 }
-
-// Sent to the delegate when a PFUser is signed up.
-- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
-    [self dismissViewControllerAnimated:YES completion:NULL];
-}
-
-// Sent to the delegate when the sign up attempt fails.
-- (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
-    NSLog(@"Failed to sign up...");
-}
-
-// Sent to the delegate when the sign up screen is dismissed.
-- (void)signUpViewControllerDidCancelSignUp:(PFSignUpViewController *)signUpController {
-    NSLog(@"User dismissed the signUpViewController");
-}
-
-
-#pragma mark - ()
 
 - (IBAction)logOutButtonTapAction:(id)sender {
     [self.sidePanelController showCenterPanelAnimated:YES];

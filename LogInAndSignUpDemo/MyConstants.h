@@ -1,10 +1,11 @@
 //
 //  MyConstants.h
-//  twiz
+//  Twiz
 //
-//  Created by John D. Storey on 6/17/14.
+//  Created from LogInAndSignUpDemo via Parse
+//  Copyright (c) 2014 John D. Storey. All rights reserved.
 //
-//
+
 #import <Foundation/Foundation.h>
 
 #define CURRENT_USER_KEY @"currentUser"
@@ -44,7 +45,5 @@ static NSInteger const * tweetBucketSize = 20;
 @interface MyConstants : NSObject
 
 @property (strong,nonatomic) NSString *currentUserScreenName;
-
-@property (strong,nonatomic) UIFont *museoButtonFont500_18;
 
 @end

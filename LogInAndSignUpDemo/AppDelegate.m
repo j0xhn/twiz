@@ -37,12 +37,12 @@
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     [PFTwitterUtils initializeWithConsumerKey:@"XEiHejzzFjNIzEy2bSNEug" consumerSecret:@"uEeJboXD9ZF3V8sRs89pWpGngF53xqsBd9sTT8GfE"];
     
-    // Analytics
-//    [SEGAnalytics setupWithConfiguration:[SEGAnalyticsConfiguration configurationWithWriteKey:@"vspssh598g"]];
+    // SEG Analytics not working.  Lets switch to Google Analytics
+    // [SEGAnalytics setupWithConfiguration:[SEGAnalyticsConfiguration configurationWithWriteKey:@"vspssh598g"]];
     // Crashlytics
     [Crashlytics startWithAPIKey:@"bf558a6cef31aa4273fd55371f9d5ae2cd97e01c"];
     
-    // Set default ACLs
+    // Set default ACLs for Parse
     PFACL *defaultACL = [PFACL ACL];
     [defaultACL setPublicReadAccess:YES];
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
@@ -59,12 +59,6 @@
 	self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;
-
-}
-
-// Facebook oauth callback
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    return [PFFacebookUtils handleOpenURL:url];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
@@ -81,15 +75,9 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    //
     NSLog(@"Became active - not currently sending any sort of notification");
     [[PFUser currentUser] refresh];
-//    [[NSNotificationCenter defaultCenter]
-//     postNotificationName:@"resetActiveTweetNotification"
-//     object:nil];
-    
-    // Handle an interruption during the authorization flow, such as the user clicking the home button // don't need
-    [FBSession.activeSession handleDidBecomeActive];
+
 }
 
 @end

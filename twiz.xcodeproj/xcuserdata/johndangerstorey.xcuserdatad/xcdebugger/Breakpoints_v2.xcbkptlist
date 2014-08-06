@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LogInAndSignUpDemo/MyCenterViewController.m"
-            timestampString = "428975183.869879"
+            timestampString = "429037936.944222"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
             landmarkName = "-answerSelected:"
             landmarkType = "5">
          </BreakpointContent>
@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LogInAndSignUpDemo/MyCenterViewController.m"
-            timestampString = "428975183.869879"
+            timestampString = "429037936.944222"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "250"
-            endingLineNumber = "250"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
             landmarkName = "-answerSelected:"
             landmarkType = "5">
             <Locations>
@@ -82,11 +82,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LogInAndSignUpDemo/MyCenterViewController.m"
-            timestampString = "428975183.869879"
+            timestampString = "429037936.944222"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "254"
-            endingLineNumber = "254"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
             landmarkName = "-answerSelected:"
             landmarkType = "5">
             <Locations>
@@ -128,11 +128,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LogInAndSignUpDemo/MyCenterViewController.m"
-            timestampString = "428975183.869879"
+            timestampString = "429037936.944222"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "257"
-            endingLineNumber = "257"
+            startingLineNumber = "244"
+            endingLineNumber = "244"
             landmarkName = "-answerSelected:"
             landmarkType = "5">
             <Locations>
@@ -165,22 +165,6 @@
                   offsetFromSymbolStart = "23">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LogInAndSignUpDemo/MyTwitterController.m"
-            timestampString = "428483867.974833"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
-            landmarkName = "-loadTweetBucketDictionaryWithCompletion:"
-            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

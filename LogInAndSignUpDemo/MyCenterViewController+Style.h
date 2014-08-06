@@ -1,9 +1,9 @@
 //
 //  MyCenterViewController+Style.h
-//  twiz
+//  Twiz
 //
-//  Created by John D. Storey on 6/24/14.
-//
+//  Created from LogInAndSignUpDemo via Parse
+//  Copyright (c) 2014 John D. Storey. All rights reserved.
 //
 
 #import "MyCenterViewController.h"

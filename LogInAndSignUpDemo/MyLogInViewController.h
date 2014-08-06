@@ -1,9 +1,9 @@
 //
 //  MyLogInViewController.h
-//  LogInAndSignUpDemo
+//  Twiz
 //
-//  Created by Mattieu Gamache-Asselin on 6/15/12.
-//  Copyright (c) 2013 Parse. All rights reserved.
+//  Created from LogInAndSignUpDemo via Parse
+//  Copyright (c) 2014 John D. Storey. All rights reserved.
 //
 
 @interface MyLogInViewController : PFLogInViewController

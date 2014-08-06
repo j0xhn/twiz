@@ -23,7 +23,6 @@
 		74366EC8158AAF7E00A17D8A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74366EC2158AAF7E00A17D8A /* SystemConfiguration.framework */; };
 		74366ECA158AB00E00A17D8A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74366EC9158AB00E00A17D8A /* QuartzCore.framework */; };
 		74366EFA158B95C800A17D8A /* MyCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74366EF8158B95C800A17D8A /* MyCenterViewController.m */; };
-		74366EFB158B95C800A17D8A /* MyCenterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74366EF9158B95C800A17D8A /* MyCenterViewController.xib */; };
 		74366F03158B973C00A17D8A /* MyLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74366F02158B973C00A17D8A /* MyLogInViewController.m */; };
 		747F007C15951A58000F601E /* MainBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 747F007015951A58000F601E /* MainBG.png */; };
 		C4BBB7B516FD2ABC003CA3F7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4BBB7B316FD2ABC003CA3F7 /* CoreLocation.framework */; };
@@ -42,7 +41,6 @@
 		F5228FA81938F5D400D0160A /* MuseoSansRounded-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = F5228FA41938F58500D0160A /* MuseoSansRounded-300.otf */; };
 		F5228FA91938F5D400D0160A /* MuseoSansRounded-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = F5228FA51938F58500D0160A /* MuseoSansRounded-500.otf */; };
 		F5228FAA1938F5D400D0160A /* MuseoSansRounded-900.otf in Resources */ = {isa = PBXBuildFile; fileRef = F5228FA61938F58500D0160A /* MuseoSansRounded-900.otf */; };
-		F5228FAF193900DA00D0160A /* MyPlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5228FAD193900DA00D0160A /* MyPlayViewController.xib */; };
 		F5229048193ED5B400D0160A /* loginWithTwitterBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = F5229047193ED5B300D0160A /* loginWithTwitterBtn.png */; };
 		F522904E193EDBC700D0160A /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = F522904B193EDBC700D0160A /* JASidePanelController.m */; };
 		F522904F193EDBC700D0160A /* UIViewController+JASidePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = F522904D193EDBC700D0160A /* UIViewController+JASidePanel.m */; };
@@ -113,7 +111,6 @@
 		74366EC9158AB00E00A17D8A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		74366EF7158B95C800A17D8A /* MyCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCenterViewController.h; sourceTree = "<group>"; };
 		74366EF8158B95C800A17D8A /* MyCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCenterViewController.m; sourceTree = "<group>"; };
-		74366EF9158B95C800A17D8A /* MyCenterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyCenterViewController.xib; sourceTree = "<group>"; };
 		74366F01158B973C00A17D8A /* MyLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLogInViewController.h; sourceTree = "<group>"; };
 		74366F02158B973C00A17D8A /* MyLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLogInViewController.m; sourceTree = "<group>"; };
 		747F007015951A58000F601E /* MainBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MainBG.png; sourceTree = "<group>"; };
@@ -134,7 +131,6 @@
 		F5228FA41938F58500D0160A /* MuseoSansRounded-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-300.otf"; path = "../../../../../../../Volumes/Macintosh HD/Users/johndangerstorey/Documents/Stock/Fonts/MuseoSansRounded-300.otf"; sourceTree = "<group>"; };
 		F5228FA51938F58500D0160A /* MuseoSansRounded-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-500.otf"; path = "../../../../../../../Volumes/Macintosh HD/Users/johndangerstorey/Documents/Stock/Fonts/MuseoSansRounded-500.otf"; sourceTree = "<group>"; };
 		F5228FA61938F58500D0160A /* MuseoSansRounded-900.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MuseoSansRounded-900.otf"; path = "../../../../../../../Volumes/Macintosh HD/Users/johndangerstorey/Documents/Stock/Fonts/MuseoSansRounded-900.otf"; sourceTree = "<group>"; };
-		F5228FAD193900DA00D0160A /* MyPlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyPlayViewController.xib; sourceTree = "<group>"; };
 		F5229047193ED5B300D0160A /* loginWithTwitterBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginWithTwitterBtn.png; sourceTree = "<group>"; };
 		F522904A193EDBC700D0160A /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASidePanelController.h; sourceTree = "<group>"; };
 		F522904B193EDBC700D0160A /* JASidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JASidePanelController.m; sourceTree = "<group>"; };
@@ -142,10 +138,10 @@
 		F522904D193EDBC700D0160A /* UIViewController+JASidePanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+JASidePanel.m"; sourceTree = "<group>"; };
 		F5229055193EDDF400D0160A /* JADebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JADebugViewController.h; sourceTree = "<group>"; };
 		F5229056193EDDF400D0160A /* JADebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JADebugViewController.m; sourceTree = "<group>"; };
-		F5229057193EDDF400D0160A /* JALeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JALeftViewController.h; path = Source/JALeftViewController.h; sourceTree = "<group>"; };
-		F5229058193EDDF400D0160A /* JALeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JALeftViewController.m; path = Source/JALeftViewController.m; sourceTree = "<group>"; };
-		F5229059193EDDF400D0160A /* JARightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JARightViewController.h; path = Source/JARightViewController.h; sourceTree = "<group>"; };
-		F522905A193EDDF400D0160A /* JARightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JARightViewController.m; path = Source/JARightViewController.m; sourceTree = "<group>"; };
+		F5229057193EDDF400D0160A /* JALeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JALeftViewController.h; sourceTree = "<group>"; };
+		F5229058193EDDF400D0160A /* JALeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JALeftViewController.m; sourceTree = "<group>"; };
+		F5229059193EDDF400D0160A /* JARightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JARightViewController.h; sourceTree = "<group>"; };
+		F522905A193EDDF400D0160A /* JARightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JARightViewController.m; sourceTree = "<group>"; };
 		F522905B193EDDF400D0160A /* JASidePanels-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "JASidePanels-Info.plist"; sourceTree = "<group>"; };
 		F522905C193EDDF400D0160A /* JASidePanels-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JASidePanels-Prefix.pch"; sourceTree = "<group>"; };
 		F5271D7C1988A32E006AA906 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -364,29 +360,19 @@
 				74366F02158B973C00A17D8A /* MyLogInViewController.m */,
 				F56F4AEE1971A678005829AA /* MyEmptyBucketViewController.h */,
 				F56F4AEF1971A678005829AA /* MyEmptyBucketViewController.m */,
-				F5229059193EDDF400D0160A /* JARightViewController.h */,
-				F522905A193EDDF400D0160A /* JARightViewController.m */,
-				F5229057193EDDF400D0160A /* JALeftViewController.h */,
-				F5229058193EDDF400D0160A /* JALeftViewController.m */,
 				F58D58761991A21C0040A7EC /* MyInterstatialAdViewController.h */,
 				F58D58771991A21C0040A7EC /* MyInterstatialAdViewController.m */,
-				F5228FB0193900F100D0160A /* XIB */,
 			);
 			name = "My Views";
-			sourceTree = "<group>";
-		};
-		F5228FB0193900F100D0160A /* XIB */ = {
-			isa = PBXGroup;
-			children = (
-				F5228FAD193900DA00D0160A /* MyPlayViewController.xib */,
-				74366EF9158B95C800A17D8A /* MyCenterViewController.xib */,
-			);
-			name = XIB;
 			sourceTree = "<group>";
 		};
 		F5229049193EDBC700D0160A /* JASidePanels */ = {
 			isa = PBXGroup;
 			children = (
+				F5229059193EDDF400D0160A /* JARightViewController.h */,
+				F522905A193EDDF400D0160A /* JARightViewController.m */,
+				F5229057193EDDF400D0160A /* JALeftViewController.h */,
+				F5229058193EDDF400D0160A /* JALeftViewController.m */,
 				F5229055193EDDF400D0160A /* JADebugViewController.h */,
 				F5229056193EDDF400D0160A /* JADebugViewController.m */,
 				F522905B193EDDF400D0160A /* JASidePanels-Info.plist */,
@@ -478,6 +464,7 @@
 				74366EA0158AAE0F00A17D8A /* Resources */,
 				BCF606124168401A8FAA1F1B /* Copy Pods Resources */,
 				F5AD829B19664B3C0010F2D2 /* ShellScript */,
+				OBJCLEANCUSTOMRUNSCRIPTT /* Objective-Clean Run Script */,
 			);
 			buildRules = (
 			);
@@ -528,8 +515,6 @@
 				F5228FA91938F5D400D0160A /* MuseoSansRounded-500.otf in Resources */,
 				F5228FAA1938F5D400D0160A /* MuseoSansRounded-900.otf in Resources */,
 				74366EB1158AAE1000A17D8A /* InfoPlist.strings in Resources */,
-				74366EFB158B95C800A17D8A /* MyCenterViewController.xib in Resources */,
-				F5228FAF193900DA00D0160A /* MyPlayViewController.xib in Resources */,
 				747F007C15951A58000F601E /* MainBG.png in Resources */,
 				F5271DDD1989CA5A006AA906 /* star.png in Resources */,
 				C4BBB7C216FD2D73003CA3F7 /* Default@2x.png in Resources */,
@@ -592,6 +577,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./Crashlytics.framework/run bf558a6cef31aa4273fd55371f9d5ae2cd97e01c 472560584821c1a37fea3b8c5a8c1219ebfe11b95ebf371aec4111e3966bfa4e\n";
+		};
+		OBJCLEANCUSTOMRUNSCRIPTT /* Objective-Clean Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Objective-Clean Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "if [[ -z ${SKIP_OBJCLEAN} || ${SKIP_OBJCLEAN} != 1 ]]; then\nif [[ -d \"${LOCAL_APPS_DIR}/Objective-Clean.app\" ]]; then \n\"${LOCAL_APPS_DIR}\"/Objective-Clean.app/Contents/Resources/ObjClean.app/Contents/MacOS/ObjClean \"${SRCROOT}\" \nelse\necho \"warning: You have to install and set up Objective-Clean to use its features!\" \nfi\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 

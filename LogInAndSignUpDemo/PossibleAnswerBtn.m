@@ -1,9 +1,9 @@
 //
 //  PossibleAnswerBtn.m
-//  twiz
+//  Twiz
 //
-//  Created by John D. Storey on 7/26/14.
-//
+//  Created from LogInAndSignUpDemo via Parse
+//  Copyright (c) 2014 John D. Storey. All rights reserved.
 //
 
 #import "PossibleAnswerBtn.h"
