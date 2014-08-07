@@ -168,7 +168,7 @@
                     [self resetActiveTweet]; // added because sometimes upon login it wouldn't load tweet
                 });
             }];
-    }
+        }
 }
 
 #pragma mark - Answer Selected
