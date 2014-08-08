@@ -314,7 +314,6 @@
         
         [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
-                PFUser *currentUser = [PFUser currentUser];
                 NSLog(@"Hooray! Saved to Parse!");
             }
             if (error) {

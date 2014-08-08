@@ -56,6 +56,8 @@
     [self.view addSubview:self.loadingView];
 
     [self showFullScreenAd];
+    
+
 }
 
 //Interstitial iAd
@@ -81,12 +83,13 @@
     
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [closeButton setFrame:CGRectMake(0, 0, 100, 30)];
-    closeButton.center = CGPointMake(CGRectGetMidX(self.view.bounds), (CGRectGetMidY(self.view.bounds) - 10));
+    closeButton.center = CGPointMake(CGRectGetMidX(self.view.bounds), (CGRectGetMidY(self.view.bounds) + 10));
     [closeButton setTitle:@"Click to Exit" forState:UIControlStateNormal];
+    closeButton.titleLabel.font = TWIZ_FONT_500_18;
     [closeButton addTarget:self action:@selector(removeViewController) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *closeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 30)];
-    closeLabel.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+    UILabel *closeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 145, 30)];
+    closeLabel.center = CGPointMake(CGRectGetMidX(self.view.bounds), (CGRectGetMidY(self.view.bounds)-10));
     closeLabel.textAlignment = UIControlContentHorizontalAlignmentCenter;
     closeLabel.textColor = [UIColor whiteColor];
     closeLabel.font = TWIZ_FONT_500_18;

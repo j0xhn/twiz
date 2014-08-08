@@ -55,8 +55,7 @@
      forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:NSLocalizedString(@"Login with Twitter", nil) forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    UIFont *museoButtonFont = [UIFont fontWithName:@"MuseoSansRounded-500" size:18.0];
-    [button setFont:museoButtonFont];
+    button.titleLabel.font = TWIZ_FONT_500_18;
     button.frame = CGRectMake(60.0, 287.0, 200.0, 40.0);
     [[button layer] setCornerRadius:5.0f];
     [[button layer] setBorderWidth:1.0f];

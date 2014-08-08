@@ -133,7 +133,7 @@
         [mailer setToRecipients:@[@"johndangerstorey@gmail.com"]];
         NSString *emailBody = @"I really like your app but it'd be cooler if...";
         [mailer setMessageBody:emailBody isHTML:NO];
-        [self presentModalViewController:mailer animated:YES];
+        [self presentViewController:mailer animated:YES completion:nil];
         
     }
     else { // if error
@@ -154,13 +154,12 @@
     [vc setInitialText:@"I pitty da fool dat don't donwload Twiz. They be missin' out!"];    // Settin The Initial Text
     UIImage *image = [UIImage imageNamed:@"mrT.jpg"];    // Adding an Image
     [vc addImage:image];
-    NSURL *url = [NSURL URLWithString:@"http://dev.johndangerstorey.com"];     // Adding a URL
+    NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/us/app/twiz/id907314308?ls=1&mt=8"];     // Adding a URL
     [vc addURL:url];
     [self presentViewController:vc animated:YES completion:nil];
     
     [vc setCompletionHandler:^(TWTweetComposeViewControllerResult result) {     // Setting a Completing Handler
-        
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }];
 
 }
@@ -198,7 +197,7 @@
     }
     
     // Remove the mail view
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -22,7 +22,7 @@
 
 #import "MyTwitterController.h"
 
-@interface MyCenterViewController () <MyTwitterDelegate , ADInterstitialAdDelegate>
+@interface MyCenterViewController () <MyTwitterDelegate>
 
 @property (nonatomic, strong) MyActiveTweet *activeTweet;
 @property (nonatomic, strong) PossibleAnswerBtn *possibleAnswer1;
@@ -40,8 +40,7 @@
 @property (nonatomic, assign) CGFloat heightScaleFactor;
 @property (nonatomic, assign) CGFloat additionalForSmall;
 
-@property (nonatomic, strong) ADInterstitialAd *interstitial;
-@property (nonatomic, assign) BOOL requestingAd;
+@property (nonatomic, assign) NSInteger wrongAnswerCount;
 
 @end
 
@@ -113,8 +112,6 @@
         self.additionalForSmall = 10;
         self.isIphone4 = TRUE;
     }
-    
-    self.requestingAd = NO; // for iAd
     
     if (![PFUser currentUser]) {  // Check if user is logged in - commented out during offline development
         MyLogInViewController *logInViewController = [[MyLogInViewController alloc] init];
@@ -287,7 +284,12 @@
                 self.scoreInt = [[[MyTwitterController sharedInstance] incrementScoreWithNumber:number] intValue];
                 self.scoreLabel.text = [NSString stringWithFormat: @"%d", (int)self.scoreInt];
                 
-                [self showFullScreenAd];
+                if (self.wrongAnswerCount == 5) {
+                    [self showFullScreenAd];
+                } else {
+                    self.wrongAnswerCount++;
+                }
+                
                 [self resetActiveTweet]; // loads new tweet
             }];
         }];

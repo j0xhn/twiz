@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "MyCenterViewController.h"
-
 #import "JASidePanelController.h"
 #import "JALeftViewController.h"
 #import "JARightViewController.h"

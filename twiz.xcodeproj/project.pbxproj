@@ -482,6 +482,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0430;
+				TargetAttributes = {
+					74366EA1158AAE0F00A17D8A = {
+						DevelopmentTeam = GV45FM6S26;
+					};
+				};
 			};
 			buildConfigurationList = 74366E9C158AAE0F00A17D8A /* Build configuration list for PBXProject "twiz" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -710,7 +715,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3661B7D7205C4E76A22A2FFC /* Pods-twiz.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: John D. Storey (GG38A27XE8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LogInAndSignUpDemo/twiz-Prefix.pch";
@@ -720,6 +726,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = twiz;
+				PROVISIONING_PROFILE = "9E07978E-3B32-48A9-9B9D-AC2D0A3E6447";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -728,7 +735,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3661B7D7205C4E76A22A2FFC /* Pods-twiz.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: John D. Storey (GG38A27XE8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LogInAndSignUpDemo/twiz-Prefix.pch";
@@ -738,6 +746,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = twiz;
+				PROVISIONING_PROFILE = "9E07978E-3B32-48A9-9B9D-AC2D0A3E6447";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -25,7 +25,7 @@
         [self setTitleEdgeInsets:UIEdgeInsetsMake(0, 50.0f, 0.0f, 0.0f)];
         [self.titleLabel setFont:TWIZ_FONT_500_22];
         self.possibleAnswerPoints = [[UILabel alloc] initWithFrame:CGRectMake((self.frame.size.width-47), 8, 30,30)];
-        self.possibleAnswerPoints.textAlignment = UITextAlignmentCenter;
+        self.possibleAnswerPoints.textAlignment = UIControlContentHorizontalAlignmentCenter;
         self.possibleAnswerPoints.textColor = [UIColor whiteColor];
         self.possibleAnswerPoints.font = TWIZ_FONT_900_24;
         [self.possibleAnswerPoints setHidden:(true)];

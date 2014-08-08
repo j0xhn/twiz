@@ -26,9 +26,7 @@
 - (void) loadTweetBucketDictionaryWithCompletion:(void (^)(bool success))block;
 - (NSNumber *) incrementScoreWithNumber:(NSNumber *)number;
 - (void) saveUserInfo;
-
 - (void) setCurrentUser;
-- (void) checkAnswer:(NSString *)selectedAuthorID;
 
 @end
 
